@@ -4,18 +4,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+
 import javax.naming.NamingException;
 import javax.persistence.EntityManagerFactory;
 import java.util.Properties;
@@ -41,7 +42,7 @@ public class JpaConfiguration {
     @Bean
     @Primary
 //    @ConfigurationProperties(prefix = "spring.datasource")
-    public DataSourceProperties dataSourceProperties(){
+    public DataSourceProperties dataSourceProperties() {
         return new DataSourceProperties();
     }
 
@@ -58,14 +59,28 @@ public class JpaConfiguration {
     /*
      * Entity Manager Factory setup.
      */
-    @Bean
+    @Bean(name = "em")
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() throws NamingException {
         LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();
         factoryBean.setDataSource(dataSource());
-        factoryBean.setPackagesToScan(new String[] { "com.filmdatabase.filmdb" });
+        factoryBean.setPackagesToScan(new String[]{"com.filmdatabase.filmdb"});
         factoryBean.setJpaVendorAdapter(jpaVendorAdapter());
         factoryBean.setJpaProperties(jpaProperties());
         return factoryBean;
+    }
+    //@Bean(name = "em")
+    @Deprecated
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory1() {
+        LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
+        em.setDataSource(dataSource());
+        em.setPackagesToScan(new String[] {"com.luke.films", "com.luke.user.model"});
+
+        JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+        em.setJpaVendorAdapter(vendorAdapter);
+        em.setJpaProperties(jpaProperties());
+
+        // just return the bean here
+        return em;
     }
 
     /*
@@ -79,6 +94,7 @@ public class JpaConfiguration {
 
     /*
      * Here you can specify any provider specific properties.
+     * todo add properites for cache and cache provider
      */
     public Properties jpaProperties() {
         Properties properties = new Properties();
@@ -95,6 +111,15 @@ public class JpaConfiguration {
         JpaTransactionManager txManager = new JpaTransactionManager();
         txManager.setEntityManagerFactory(emf);
         return txManager;
+    }
+
+    @Bean(name = "sessionFactory")
+    public LocalSessionFactoryBean sessionFactory() {
+        LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
+        sessionFactory.setDataSource(dataSource());
+        sessionFactory.setPackagesToScan(new String[] { "com.filmdatabase.filmdb.application.model"});
+        sessionFactory.setHibernateProperties(jpaProperties());
+        return sessionFactory;
     }
 
 }

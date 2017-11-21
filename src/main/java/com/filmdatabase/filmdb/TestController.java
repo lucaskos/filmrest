@@ -1,5 +1,7 @@
 package com.filmdatabase.filmdb;
 
+import com.filmdatabase.filmdb.application.model.film.Film;
+import com.filmdatabase.filmdb.application.model.film.FilmDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,16 +20,21 @@ public class TestController {
 
     @RequestMapping("/allFilms")
     public Film allFils() {
-        List<Film> list = filmDao.getFilms();
-        return new Film("The matrix", 1999);
+        List<Film> all = filmDao.findAll();
+        Film oneFilm = null;
+        if (!all.isEmpty()) {
+            oneFilm = all.get(0);
+            System.out.println(oneFilm);
+        }
+        return oneFilm;
     }
 
     @RequestMapping(value = "/film", method = RequestMethod.GET)
-    public @ResponseBody Film sayHello() {
-        List<Film> list = filmDao.getFilms();
+    public @ResponseBody List<Film> sayHello() {
+        List<Film> list = filmDao.findAll();
         System.out.println(list);
         System.out.println(list.get(0));
-        return list.get(0);
+        return list;
     }
 
 }

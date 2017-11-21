@@ -1,5 +1,6 @@
 package com.filmdatabase.filmdb.configuration;
 
+import com.filmdatabase.filmdb.FilmdbApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 
