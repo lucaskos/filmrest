@@ -2,6 +2,7 @@ package com.filmdatabase.filmdb.application.model.actor;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.filmdatabase.filmdb.application.model.FilmRelation;
 import com.filmdatabase.filmdb.application.model.PersonRelation;
 import org.hibernate.validator.constraints.NotBlank;
@@ -30,9 +31,11 @@ public class Person {
 	@Column(name = "BIOGRAPHY")
 	private String bio;
 
+	@JsonIgnore
 	@OneToMany(targetEntity = PersonRelation.class, mappedBy = "personObject", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<PersonRelation> personRelations;
 
+	@JsonIgnore
 	@OneToMany(targetEntity = FilmRelation.class, mappedBy = "person", fetch = FetchType.LAZY, cascade = CascadeType
 			.ALL)
 	private Set<FilmRelation> filmRelations;

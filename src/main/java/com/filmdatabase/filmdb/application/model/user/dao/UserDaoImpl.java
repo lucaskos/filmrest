@@ -27,10 +27,6 @@ public class UserDaoImpl implements UserDao {
 	@Autowired
 	private RoleDao roleDao;
 
-	@Autowired
-	public SessionFactory(SessionFactory sessionFactory) {
-		this.sessionFactory = repository;
-	}
 //	private NamedParameterJdbcTemplate jdbc;
 
 	/**
