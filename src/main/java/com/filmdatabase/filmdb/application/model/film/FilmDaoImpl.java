@@ -2,6 +2,7 @@ package com.filmdatabase.filmdb.application.model.film;
 
 import com.filmdatabase.filmdb.application.model.GenericDaoHibernateImpl;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.criteria.*;
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import java.util.List;
 /**
  * Created by Luke on 02.11.2017.
  */
+@Transactional
 @Component("FilmDao")
 public class FilmDaoImpl extends GenericDaoHibernateImpl<Film> implements FilmDao {
 

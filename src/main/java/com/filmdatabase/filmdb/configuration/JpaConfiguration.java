@@ -3,12 +3,12 @@ package com.filmdatabase.filmdb.configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
@@ -18,7 +18,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.naming.NamingException;
-import javax.persistence.EntityManagerFactory;
+import javax.sql.DataSource;
 import java.util.Properties;
 
 @Configuration
@@ -47,7 +47,7 @@ public class JpaConfiguration {
     }
 
     @Bean
-    public DriverManagerDataSource dataSource() {
+    public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("com.mysql.jdbc.Driver");
         dataSource.setUrl("jdbc:mysql://localhost:3306/films");
@@ -68,20 +68,6 @@ public class JpaConfiguration {
         factoryBean.setJpaProperties(jpaProperties());
         return factoryBean;
     }
-    //@Bean(name = "em")
-    @Deprecated
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory1() {
-        LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
-        em.setDataSource(dataSource());
-        em.setPackagesToScan(new String[] {"com.luke.films", "com.luke.user.model"});
-
-        JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
-        em.setJpaVendorAdapter(vendorAdapter);
-        em.setJpaProperties(jpaProperties());
-
-        // just return the bean here
-        return em;
-    }
 
     /*
      * Provider specific adapter.
@@ -89,6 +75,8 @@ public class JpaConfiguration {
     @Bean
     public JpaVendorAdapter jpaVendorAdapter() {
         HibernateJpaVendorAdapter hibernateJpaVendorAdapter = new HibernateJpaVendorAdapter();
+        //todo check this
+        hibernateJpaVendorAdapter.setGenerateDdl(true);
         return hibernateJpaVendorAdapter;
     }
 
@@ -106,10 +94,13 @@ public class JpaConfiguration {
     }
 
     @Bean
-    @Autowired
-    public PlatformTransactionManager transactionManager(EntityManagerFactory emf) {
+    public PlatformTransactionManager transactionManager() {
         JpaTransactionManager txManager = new JpaTransactionManager();
-        txManager.setEntityManagerFactory(emf);
+        try {
+            txManager.setEntityManagerFactory(entityManagerFactory().getObject());
+        } catch (NamingException e) {
+            e.printStackTrace();
+        }
         return txManager;
     }
 
@@ -117,7 +108,7 @@ public class JpaConfiguration {
     public LocalSessionFactoryBean sessionFactory() {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource());
-        sessionFactory.setPackagesToScan(new String[] { "com.filmdatabase.filmdb.application.model"});
+        sessionFactory.setPackagesToScan(new String[]{"com.filmdatabase.filmdb.application.model"});
         sessionFactory.setHibernateProperties(jpaProperties());
         return sessionFactory;
     }

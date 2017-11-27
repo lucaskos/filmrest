@@ -1,4 +1,4 @@
-package com.filmdatabase.filmdb.application.model.actor;
+package com.filmdatabase.filmdb.application.model.person;
 
 import com.filmdatabase.filmdb.application.model.GenericDao;
 

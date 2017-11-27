@@ -2,7 +2,7 @@ package com.filmdatabase.filmdb.application.model.cast;
 
 import java.util.List;
 
-import com.filmdatabase.filmdb.application.model.actor.Person;
+import com.filmdatabase.filmdb.application.model.person.Person;
 import com.filmdatabase.filmdb.application.model.film.Film;
 
 public interface CastDao {

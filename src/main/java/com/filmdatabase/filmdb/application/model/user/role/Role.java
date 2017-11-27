@@ -10,26 +10,17 @@ import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.filmdatabase.filmdb.application.model.user.User;
+import com.filmdatabase.filmdb.application.model.user.dao.User;
+
+import java.util.Set;
 
 @Entity
 @Table(name = "roles")
 public class Role {
 
-	@Id
-	@GeneratedValue
-	@Column(name = "id")
 	private int id;
-
-	@Column(name = "role")
 	private String role;
-
-	@OneToMany(cascade=CascadeType.ALL)
-    @JoinTable(name="users_roles",
-        joinColumns = {@JoinColumn(name="users_id", referencedColumnName="id")},
-        inverseJoinColumns = {@JoinColumn(name="roles_id", referencedColumnName="id")}
-    )
-	private java.util.Set<User> userRoles;
+	private Set<User> userRoles;
 
 	public Role() {
 
@@ -39,6 +30,9 @@ public class Role {
 		this.role = role;
 	}
 
+	@Id
+	@GeneratedValue
+	@Column(name = "id")
 	public int getId() {
 		return id;
 	}
@@ -47,6 +41,7 @@ public class Role {
 		this.id = id;
 	}
 
+	@Column(name = "role")
 	public String getRole() {
 		return role;
 	}
@@ -55,6 +50,11 @@ public class Role {
 		this.role = role;
 	}
 
+	@OneToMany(cascade=CascadeType.ALL)
+	@JoinTable(name="users_roles",
+			joinColumns = {@JoinColumn(name="users_id", referencedColumnName="id")},
+			inverseJoinColumns = {@JoinColumn(name="roles_id", referencedColumnName="id")}
+	)
 	public java.util.Set<User> getUsersSet() {
 		return userRoles;
 	}

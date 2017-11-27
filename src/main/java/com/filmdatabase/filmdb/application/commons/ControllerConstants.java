@@ -15,7 +15,7 @@ public class ControllerConstants {
 
     public static final String FILM = "film";
 
-    public static final String ACTOR = "actor";
+    public static final String ACTOR = "person";
     
     public static final String ACTORS = "actors";
     

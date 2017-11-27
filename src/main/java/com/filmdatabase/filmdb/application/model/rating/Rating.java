@@ -11,7 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.filmdatabase.filmdb.application.model.film.Film;
-import com.filmdatabase.filmdb.application.model.user.User;
+import com.filmdatabase.filmdb.application.model.user.dao.User;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 

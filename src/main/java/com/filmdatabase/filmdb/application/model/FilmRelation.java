@@ -1,6 +1,6 @@
 package com.filmdatabase.filmdb.application.model;
 
-import com.filmdatabase.filmdb.application.model.actor.Person;
+import com.filmdatabase.filmdb.application.model.person.Person;
 import com.filmdatabase.filmdb.application.model.film.Film;
 
 import javax.persistence.*;
@@ -12,19 +12,13 @@ import javax.persistence.*;
 @Table(name = "FILM_RELATION")
 public class FilmRelation {
 
+    private int filmRelationId;
+    private Film film;
+    private Person person;
+
     @Id
     @Column(name = "ID_FILM_RELATION")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int filmRelationId;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "FILM_ID")
-    private Film film;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "ID_PERSON_RELATION_ID")
-    private Person person;
-
     public int getFilmRelationId() {
         return filmRelationId;
     }
@@ -33,6 +27,8 @@ public class FilmRelation {
         this.filmRelationId = filmRelationId;
     }
 
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "FILM_ID")
     public Film getFilm() {
         return film;
     }
@@ -41,6 +37,8 @@ public class FilmRelation {
         this.film = film;
     }
 
+    @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "ID_PERSON_RELATION_ID")
     public Person getPerson() {
         return person;
     }

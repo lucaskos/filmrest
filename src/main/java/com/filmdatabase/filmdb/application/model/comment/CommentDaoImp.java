@@ -1,7 +1,7 @@
 package com.filmdatabase.filmdb.application.model.comment;
 
 
-import com.filmdatabase.filmdb.application.model.actor.Person;
+import com.filmdatabase.filmdb.application.model.person.Person;
 import com.filmdatabase.filmdb.application.model.film.Film;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;

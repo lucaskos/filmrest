@@ -26,4 +26,9 @@ public class ConfigurationConstants {
     public static final String STATIC_RESOURCES_NAME = "static.resources.name";
 
     public static final String STATIC_RESOURCES_PATH = "static.resources.path";
+
+    public static final String ROLE_ADMIN = "ROLE_ADMIN";
+    public static final String ROLE_USER = "ROLE_USER";
+    public static final String ROLE_PREMIUM = "ROLE_PREMIUM";
+
 }

@@ -1,6 +1,6 @@
 package com.filmdatabase.filmdb.application.model;
 
-import com.filmdatabase.filmdb.application.model.actor.Person;
+import com.filmdatabase.filmdb.application.model.person.Person;
 import com.filmdatabase.filmdb.application.model.cache.dictionaries.PersonRole;
 
 import javax.persistence.*;
@@ -12,19 +12,14 @@ import javax.persistence.*;
 @Table(name = "PERSON_RELATION")
 public class PersonRelation {
 
+
+    private int personRelationId;
+    private PersonRole personRole;
+    private Person person;
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID_RELATION")
-    private int personRelationId;
-
-    @OneToOne(cascade = CascadeType.ALL, targetEntity = PersonRole.class)
-    @JoinColumn(name = "ID_PERSON_ROLE")
-    private PersonRole personRoleId;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "ID_PERSON")
-    private Person personObject;
-
     public int getPersonRelationId() {
         return personRelationId;
     }
@@ -33,19 +28,23 @@ public class PersonRelation {
         this.personRelationId = personRelationId;
     }
 
-    public PersonRole getPersonRoleId() {
-        return personRoleId;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "ID_PERSON_ROLE")
+    public PersonRole getPersonRole() {
+        return personRole;
     }
 
-    public void setPersonRoleId(PersonRole personRoleId) {
-        this.personRoleId = personRoleId;
+    public void setPersonRole(PersonRole personRole) {
+        this.personRole = personRole;
     }
 
-    public Person getPersonId() {
-        return personObject;
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "ID_PERSON")
+    public Person getPerson() {
+        return person;
     }
 
-    public void setPersonId(Person person) {
-        this.personObject = person;
+    public void setPerson(Person person) {
+        this.person = person;
     }
 }

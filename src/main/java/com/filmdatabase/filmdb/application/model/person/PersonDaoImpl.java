@@ -1,14 +1,16 @@
-package com.filmdatabase.filmdb.application.model.actor;
+package com.filmdatabase.filmdb.application.model.person;
 
 import com.filmdatabase.filmdb.application.model.GenericDaoHibernateImpl;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 /**
  * Created by Luke on 03.11.2017.
  */
-@Component("ADaoI")
+@Transactional
+@Repository("personDao")
 public class PersonDaoImpl extends GenericDaoHibernateImpl<Person> implements PersonDao {
 
     public PersonDaoImpl() {

@@ -31,17 +31,16 @@ public class Film {
 	private Integer year;
 	private String description;
 
-	@JsonIgnore
-	@OneToMany(mappedBy = "film", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+//	@JsonIgnore
+//	@OneToMany(mappedBy = "film", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
 	private Set<Cast> allCast = new HashSet<Cast>();
-
 
 	private Set<FilmRelation> filmRelations;
 
 	private Set<Rating> rating = new HashSet<Rating>();
 
 	@JsonIgnore
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "film", cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "film", cascade = CascadeType.ALL)
 	public Set<Rating> getRating() {
 		return rating;
 	}
@@ -120,8 +119,6 @@ public class Film {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
-
 
 	@Override
 	public int hashCode() {
