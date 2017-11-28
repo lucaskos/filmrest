@@ -21,7 +21,7 @@ public class UserController {
         return userRepository.getAllUsers();
     }
 
-    @GetMapping
+    @GetMapping("{id}")
     public @ResponseBody User getUserById(@PathVariable("id") Long id) {
         return userRepository.getUserById(id);
     }

@@ -1,7 +1,7 @@
 package com.filmdatabase.filmdb.application.model.cache.dao;
 
 import com.filmdatabase.filmdb.application.commons.QualifierConstants;
-import com.filmdatabase.filmdb.application.model.cache.CacheConstants;
+import com.filmdatabase.filmdb.application.commons.CacheConstants;
 import com.filmdatabase.filmdb.application.model.cache.dictionaries.PersonRole;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
@@ -19,7 +19,7 @@ public class PersonRoleDaoImpl extends DictionaryAbstractClass<PersonRole> {
     }
 
     @Override
-    @Cacheable(CacheConstants.CACHE_DICTIONARY)
+    @Cacheable(CacheConstants.ROLES)
     public List<PersonRole> getAll() {
         return super.getAll();
     }

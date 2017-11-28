@@ -7,5 +7,5 @@ import java.util.List;
  */
 public interface DictionaryDao<T> {
 
-    public List<T> getAll();
+    List<T> getAll();
 }

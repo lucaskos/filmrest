@@ -4,10 +4,12 @@ import com.filmdatabase.filmdb.application.model.film.Film;
 import com.filmdatabase.filmdb.application.model.film.FilmDao;
 import jersey.repackaged.com.google.common.base.Preconditions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
+import javax.ws.rs.Produces;
 import java.util.List;
 
 @RestController

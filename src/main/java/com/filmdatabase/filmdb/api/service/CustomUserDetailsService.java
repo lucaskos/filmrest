@@ -11,12 +11,14 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import com.filmdatabase.filmdb.application.model.user.dao.UserDao;
 import com.filmdatabase.filmdb.application.model.user.role.Role;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@Service
 public class CustomUserDetailsService implements UserDetailsService {
 
     private final UserDao userDao;
@@ -28,7 +30,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        com.filmdatabase.filmdb.application.model.user.dao.User activeUsr = userDao.getUser(username);
+        com.filmdatabase.filmdb.application.model.user.dao.User activeUsr = userDao.getUserByUsername(username);
         List<GrantedAuthority> authorities = buildUserAuthority(activeUsr.getRole());
 
         return buildUserForAuthentication(activeUsr, authorities);

@@ -1,86 +1,72 @@
 package com.filmdatabase.filmdb.application.model.rating;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-
-import com.filmdatabase.filmdb.application.model.film.Film;
-import com.filmdatabase.filmdb.application.model.user.dao.User;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.*;
+
 @Entity
 @Table(name = "rating_films")
-@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class, readOnly=false)
+@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class, readOnly = false)
 public class Rating {
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name = "rating_id")
-	private int ratingId;
 
-	@Column(name = "rating")
-	private int rating;
+    private int ratingId;
+    private int rating;
+    private Integer userId;
+    private Integer film;
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "users_id")
-	private User user;
+    public Rating() {
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "film_id")
-	private Film film;
-	
-	public Rating() {
-		
-	}
+    }
 
-	public Rating(int rating, User user, Film film) {
-		this.rating = rating;
-		this.user = user;
-		this.film = film;
-	}
+    public Rating(int rating, Integer userId, int filmId) {
+        this.rating = rating;
+        this.userId = userId;
+        this.film = filmId;
+    }
 
-	public int getRatingId() {
-		return ratingId;
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "rating_id")
+    public int getRatingId() {
+        return ratingId;
+    }
 
-	public void setRatingId(int ratingId) {
-		this.ratingId = ratingId;
-	}
+    public void setRatingId(int ratingId) {
+        this.ratingId = ratingId;
+    }
 
-	public Film getFilm() {
-		return film;
-	}
+    @JoinColumn(name = "film_id")
+    public Integer getFilm() {
+        return film;
+    }
 
-	public int getRating() {
-		return rating;
-	}
+    @Column(name = "rating")
+    public int getRating() {
+        return rating;
+    }
 
-	public void setRating(int rating) {
-		this.rating = rating;
-	}
+    public void setRating(int rating) {
+        this.rating = rating;
+    }
 
-	public User getUser() {
-		return user;
-	}
+    @Column(name = "user_id")
+    public Integer getUserId() {
+        return userId;
+    }
 
-	public void setUser(User user) {
-		this.user = user;
-	}
+    public void setUserId(Integer user) {
+        this.userId = user;
+    }
 
-	public void setFilm(Film film) {
-		this.film = film;
-	}
+    public void setFilm(Integer filmId) {
+        this.film = filmId;
+    }
 
-	@Override
-	public String toString() {
-		return "Rating [ratingId=" + ratingId + ", rating=" + rating + ", user=" + user + ", film=" + film + "]";
-	}
+    @Override
+    public String toString() {
+        return "Rating [ratingId=" + ratingId + ", rating=" + rating + ", user=" + userId + ", film=" + film + "]";
+    }
 
 }

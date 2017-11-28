@@ -16,7 +16,7 @@ public abstract class GenericDaoHibernateImpl<T>
         implements GenericDao<T> {
 
     @Autowired
-    private EntityManager entityManager;
+    public EntityManager entityManager;
 
     private Class<T> eClass;
 

@@ -2,7 +2,7 @@ package com.filmdatabase.filmdb.application.model.cache.dao;
 
 
 import com.filmdatabase.filmdb.application.commons.QualifierConstants;
-import com.filmdatabase.filmdb.application.model.cache.CacheConstants;
+import com.filmdatabase.filmdb.application.commons.CacheConstants;
 import com.filmdatabase.filmdb.application.model.cache.dictionaries.GenresDictionary;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
@@ -20,7 +20,7 @@ public class GenresDaoImpl extends DictionaryAbstractClass<GenresDictionary> {
     }
 
     @Override
-    @Cacheable(CacheConstants.CACHE_DICTIONARY)
+    @Cacheable(CacheConstants.GENRES)
     public List<GenresDictionary> getAll() {
         return super.getAll();
     }

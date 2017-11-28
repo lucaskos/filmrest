@@ -3,18 +3,10 @@ package com.filmdatabase.filmdb.application.model.film;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.Size;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.*;
 import com.filmdatabase.filmdb.application.model.FilmRelation;
 import com.filmdatabase.filmdb.application.model.PersonRelation;
 import com.filmdatabase.filmdb.application.model.cast.Cast;
@@ -36,18 +28,6 @@ public class Film {
 	private Set<Cast> allCast = new HashSet<Cast>();
 
 	private Set<FilmRelation> filmRelations;
-
-	private Set<Rating> rating = new HashSet<Rating>();
-
-	@JsonIgnore
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "film", cascade = CascadeType.ALL)
-	public Set<Rating> getRating() {
-		return rating;
-	}
-
-	public void setRating(Set<Rating> rating) {
-		this.rating = rating;
-	}
 
 	public Film() {
 

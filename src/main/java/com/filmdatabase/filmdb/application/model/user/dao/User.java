@@ -1,5 +1,7 @@
 package com.filmdatabase.filmdb.application.model.user.dao;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.filmdatabase.filmdb.application.model.rating.Rating;
 import com.filmdatabase.filmdb.application.model.user.role.Role;
 import org.hibernate.validator.constraints.Email;
@@ -34,6 +36,7 @@ public class User {
         this.email = email;
     }
 
+    @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL)
     @JoinTable(name = "users_roles",
             joinColumns = {@JoinColumn(name = "users_id", referencedColumnName = "id")},
@@ -89,7 +92,6 @@ public class User {
         this.enabled = enabled;
     }
 
-    @NotBlank
     @Email
     @Column(name = "email")
     public String getEmail() {
@@ -100,7 +102,8 @@ public class User {
         this.email = email;
     }
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "userId", cascade = CascadeType.ALL)
     public Set<Rating> getRating() {
         return rating;
     }
