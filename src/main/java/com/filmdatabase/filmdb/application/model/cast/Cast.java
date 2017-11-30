@@ -19,38 +19,24 @@ import com.filmdatabase.filmdb.application.model.film.Film;
 
 @Entity
 @Table(name = "actor_film")
-@Transactional(propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
 public class Cast implements Serializable {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -6424609370178798738L;
 
-	@Column(name = "actor_film_id")
-	@Id
-	@GeneratedValue
 	private int actorFilmId;
-
-	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "film_id")
-	private Film film;
-
-	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "person_id")
-	private Person person;
-
-	@Column(name = "role")
+	private Integer film;
+	private Integer person;
 	private String role;
 
 	public Cast() {
 
 	}
-	
-	public Cast(Film f) {
-		this.film = f;
 
-	}
-
+	@Column(name = "actor_film_id")
+	@Id
+	@GeneratedValue
 	public int getActorFilmId() {
 		return actorFilmId;
 	}
@@ -59,6 +45,7 @@ public class Cast implements Serializable {
 		this.actorFilmId = actorFilmId;
 	}
 
+	@Column(name = "role")
 	public String getRole() {
 		return role;
 	}
@@ -67,19 +54,21 @@ public class Cast implements Serializable {
 		this.role = role;
 	}
 
-	public Film getFilm() {
+	@Column(name = "film_id")
+	public Integer getFilm() {
 		return film;
 	}
 
-	public void setFilm(Film film) {
+	public void setFilm(Integer film) {
 		this.film = film;
 	}
 
-	public Person getPerson() {
+	@Column(name = "person_id")
+	public Integer getPerson() {
 		return person;
 	}
 
-	public void setPerson(Person person) {
+	public void setPerson(Integer person) {
 		this.person = person;
 	}
 }

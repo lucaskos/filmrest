@@ -26,11 +26,11 @@ public class Person implements Serializable{
     private Set<PersonRelation> personRelations;
     private Set<FilmRelation> filmRelations;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "person", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    public Set<PersonRelation> getPersonRelations() {
-        return personRelations;
-    }
+//    @JsonIgnore
+    //@OneToMany(mappedBy = "person", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    public Set<PersonRelation> getPersonRelations() {
+//        return personRelations;
+//    }
 
     public void setPersonRelations(Set<PersonRelation> personRelations) {
         this.personRelations = personRelations;

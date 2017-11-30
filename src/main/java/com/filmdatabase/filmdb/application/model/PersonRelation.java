@@ -28,23 +28,23 @@ public class PersonRelation {
         this.personRelationId = personRelationId;
     }
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "ID_PERSON_ROLE")
-    public PersonRole getPersonRole() {
-        return personRole;
-    }
-
-    public void setPersonRole(PersonRole personRole) {
-        this.personRole = personRole;
-    }
-
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "ID_PERSON")
-    public Person getPerson() {
-        return person;
-    }
-
-    public void setPerson(Person person) {
-        this.person = person;
-    }
+//    //@OneToOne(cascade = CascadeType.ALL)
+//    @Column(name = "ID_PERSON_ROLE")
+//    public PersonRole getPersonRole() {
+//        return personRole;
+//    }
+//
+//    public void setPersonRole(PersonRole personRole) {
+//        this.personRole = personRole;
+//    }
+//
+//    //@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    @Column(name = "ID_PERSON")
+//    public Person getPerson() {
+//        return person;
+//    }
+//
+//    public void setPerson(Person person) {
+//        this.person = person;
+//    }
 }

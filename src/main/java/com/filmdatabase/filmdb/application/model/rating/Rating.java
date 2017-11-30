@@ -1,20 +1,51 @@
 package com.filmdatabase.filmdb.application.model.rating;
 
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 
+@NamedStoredProcedureQueries({
+        @NamedStoredProcedureQuery(
+                name = "inertRating",
+                procedureName = "INSERT_RATING",
+                resultClasses = {Rating.class},
+                parameters = {
+                        @StoredProcedureParameter(
+                                name = "in_user_id",
+                                type = Integer.class,
+                                mode = ParameterMode.IN),
+                        @StoredProcedureParameter(
+                                name = "in_film_id",
+                                type = Integer.class,
+                                mode = ParameterMode.IN),
+
+                        @StoredProcedureParameter(
+                                name = "in_person_id",
+                                type = Integer.class,
+                                mode = ParameterMode.IN
+                        ),
+
+                        @StoredProcedureParameter(
+                                name = "in_rating",
+                                type = Integer.class,
+                                mode = ParameterMode.IN
+                        )
+                        ,
+//                        @StoredProcedureParameter(
+//                                name = "out_result",
+//                                type = Integer.class,
+//                                mode = ParameterMode.OUT
+//                        )
+                })
+})
 @Entity
 @Table(name = "rating_films")
-@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class, readOnly = false)
 public class Rating {
 
-
-    private int ratingId;
+    private Long ratingId;
     private int rating;
     private Integer userId;
-    private Integer film;
+    private Integer filmId;
+    private Integer personId;
 
     public Rating() {
 
@@ -23,23 +54,23 @@ public class Rating {
     public Rating(int rating, Integer userId, int filmId) {
         this.rating = rating;
         this.userId = userId;
-        this.film = filmId;
+        this.filmId = filmId;
     }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "rating_id")
-    public int getRatingId() {
+    public Long getRatingId() {
         return ratingId;
     }
 
-    public void setRatingId(int ratingId) {
+    public void setRatingId(Long ratingId) {
         this.ratingId = ratingId;
     }
 
     @JoinColumn(name = "film_id")
-    public Integer getFilm() {
-        return film;
+    public Integer getFilmId() {
+        return filmId;
     }
 
     @Column(name = "rating")
@@ -60,13 +91,22 @@ public class Rating {
         this.userId = user;
     }
 
-    public void setFilm(Integer filmId) {
-        this.film = filmId;
+    public void setFilmId(Integer filmId) {
+        this.filmId = filmId;
+    }
+
+    @Column(name = "person_id")
+    public Integer getPersonId() {
+        return personId;
+    }
+
+    public void setPersonId(Integer personId) {
+        this.personId = personId;
     }
 
     @Override
     public String toString() {
-        return "Rating [ratingId=" + ratingId + ", rating=" + rating + ", user=" + userId + ", film=" + film + "]";
+        return "Rating [ratingId=" + ratingId + ", rating=" + rating + ", user=" + userId + ", film=" + filmId + "]";
     }
 
 }

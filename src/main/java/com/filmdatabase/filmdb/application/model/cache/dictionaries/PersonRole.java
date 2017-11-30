@@ -1,5 +1,7 @@
 package com.filmdatabase.filmdb.application.model.cache.dictionaries;
 
+import com.filmdatabase.filmdb.application.commons.QualifierConstants;
+
 import javax.persistence.*;
 
 /**

@@ -18,7 +18,6 @@ public class Comment {
     @Column(name = "COMMENT_ID")
     private int commentId;
 
-
     @Column(name = "OWNER_ID")
     private Integer user;
 
