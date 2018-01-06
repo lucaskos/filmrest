@@ -5,7 +5,7 @@
 
 	<groupId>com.filmdatabase</groupId>
 	<artifactId>filmdb</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 	<packaging>war</packaging>
 
 	<name>filmdb</name>
@@ -95,6 +95,7 @@
 	</dependencies>
 
 	<build>
+		<finalName>filmdb</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

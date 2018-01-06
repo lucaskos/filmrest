@@ -11,6 +11,7 @@ import com.filmdatabase.filmdb.application.procedures.ProcedureDao;
 import jersey.repackaged.com.google.common.base.Preconditions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +19,7 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = {"http://localhost:4200"})
 @RequestMapping("/film")
 public class FilmController {
 
@@ -42,7 +44,9 @@ public class FilmController {
         return filmService.getFilmById(id);
     }
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping
+    @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody List<Film> getList() {
         List<PersonRole> all = genresDao.getAll();
         int i = procedureDao.insertRating(1, 1, null, 1);
