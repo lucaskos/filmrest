@@ -1,13 +1,17 @@
 package com.filmdatabase.filmdb.configuration;
 
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -26,7 +30,10 @@ import java.util.Properties;
         entityManagerFactoryRef = "entityManagerFactory",
         transactionManagerRef = "transactionManager")
 @EnableTransactionManagement
+@PropertySource("classpath:application.properties")
 public class JpaConfiguration {
+
+    private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(JpaConfiguration.class);
 
     @Autowired
     private Environment env;
@@ -43,6 +50,7 @@ public class JpaConfiguration {
     @Primary
 //    @ConfigurationProperties(prefix = "spring.datasource")
     public DataSourceProperties dataSourceProperties() {
+        LOGGER.info("DataSource file initialized");
         return new DataSourceProperties();
     }
 
@@ -113,6 +121,13 @@ public class JpaConfiguration {
         sessionFactory.setPackagesToScan(new String[]{"com.filmdatabase.filmdb.application.model"});
         sessionFactory.setHibernateProperties(jpaProperties());
         return sessionFactory;
+    }
+
+    @Bean
+    public static PropertySourcesPlaceholderConfigurer
+    propertySourcesPlaceholderConfigurer() {
+        LOGGER.info("property file initialized");
+        return new PropertySourcesPlaceholderConfigurer();
     }
 
 }

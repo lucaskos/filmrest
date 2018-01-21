@@ -14,6 +14,7 @@ import java.util.Set;
 @Table(name = "PERSON")
 public class Person implements Serializable{
 
+    private static final long serialVersionUID = 5650070241555490348L;
     private int id;
     private String firstName;
     private String lastName;
@@ -35,7 +36,6 @@ public class Person implements Serializable{
     public void setPersonRelations(Set<PersonRelation> personRelations) {
         this.personRelations = personRelations;
     }
-    @JsonIgnore
     @OneToMany(mappedBy = "person", fetch = FetchType.LAZY, cascade = CascadeType
             .ALL)
     public Set<FilmRelation> getFilmRelations() {

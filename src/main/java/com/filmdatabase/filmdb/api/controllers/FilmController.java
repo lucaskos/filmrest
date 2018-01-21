@@ -1,14 +1,18 @@
 package com.filmdatabase.filmdb.api.controllers;
 
 import com.filmdatabase.filmdb.api.service.FilmService;
+import com.filmdatabase.filmdb.application.DTO.FilmDTO;
 import com.filmdatabase.filmdb.application.commons.QualifierConstants;
+import com.filmdatabase.filmdb.application.model.FilmRelation;
 import com.filmdatabase.filmdb.application.model.cache.dao.DictionaryDao;
 import com.filmdatabase.filmdb.application.model.cache.dao.GenresDaoImpl;
 import com.filmdatabase.filmdb.application.model.cache.dictionaries.GenresDictionary;
 import com.filmdatabase.filmdb.application.model.cache.dictionaries.PersonRole;
 import com.filmdatabase.filmdb.application.model.film.Film;
+import com.filmdatabase.filmdb.application.model.test.RatingTest;
 import com.filmdatabase.filmdb.application.procedures.ProcedureDao;
 import jersey.repackaged.com.google.common.base.Preconditions;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
@@ -17,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @CrossOrigin(origins = {"http://localhost:4200"})
@@ -38,10 +43,16 @@ public class FilmController {
     }
 
     @GetMapping("/{id}")
-    public @ResponseBody Film getFilm(@PathVariable @NotNull int id) {
+    public @ResponseBody
+    FilmDTO getFilm(@PathVariable @NotNull int id) {
         //todo exception handler if no entity found
         //generic for person, film and what not
-        return filmService.getFilmById(id);
+        if(id == 0) {
+            return null;
+        }
+        FilmDTO film = filmService.getFilmDetails(id);
+
+        return film;
     }
 
     @CrossOrigin(origins = "http://localhost:4200")
@@ -49,7 +60,7 @@ public class FilmController {
     @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody List<Film> getList() {
         List<PersonRole> all = genresDao.getAll();
-        int i = procedureDao.insertRating(1, 1, null, 1);
+
         List<Film> list = (List<Film>) filmService.getAllFilms();
         return list;
     }

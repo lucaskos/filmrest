@@ -4,6 +4,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.io.Serializable;
 import java.util.List;
 
@@ -16,6 +17,7 @@ public abstract class GenericDaoHibernateImpl<T>
         implements GenericDao<T> {
 
     @Autowired
+    @PersistenceContext
     public EntityManager entityManager;
 
     private Class<T> eClass;

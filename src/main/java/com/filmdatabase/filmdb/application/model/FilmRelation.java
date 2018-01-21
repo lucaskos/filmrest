@@ -2,19 +2,27 @@ package com.filmdatabase.filmdb.application.model;
 
 import com.filmdatabase.filmdb.application.model.person.Person;
 import com.filmdatabase.filmdb.application.model.film.Film;
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * Created by Luke on 29.10.2017.
  */
 @Entity
 @Table(name = "FILM_RELATION")
-public class FilmRelation {
+public class FilmRelation implements Serializable {
 
+    private static final long serialVersionUID = -3368604415829986784L;
     private int filmRelationId;
     private Film film;
     private Person person;
+
+    public FilmRelation() {
+
+    }
 
     @Id
     @Column(name = "ID_FILM_RELATION")
@@ -27,8 +35,7 @@ public class FilmRelation {
         this.filmRelationId = filmRelationId;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "FILM_ID")
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     public Film getFilm() {
         return film;
     }
@@ -37,8 +44,7 @@ public class FilmRelation {
         this.film = film;
     }
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "ID_PERSON_RELATION_ID")
+    @ManyToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     public Person getPerson() {
         return person;
     }

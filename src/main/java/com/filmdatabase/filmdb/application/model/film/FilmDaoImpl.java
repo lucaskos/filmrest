@@ -1,12 +1,16 @@
 package com.filmdatabase.filmdb.application.model.film;
 
 import com.filmdatabase.filmdb.application.model.GenericDaoHibernateImpl;
+import com.filmdatabase.filmdb.application.model.test.RatingTest;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
+import javax.persistence.Query;
 import javax.persistence.criteria.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Luke on 02.11.2017.
@@ -19,6 +23,21 @@ public class FilmDaoImpl extends GenericDaoHibernateImpl<Film> implements FilmDa
         super(Film.class);
     }
 
+
+    @Override
+    public Film getFilmDetails(int id) {
+
+        Query query = entityManager.createQuery("from Film f LEFT JOIN FETCH f.filmRelations WHERE f.id=:id");
+        query.setParameter("id", id);
+
+        Film singleResult = (Film) query.getSingleResult();
+
+        if (singleResult != null) {
+            return singleResult;
+        } else {
+            return null;
+        }
+    }
 
     public List getByTitle(String title) {
 //        CriteriaBuilder cb = getSession().getCriteriaBuilder();
@@ -46,6 +65,11 @@ public class FilmDaoImpl extends GenericDaoHibernateImpl<Film> implements FilmDa
         List list = new ArrayList();
         return list;
 
+    }
+
+    public Set<RatingTest> getRatingTestList(Film film) {
+        Query query = entityManager.createQuery("from " + RatingTest.class + "ft WHERE ft.filmId=" + film.getFilmId());
+        return (Set<RatingTest>) query.getResultList();
     }
 
 }

@@ -1,149 +1,162 @@
 package com.filmdatabase.filmdb.application.model.film;
 
-import java.util.HashSet;
-import java.util.Set;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.filmdatabase.filmdb.application.model.FilmRelation;
+import com.filmdatabase.filmdb.application.model.cast.Cast;
+import com.filmdatabase.filmdb.application.model.test.RatingTest;
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
+import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
-import com.fasterxml.jackson.annotation.*;
-import com.filmdatabase.filmdb.application.model.FilmRelation;
-import com.filmdatabase.filmdb.application.model.PersonRelation;
-import com.filmdatabase.filmdb.application.model.cast.Cast;
-import org.hibernate.validator.constraints.NotBlank;
-
-import com.filmdatabase.filmdb.application.model.rating.Rating;
-
+@XmlRootElement
 @Entity
 @Table(name = "FILM")
-public class Film {
+public class Film implements Serializable {
 
-	private int filmId;
-	private String title;
-	private Integer year;
-	private String description;
+    private static final long serialVersionUID = -8915838577868975194L;
+    private int filmId;
+    private String title;
+    private Integer year;
+    private String description;
 
-//	@JsonIgnore
+    //	@JsonIgnore
 //	@OneToMany(mappedBy = "film", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
-	private Set<Cast> allCast = new HashSet<Cast>();
+    private Set<Cast> allCast = new HashSet<Cast>();
 
-	private Set<FilmRelation> filmRelations;
+    private List<FilmRelation> filmRelations;
 
-	public Film() {
+    public Film() {
 
-	}
+    }
 
-	@JsonIgnore
-	@OneToMany(targetEntity = FilmRelation.class, mappedBy = "film", fetch = FetchType.LAZY, cascade = CascadeType
-			.ALL)
-	public Set<FilmRelation> getFilmRelations() {
-		return filmRelations;
-	}
+    @JsonIgnore
+    @OneToMany(targetEntity = FilmRelation.class, mappedBy = "film", fetch = FetchType.LAZY, cascade = CascadeType
+            .ALL)
+    public List<FilmRelation> getFilmRelations() {
+        return filmRelations;
+    }
 
-	public void setFilmRelations(Set<FilmRelation> filmRelations) {
-		this.filmRelations = filmRelations;
-	}
+    public void setFilmRelations(List<FilmRelation> filmRelations) {
+        this.filmRelations = filmRelations;
+    }
 
-	public Film(String title, int year) {
-		this.title = title;
-		this.year = year;
-	}
+    public void addRelation(FilmRelation relation) {
+        if(filmRelations == null) {
+            filmRelations = new ArrayList<>();
+        }
+        filmRelations.add(relation);
+    }
 
-	public Film(String title, int year, String description) {
-		this.title = title;
-		this.year = year;
-		this.description = description;
-	}
+    public Film(String title, int year) {
+        this.title = title;
+        this.year = year;
+    }
 
-	public void addActor(Cast actorsFilms) {
-		this.allCast.add(actorsFilms);
-	}
+    public Film(String title, int year, String description) {
+        this.title = title;
+        this.year = year;
+        this.description = description;
+    }
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "FILM_ID")
-	public int getFilmId() {
-		return filmId;
-	}
+    public void addActor(Cast actorsFilms) {
+        this.allCast.add(actorsFilms);
+    }
 
-	public void setFilmId(int filmId) {
-		this.filmId = filmId;
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "FILM_ID")
+    public int getFilmId() {
+        return filmId;
+    }
 
-	@Size(max = 60)
-	@NotBlank
-	@Column(name = "TITLE")
-	public String getTitle() {
-		return title;
-	}
+    public void setFilmId(int filmId) {
+        this.filmId = filmId;
+    }
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+    @Size(max = 60)
+    @NotBlank
+    @Column(name = "TITLE")
+    public String getTitle() {
+        return title;
+    }
 
-	@Column(name = "YEAR")
-	public Integer getYear() {
-		return year;
-	}
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-	public void setYear(Integer year) {
-		this.year = year;
-	}
+    @Column(name = "YEAR")
+    public Integer getYear() {
+        return year;
+    }
 
-	@NotBlank
-	@Size(min = 10)
-	public String getDescription() {
-		return description;
-	}
+    public void setYear(Integer year) {
+        this.year = year;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    @NotBlank
+    @Size(min = 10)
+    public String getDescription() {
+        return description;
+    }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((description == null) ? 0 : description.hashCode());
-		result = prime * result + filmId;
-		result = prime * result + ((title == null) ? 0 : title.hashCode());
-		result = prime * result + ((year == null) ? 0 : year.hashCode());
-		return result;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Film other = (Film) obj;
-		if (description == null) {
-			if (other.description != null)
-				return false;
-		} else if (!description.equals(other.description))
-			return false;
-		if (filmId != other.filmId)
-			return false;
-		if (title == null) {
-			if (other.title != null)
-				return false;
-		} else if (!title.equals(other.title))
-			return false;
-		if (year == null) {
-			if (other.year != null)
-				return false;
-		} else if (!year.equals(other.year))
-			return false;
-		return true;
-	}
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((description == null) ? 0 : description.hashCode());
+        result = prime * result + filmId;
+        result = prime * result + ((title == null) ? 0 : title.hashCode());
+        result = prime * result + ((year == null) ? 0 : year.hashCode());
+        return result;
+    }
 
-	@Override
-	public String toString() {
-		return "Film [filmId=" + filmId + ", title=" + title + ", year=" + year + ", description=" + description
-				+ "]";
-	}
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Film other = (Film) obj;
+        if (description == null) {
+            if (other.description != null)
+                return false;
+        } else if (!description.equals(other.description))
+            return false;
+        if (filmId != other.filmId)
+            return false;
+        if (title == null) {
+            if (other.title != null)
+                return false;
+        } else if (!title.equals(other.title))
+            return false;
+        if (year == null) {
+            if (other.year != null)
+                return false;
+        } else if (!year.equals(other.year))
+            return false;
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "Film [filmId=" + filmId + ", title=" + title + ", year=" + year + ", description=" + description
+                + "]";
+    }
 
 }
