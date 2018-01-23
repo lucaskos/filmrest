@@ -8,6 +8,7 @@ import java.util.List;
 public class FilmDTO {
 
     private int id;
+    private int year;
     private String title;
     private String description;
     private List<PersonDTO> peopleList;
@@ -15,7 +16,8 @@ public class FilmDTO {
     public FilmDTO() {
     }
 
-    public FilmDTO(int id, String title, String description) {
+    public FilmDTO(int id, int year, String title, String description) {
+        this.year = year;
         this.id = id;
         this.title = title;
         this.description = description;
@@ -43,6 +45,14 @@ public class FilmDTO {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
     }
 
     public List<PersonDTO> getPeopleList() {

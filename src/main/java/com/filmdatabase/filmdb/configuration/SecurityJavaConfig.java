@@ -22,16 +22,18 @@ public class SecurityJavaConfig extends WebSecurityConfigurerAdapter{
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication().withUser("ram").password("ram123").roles("ADMIN");
         auth.inMemoryAuthentication().withUser("ravan").password("ravan123").roles("USER");
-        auth.inMemoryAuthentication().withUser("kans").password("kans123").roles("USER");
+        auth.inMemoryAuthentication().withUser("kans").password("kans123").roles("PREMIUM");
     }
 
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable().cors();
-        http.authorizeRequests()
-                .antMatchers("/").permitAll();
+//        http.authorizeRequests()
+//                .antMatchers("/").permitAll();
 
-//        http.authorizeRequests().antMatchers("/film/{id}").authenticated().
-//        and().formLogin();
+        http.authorizeRequests()
+                .antMatchers("/film/**").access("hasRole('ROLE_ADMIN')")
+                .antMatchers("/films/**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_DBA')")
+                .and().formLogin();
 
         //todo not working for now
         http.authorizeRequests().antMatchers(HttpMethod.POST, "/film/").authenticated()

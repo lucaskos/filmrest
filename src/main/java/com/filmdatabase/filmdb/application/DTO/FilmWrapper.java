@@ -13,7 +13,7 @@ public class FilmWrapper {
 
     public FilmDTO populateDetails(Film film) {
         if(film != null) {
-            FilmDTO filmDTO = new FilmDTO(film.getFilmId(), film.getTitle(), film.getDescription());
+            FilmDTO filmDTO = new FilmDTO(film.getFilmId(), film.getYear(), film.getTitle(), film.getDescription());
             if (film.getFilmRelations() != null) {
                 for(FilmRelation filmRelation : film.getFilmRelations()) {
                     filmDTO.addPerson(wrapPeopleObject(filmRelation.getPerson()));
