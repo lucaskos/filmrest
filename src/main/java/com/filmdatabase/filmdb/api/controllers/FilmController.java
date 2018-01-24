@@ -10,6 +10,8 @@ import com.filmdatabase.filmdb.application.model.cache.dictionaries.GenresDictio
 import com.filmdatabase.filmdb.application.model.cache.dictionaries.PersonRole;
 import com.filmdatabase.filmdb.application.model.film.Film;
 import com.filmdatabase.filmdb.application.model.test.RatingTest;
+import com.filmdatabase.filmdb.application.model.user.dao.User;
+import com.filmdatabase.filmdb.application.model.user.dao.UserDao;
 import com.filmdatabase.filmdb.application.procedures.ProcedureDao;
 import jersey.repackaged.com.google.common.base.Preconditions;
 import org.hibernate.Hibernate;
@@ -38,6 +40,9 @@ public class FilmController {
     private DictionaryDao genresDao;
 
     @Autowired
+    private UserDao userDao;
+
+    @Autowired
     public FilmController(FilmService filmService) {
         this.filmService = filmService;
     }
@@ -47,6 +52,7 @@ public class FilmController {
     FilmDTO getFilm(@PathVariable @NotNull int id) {
         //todo exception handler if no entity found
         //generic for person, film and what not
+        List<User> all = userDao.findAll();
         if(id == 0) {
             return null;
         }

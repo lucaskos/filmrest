@@ -1,28 +1,24 @@
 package com.filmdatabase.filmdb.application.model.user.dao;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.filmdatabase.filmdb.application.model.rating.Rating;
 import com.filmdatabase.filmdb.application.model.user.role.Role;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Table(name = "users")
 public class User {
 
-    private String username;
-    private int id;
-    private String password;
-    private boolean enabled;
-    private String email;
-    private Role role;
-    private Set<Rating> rating = new HashSet<>();
+    public String username;
+    public int id;
+    public String password;
+    public boolean enabled;
+    public String email;
+//    public Set<Rating> rating = new HashSet<>();
+    public Role roles;
     //@OneToMany(mappedBy = "user")
     //private Set<Comment> comments;
 
@@ -30,24 +26,24 @@ public class User {
 
     }
 
-    public User(String username, String password, String email) {
+    public User(String username, String password, Role role) {
         this.username = username;
         this.password = password;
-        this.email = email;
+        this.roles = role;
     }
 
     @JsonIgnore
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinTable(name = "users_roles",
             joinColumns = {@JoinColumn(name = "users_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "roles_id", referencedColumnName = "id")}
     )
-    public Role getRole() {
-        return role;
+    public Role getRoles() {
+        return roles;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
+    public void setRoles(Role roles) {
+        this.roles = roles;
     }
 
     @Id
@@ -102,20 +98,29 @@ public class User {
         this.email = email;
     }
 
-    @JsonManagedReference
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "userId", cascade = CascadeType.ALL)
-    public Set<Rating> getRating() {
-        return rating;
-    }
-
-    public void setRating(Set<Rating> rating) {
-        this.rating = rating;
-    }
+//    @JsonManagedReference
+//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "userId", cascade = CascadeType.ALL)
+//    public Set<Rating> getRating() {
+//        return rating;
+//    }
+//
+//    public void setRating(Set<Rating> rating) {
+//        this.rating = rating;
+//    }
 
     @Override
     public String toString() {
-        return "User [username=" + username + ", password=" + password + ", enabled=" + enabled + ", email=" + email
-                + "]";
+        StringBuilder sb = new StringBuilder();
+        sb.append("User [username:" + username)
+                .append(", password:" + password)
+                .append(",enabled" + enabled)
+                .append(",email:"+email);
+        if(roles != null) {
+            sb.append(",role:"+roles.getRole()+"]");
+        } else {
+            sb.append("]");
+        }
+        return sb.toString();
     }
 
     @Override

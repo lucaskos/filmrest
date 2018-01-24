@@ -12,6 +12,7 @@ import javax.persistence.Table;
 
 import com.filmdatabase.filmdb.application.model.user.dao.User;
 
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -20,7 +21,7 @@ public class Role {
 
 	private int id;
 	private String role;
-	private Set<User> userRoles;
+	private List<User> userRoles;
 
 	public Role() {
 
@@ -50,16 +51,16 @@ public class Role {
 		this.role = role;
 	}
 
-	@OneToMany(cascade=CascadeType.ALL)
+	@OneToMany(cascade=CascadeType.MERGE)
 	@JoinTable(name="users_roles",
 			joinColumns = {@JoinColumn(name="users_id", referencedColumnName="id")},
 			inverseJoinColumns = {@JoinColumn(name="roles_id", referencedColumnName="id")}
 	)
-	public java.util.Set<User> getUsersSet() {
+	public List<User> getUsersSet() {
 		return userRoles;
 	}
 
-	public void setUsersSet(java.util.Set<User> usersSet) {
+	public void setUsersSet(List<User> usersSet) {
 		this.userRoles = usersSet;
 	}
 
