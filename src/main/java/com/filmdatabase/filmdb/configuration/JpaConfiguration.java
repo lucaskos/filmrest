@@ -1,17 +1,18 @@
 package com.filmdatabase.filmdb.configuration;
 
+import com.filmdatabase.filmdb.configuration.common.ConfigurationConstants;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.config.YamlPropertiesFactoryBean;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.env.Environment;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -30,16 +31,13 @@ import java.util.Properties;
         entityManagerFactoryRef = "entityManagerFactory",
         transactionManagerRef = "transactionManager")
 @EnableTransactionManagement
-@PropertySource("classpath:application.properties")
+//@PropertySource("classpath:application.yml")
 public class JpaConfiguration {
 
-    private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(JpaConfiguration.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(JpaConfiguration.class);
 
     @Autowired
     private Environment env;
-
-    @Value("10")
-    private int maxPoolSize;
 
     /**
      * Populate SpringBoot DataSourceProperties object directly from application.yml
@@ -50,17 +48,17 @@ public class JpaConfiguration {
     @Primary
 //    @ConfigurationProperties(prefix = "spring.datasource")
     public DataSourceProperties dataSourceProperties() {
-        LOGGER.info("DataSource file initialized");
+        LOGGER.debug("DataSource file initialized");
         return new DataSourceProperties();
     }
 
     @Bean
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://localhost:3306/films");
-        dataSource.setUsername("root");
-        dataSource.setPassword("lucas7");
+        dataSource.setDriverClassName(env.getProperty(ConfigurationConstants.DATASOURCE_PATH));
+        dataSource.setUrl(env.getProperty(ConfigurationConstants.DATASOURCE_URL));
+        dataSource.setUsername(env.getProperty(ConfigurationConstants.DATASOURCE_USERNAME));
+        dataSource.setPassword(env.getProperty(ConfigurationConstants.DATASOURCE_PASSWORD));
         return dataSource;
     }
 
@@ -88,18 +86,22 @@ public class JpaConfiguration {
         return hibernateJpaVendorAdapter;
     }
 
-    /*
+    /**
      * Here you can specify any provider specific properties.
      * todo add properites for cache and cache provider
      */
     public Properties jpaProperties() {
         Properties properties = new Properties();
-        properties.put("hibernate.dialect", env.getRequiredProperty("spring.datasource.hibernate.dialect"));
-        properties.put("hibernate.hbm2ddl.auto", env.getRequiredProperty("spring.datasource.hibernate.hbm2ddl.method"));
-        properties.put("hibernate.show_sql", env.getRequiredProperty("spring.datasource.hibernate.show_sql"));
-        properties.put("hibernate.format_sql", env.getRequiredProperty("spring.datasource.hibernate.format_sql"));
-
-        properties.put("hibernate.default_schema", env.getRequiredProperty("spring.jpa.properties.hibernate.default_schema"));
+        properties.put(ConfigurationConstants.HIBERNATE_DIALECT_KEY,
+                env.getRequiredProperty(ConfigurationConstants.HIBERNATE_DIALECT_PROP_VAL));
+        properties.put(ConfigurationConstants.HIBERNATE_HBM2DLL_KEY,
+                env.getRequiredProperty(ConfigurationConstants.HIBERNATE_HBM2DLL_PROP_VAL));
+        properties.put(ConfigurationConstants.HIBERNATE_SHOW_SQL_KEY,
+                env.getRequiredProperty(ConfigurationConstants.HIBERNATE_SHOW_SQL_PROP_VAL));
+        properties.put(ConfigurationConstants.HIBERNATE_FORMAT_SQL_KEY,
+                env.getRequiredProperty(ConfigurationConstants.HIBERNATE_FORMAT_SQL_PROP_VAL));
+        properties.put(ConfigurationConstants.HIBERNATE_DEFAULT_SCHEMA_KEY,
+                env.getRequiredProperty(ConfigurationConstants.HIBERNATE_DEFAULT_SCHEMA_PROP_VAL));
         return properties;
     }
 
@@ -109,6 +111,8 @@ public class JpaConfiguration {
         try {
             txManager.setEntityManagerFactory(entityManagerFactory().getObject());
         } catch (NamingException e) {
+            LOGGER.error("Error while initializing transaction manager " + e.getMessage() +
+                    " ,casusd by " + e.getCause());
             e.printStackTrace();
         }
         return txManager;
@@ -126,8 +130,14 @@ public class JpaConfiguration {
     @Bean
     public static PropertySourcesPlaceholderConfigurer
     propertySourcesPlaceholderConfigurer() {
-        LOGGER.info("property file initialized");
-        return new PropertySourcesPlaceholderConfigurer();
+//        LOGGER.info("property file initialized");
+//        return new PropertySourcesPlaceholderConfigurer();
+        PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer = new PropertySourcesPlaceholderConfigurer();
+        YamlPropertiesFactoryBean yaml = new YamlPropertiesFactoryBean();
+        yaml.setResources(new ClassPathResource("application.yml"));
+        propertySourcesPlaceholderConfigurer.setProperties(yaml.getObject());
+        LOGGER.info("Properties loaded " + yaml.toString());
+        return propertySourcesPlaceholderConfigurer;
     }
 
 }

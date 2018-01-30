@@ -1,23 +1,14 @@
 package com.filmdatabase.filmdb.application.model.user.dao;
 
 import com.filmdatabase.filmdb.application.model.GenericDaoHibernateImpl;
-import com.filmdatabase.filmdb.application.model.cache.dao.GenresDaoImpl;
-import com.filmdatabase.filmdb.application.model.cache.dao.PersonRoleDaoImpl;
-import com.filmdatabase.filmdb.application.model.cache.dictionaries.GenresDictionary;
-import com.filmdatabase.filmdb.application.model.cache.dictionaries.PersonRole;
-import com.filmdatabase.filmdb.application.model.film.Film;
 import com.filmdatabase.filmdb.application.model.user.role.Role;
 import com.filmdatabase.filmdb.application.model.user.role.RoleDao;
-import com.filmdatabase.filmdb.configuration.ConfigurationConstants;
+import com.filmdatabase.filmdb.configuration.common.ConfigurationConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.Query;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
-import java.util.List;
 
 @Transactional
 @Repository("userDao")
@@ -38,7 +29,7 @@ public class UserDaoImpl extends GenericDaoHibernateImpl<User> implements UserDa
     }
 
     @Override
-    public User getUserByUsername(String username) {
+    public User findByUsername(String username) {
         Query query = entityManager.createQuery("from User u WHERE u.username=:username");
         query.setParameter("username", username);
         User user = (User) query.getSingleResult();

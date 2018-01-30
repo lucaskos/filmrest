@@ -1,4 +1,4 @@
-package com.filmdatabase.filmdb.configuration;
+package com.filmdatabase.filmdb.configuration.common;
 
 import com.filmdatabase.filmdb.application.model.user.dao.User;
 import org.springframework.security.core.GrantedAuthority;

@@ -1,4 +1,4 @@
-package com.filmdatabase.filmdb.configuration;
+package com.filmdatabase.filmdb.configuration.common;
 
 import com.filmdatabase.filmdb.application.commons.CacheConstants;
 import org.springframework.cache.Cache;

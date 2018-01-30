@@ -1,17 +1,19 @@
 package com.filmdatabase.filmdb.api.service;
 
 
-import com.filmdatabase.filmdb.configuration.MyUserPrincipal;
+import com.filmdatabase.filmdb.configuration.common.MyUserPrincipal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import com.filmdatabase.filmdb.application.model.user.dao.UserDao;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.*;
 
@@ -29,22 +31,15 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        final com.filmdatabase.filmdb.application.model.user.dao.User user = userDao.getUserByUsername(username);
-        if (user == null) {
-            throw new UsernameNotFoundException("User not found by name: " + username);
+        com.filmdatabase.filmdb.application.model.user.dao.User applicationUser = userDao.findByUsername(username);
+        if (applicationUser == null) {
+            throw new UsernameNotFoundException(username);
         }
-        MyUserPrincipal myUserPrincipal = new MyUserPrincipal(user);
-        LOGGER.info(myUserPrincipal.toString());
-        return myUserPrincipal;
-    }
-    /**
-     * Converts the user from com.luke.films.dao package
-     * to org.springframework.security.core.userdetails.User
-     */
-    private User buildUserForAuthentication(com.filmdatabase.filmdb.application.model.user.dao.User user,
-                                            List<GrantedAuthority> authorities) {
-        LOGGER.info("buildUser : " + user + " : authorities size : " + authorities.size());
-        return new User(user.getUsername(), user.getPassword(),
-                user.isEnabled(), true, true, true, authorities);
+        SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(applicationUser.getRoles().getRole());
+        ArrayList<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+        if (simpleGrantedAuthority != null){
+            grantedAuthorities.add(simpleGrantedAuthority);
+        }
+        return new User(applicationUser.getUsername(), applicationUser.getPassword(), grantedAuthorities);
     }
 }

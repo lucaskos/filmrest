@@ -1,0 +1,57 @@
+jwt:
+    expiration: 604800
+    header: Authorization
+    route:
+        authentication:
+            path: auth
+            refresh: refresh
+    secret: mySecret
+
+log4j:
+    appender:
+        file: org.apache.log4j.RollingFileAppender
+        file.File: ${catalina.home}/logs/logging.log
+        file.MaxBackupIndex: 10
+        file.layout: org.apache.log4j.PatternLayout
+        file.layout.ConversionPattern: '%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %m%n'
+    rootLogger: DEBUG, file
+logging:
+    file: myapplication.log
+    level:
+        org:
+            hibernate: DEBUG
+            springframework:
+                web: DEBUG
+
+security:
+    basic:
+        enabled: true
+    ignored: false
+spring:
+    datasource:
+        driver-class-name: com.mysql.jdbc.Driver
+        hibernate:
+            dialect: org.hibernate.dialect.MySQLDialect
+            format_sql: true
+            hbm2ddl:
+                method: validate
+            show_sql: true
+        password: lucas7
+        url: jdbc:mysql://localhost:3306/films
+        username: root
+    jpa:
+        open-in-view: false
+        properties:
+            maxPoolSize: 10
+            hibernate:
+                default_schema: films
+                enable_lazy_load_no_trans: true
+    management:
+        security:
+            enabled: true
+    security:
+        basic:
+            enabled: true
+        enabled: true
+    session:
+        store-type: none

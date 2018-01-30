@@ -5,28 +5,23 @@ import com.filmdatabase.filmdb.application.model.user.dao.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
+@CrossOrigin
 public class UserController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
-
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
-
-    @Autowired
-    UserDetailsService customUserDetailsService;
-
-    @Autowired
+    private final BCryptPasswordEncoder passwordEncoder;
     private final UserService userService;
 
     @Autowired
-    public UserController(UserService userServiceImpl) {
-        this.userService = userServiceImpl;
+    public UserController(UserService userService, BCryptPasswordEncoder passwordEncoder) {
+        this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping
@@ -39,15 +34,10 @@ public class UserController {
         return userService.getUserById(id);
     }
 
-    @PostMapping(consumes = "application/json", produces = "application/json")
+    @PostMapping("/sign-up")
     public void register(@RequestBody User user) {
-        LOGGER.info("Register user: " + user.getUsername());
-//        todo delete this below
-        LOGGER.debug(user.toString());
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userService.save(user);
-        customUserDetailsService.loadUserByUsername(user.getUsername());
-        LOGGER.info(user.toString());
     }
 
 }
