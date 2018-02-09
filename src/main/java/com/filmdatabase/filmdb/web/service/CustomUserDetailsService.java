@@ -1,7 +1,6 @@
-package com.filmdatabase.filmdb.api.service;
+package com.filmdatabase.filmdb.web.service;
 
 
-import com.filmdatabase.filmdb.configuration.common.MyUserPrincipal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import com.filmdatabase.filmdb.application.model.user.dao.UserDao;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 import java.util.*;
 

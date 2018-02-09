@@ -1,6 +1,6 @@
-package com.filmdatabase.filmdb.api.controllers;
+package com.filmdatabase.filmdb.web.controllers;
 
-import com.filmdatabase.filmdb.api.service.PersonService;
+import com.filmdatabase.filmdb.web.service.PersonService;
 import com.filmdatabase.filmdb.application.model.FilmRelation;
 import com.filmdatabase.filmdb.application.model.person.Person;
 import jersey.repackaged.com.google.common.base.Preconditions;

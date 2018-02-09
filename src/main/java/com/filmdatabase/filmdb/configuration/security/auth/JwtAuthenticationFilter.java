@@ -16,11 +16,12 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
-import static com.filmdatabase.filmdb.configuration.security.auth.SecurityConstants.*;
+import static com.filmdatabase.filmdb.configuration.security.SecurityConstants.*;
 
 
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
@@ -29,7 +30,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     public JwtAuthenticationFilter(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
     }
-
+    private final List<String> allowedOrigins = Arrays.asList("http://localhost:4200");
     @Override
     public Authentication attemptAuthentication(HttpServletRequest req,
                                                 HttpServletResponse res) throws AuthenticationException {
@@ -59,6 +60,25 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(SignatureAlgorithm.HS512, SECRET.getBytes())
                 .compact();
+        String origin = req.getHeader("Origin");
+        res.setHeader("Access-Control-Allow-Headers", HEADER_STRING + ", " + "Content-Type, Accept, X-Requested-With, remember-me");
+        res.setHeader("Access-Control-Allow-Origin", allowedOrigins.contains(origin) ? origin : "");
+        res.setHeader("Vary", "Origin");
+
+        // Access-Control-Max-Age
+        res.setHeader("Access-Control-Max-Age", "3600");
+
+        // Access-Control-Allow-Credentials
+        res.setHeader("Access-Control-Allow-Credentials", "true");
+
+        // Access-Control-Allow-Methods
+        res.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
+
+        // Access-Control-Allow-Headers
+        res.setHeader("Access-Control-Allow-Headers",
+                "Origin, Authorization, X-Requested-By, X-Requested-With, Content-Type, Accept, " + "X-CSRF-TOKEN");
+
+        res.setHeader("Access-Control-Expose-Headers", HEADER_STRING);
         res.addHeader(HEADER_STRING, TOKEN_PREFIX + token);
     }
 }

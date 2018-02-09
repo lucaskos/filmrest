@@ -1,4 +1,4 @@
-package com.filmdatabase.filmdb.api.service;
+package com.filmdatabase.filmdb.web.service;
 
 import com.filmdatabase.filmdb.application.model.user.dao.User;
 import com.filmdatabase.filmdb.application.model.user.dao.UserDao;

@@ -1,11 +1,9 @@
-package com.filmdatabase.filmdb.api.service;
+package com.filmdatabase.filmdb.web.service;
 
 import com.filmdatabase.filmdb.application.DTO.FilmDTO;
 import com.filmdatabase.filmdb.application.model.film.Film;
-import com.filmdatabase.filmdb.application.model.test.RatingTest;
 
 import java.util.Collection;
-import java.util.Set;
 
 public interface FilmService {
 

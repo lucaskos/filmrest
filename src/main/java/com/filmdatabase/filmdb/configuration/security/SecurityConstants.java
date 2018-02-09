@@ -1,4 +1,4 @@
-package com.filmdatabase.filmdb.configuration.security.auth;
+package com.filmdatabase.filmdb.configuration.security;
 
 public class SecurityConstants {
     public static final String SECRET = "SecretKeyToGenJWTs";

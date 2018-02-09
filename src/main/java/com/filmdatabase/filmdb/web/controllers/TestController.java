@@ -1,9 +1,6 @@
-package com.filmdatabase.filmdb.api.controllers;
+package com.filmdatabase.filmdb.web.controllers;
 
-import com.filmdatabase.filmdb.application.model.film.Film;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.constraints.NotNull;
 
 @RestController
 @RequestMapping("/")

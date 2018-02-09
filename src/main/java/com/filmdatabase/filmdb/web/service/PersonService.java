@@ -1,8 +1,7 @@
-package com.filmdatabase.filmdb.api.service;
+package com.filmdatabase.filmdb.web.service;
 
 import com.filmdatabase.filmdb.application.model.person.Person;
 import com.filmdatabase.filmdb.application.model.person.PersonDao;
-import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
