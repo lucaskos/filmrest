@@ -1,10 +1,11 @@
-package com.filmdatabase.filmdb.web.controllers;
+package com.filmdatabase.filmdb.api.controllers;
 
-import com.filmdatabase.filmdb.web.service.UserService;
+import com.filmdatabase.filmdb.api.service.UserService;
 import com.filmdatabase.filmdb.application.model.user.dao.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,10 +34,12 @@ public class UserController {
         return userService.getUserById(id);
     }
 
-    //@PostMapping("/sign-up")
+    @PostMapping("/sign-up")
     public void register(@RequestBody User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        String user1 = user.toString();
         //userService.save(user);
+        String test = "test";
     }
 
 }

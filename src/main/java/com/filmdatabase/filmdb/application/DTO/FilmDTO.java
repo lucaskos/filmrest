@@ -1,5 +1,7 @@
 package com.filmdatabase.filmdb.application.DTO;
 
+import com.filmdatabase.filmdb.application.model.person.Person;
+
 import java.util.ArrayList;
 import java.util.List;
 

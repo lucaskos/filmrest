@@ -12,9 +12,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import static com.filmdatabase.filmdb.configuration.security.SecurityConstants.HEADER_STRING;
-import static com.filmdatabase.filmdb.configuration.security.SecurityConstants.SECRET;
-import static com.filmdatabase.filmdb.configuration.security.SecurityConstants.TOKEN_PREFIX;
+import static com.filmdatabase.filmdb.configuration.security.auth.SecurityConstants.HEADER_STRING;
+import static com.filmdatabase.filmdb.configuration.security.auth.SecurityConstants.SECRET;
+import static com.filmdatabase.filmdb.configuration.security.auth.SecurityConstants.TOKEN_PREFIX;
 
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
     public JWTAuthorizationFilter(AuthenticationManager authManager) {

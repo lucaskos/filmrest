@@ -1,13 +1,16 @@
-package com.filmdatabase.filmdb.web.service;
+package com.filmdatabase.filmdb.api.service;
 
 import com.filmdatabase.filmdb.application.DTO.FilmDTO;
 import com.filmdatabase.filmdb.application.DTO.FilmWrapper;
 import com.filmdatabase.filmdb.application.model.film.Film;
 import com.filmdatabase.filmdb.application.model.film.FilmDao;
+import com.filmdatabase.filmdb.application.model.test.RatingTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
+import java.util.Set;
 
 @Service
 public class FilmServiceImpl implements FilmService {

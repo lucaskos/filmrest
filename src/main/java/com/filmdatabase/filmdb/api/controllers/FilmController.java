@@ -1,15 +1,20 @@
-package com.filmdatabase.filmdb.web.controllers;
+package com.filmdatabase.filmdb.api.controllers;
 
-import com.filmdatabase.filmdb.web.service.FilmService;
+import com.filmdatabase.filmdb.api.service.FilmService;
 import com.filmdatabase.filmdb.application.DTO.FilmDTO;
 import com.filmdatabase.filmdb.application.commons.QualifierConstants;
+import com.filmdatabase.filmdb.application.model.FilmRelation;
 import com.filmdatabase.filmdb.application.model.cache.dao.DictionaryDao;
+import com.filmdatabase.filmdb.application.model.cache.dao.GenresDaoImpl;
+import com.filmdatabase.filmdb.application.model.cache.dictionaries.GenresDictionary;
 import com.filmdatabase.filmdb.application.model.cache.dictionaries.PersonRole;
 import com.filmdatabase.filmdb.application.model.film.Film;
+import com.filmdatabase.filmdb.application.model.test.RatingTest;
 import com.filmdatabase.filmdb.application.model.user.dao.User;
 import com.filmdatabase.filmdb.application.model.user.dao.UserDao;
 import com.filmdatabase.filmdb.application.procedures.ProcedureDao;
 import jersey.repackaged.com.google.common.base.Preconditions;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
@@ -18,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @CrossOrigin(origins = {"http://localhost:4200"})
@@ -83,5 +89,6 @@ public class FilmController {
     @DeleteMapping("/{id}")
     public void delete(@PathVariable("id") Long id) {
         filmService.deleteFilm(null);
+        //
     }
 }

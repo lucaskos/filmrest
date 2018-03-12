@@ -1,6 +1,8 @@
-package com.filmdatabase.filmdb.web.service;
+package com.filmdatabase.filmdb.api.service;
 
 import com.filmdatabase.filmdb.application.model.user.dao.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.List;
 

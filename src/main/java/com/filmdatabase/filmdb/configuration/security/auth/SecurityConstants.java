@@ -1,4 +1,4 @@
-package com.filmdatabase.filmdb.configuration.security;
+package com.filmdatabase.filmdb.configuration.security.auth;
 
 import java.util.ArrayList;
 import java.util.Arrays;
