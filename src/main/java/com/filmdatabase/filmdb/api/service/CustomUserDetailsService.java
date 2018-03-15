@@ -35,11 +35,11 @@ public class CustomUserDetailsService implements UserDetailsService {
         if (applicationUser == null) {
             throw new UsernameNotFoundException(username);
         }
-        SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(applicationUser.getRoles().getRole());
-        ArrayList<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-        if (simpleGrantedAuthority != null){
-            grantedAuthorities.add(simpleGrantedAuthority);
-        }
-        return new User(applicationUser.getUsername(), applicationUser.getPassword(), grantedAuthorities);
+//        SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(applicationUser.getRoles().getRole());
+//        ArrayList<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+//        if (simpleGrantedAuthority != null){
+//            grantedAuthorities.add(simpleGrantedAuthority);
+//        }
+        return new User(applicationUser.getUsername(), applicationUser.getPassword(), null);
     }
 }

@@ -7,6 +7,7 @@ import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -18,7 +19,7 @@ public class User {
     public boolean enabled;
     public String email;
 //    public Set<Rating> rating = new HashSet<>();
-    public Role roles;
+    public List<Role> roles;
     //@OneToMany(mappedBy = "user")
     //private Set<Comment> comments;
 
@@ -26,23 +27,23 @@ public class User {
 
     }
 
-    public User(String username, String password, Role role) {
+    public User(String username, String password, List<Role> role) {
         this.username = username;
         this.password = password;
         this.roles = role;
     }
 
     @JsonIgnore
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @OneToMany(cascade = CascadeType.MERGE)
     @JoinTable(name = "users_roles",
             joinColumns = {@JoinColumn(name = "users_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "roles_id", referencedColumnName = "id")}
     )
-    public Role getRoles() {
+    public List<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(Role roles) {
+    public void setRoles(List<Role> roles) {
         this.roles = roles;
     }
 
@@ -115,11 +116,11 @@ public class User {
                 .append(", password:" + password)
                 .append(",enabled" + enabled)
                 .append(",email:"+email);
-        if(roles != null) {
-            sb.append(",role:"+roles.getRole()+"]");
-        } else {
-            sb.append("]");
-        }
+//        if(roles != null) {
+//            sb.append(",role:"+roles.getRole()+"]");
+//        } else {
+//            sb.append("]");
+//        }
         return sb.toString();
     }
 

@@ -23,8 +23,6 @@ public class UserDaoImpl extends GenericDaoHibernateImpl<User> implements UserDa
 
     @Override
     public User create(User user) {
-        Role role = roleDao.getRole(ConfigurationConstants.ROLE_USER);
-        user.setRoles(role);
         return super.create(user);
     }
 

@@ -1,14 +1,6 @@
 package com.filmdatabase.filmdb.application.model.user.role;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.filmdatabase.filmdb.application.model.user.dao.User;
 
@@ -21,7 +13,7 @@ public class Role {
 
 	private int id;
 	private String role;
-	private List<User> userRoles;
+	private User user;
 
 	public Role() {
 
@@ -51,17 +43,17 @@ public class Role {
 		this.role = role;
 	}
 
-	@OneToMany(cascade=CascadeType.MERGE)
+	@ManyToOne(cascade=CascadeType.MERGE)
 	@JoinTable(name="users_roles",
 			joinColumns = {@JoinColumn(name="users_id", referencedColumnName="id")},
 			inverseJoinColumns = {@JoinColumn(name="roles_id", referencedColumnName="id")}
 	)
-	public List<User> getUsersSet() {
-		return userRoles;
+	public User getUser() {
+		return user;
 	}
 
-	public void setUsersSet(List<User> usersSet) {
-		this.userRoles = usersSet;
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	@Override

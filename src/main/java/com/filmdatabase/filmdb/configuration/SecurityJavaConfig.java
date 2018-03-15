@@ -2,6 +2,7 @@ package com.filmdatabase.filmdb.configuration;
 
 import com.filmdatabase.filmdb.configuration.security.auth.JwtAuthenticationFilter;
 import com.filmdatabase.filmdb.configuration.security.auth.JWTAuthorizationFilter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -32,16 +33,18 @@ public class SecurityJavaConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         http.cors().and().csrf().disable().authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/**").permitAll()
-                .and().authorizeRequests().antMatchers(HttpMethod.POST, "/film").hasRole("ADMIN")
-                .antMatchers(HttpMethod.POST, SIGN_UP_URL).permitAll()
-                .and().authorizeRequests().antMatchers(HttpMethod.POST, SIGN_UP_URL).permitAll()
+                .antMatchers(HttpMethod.GET, "/**").permitAll().and()
+                .authorizeRequests().antMatchers(HttpMethod.POST, "/films/*").hasRole("ADMIN").and()
+                .authorizeRequests().antMatchers(HttpMethod.GET, "/films/new").hasRole("ADMIN")
+                .antMatchers(HttpMethod.POST, SIGN_UP_URL).permitAll().and()
+                .authorizeRequests().antMatchers(HttpMethod.POST, SIGN_UP_URL).permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilter(new JwtAuthenticationFilter(authenticationManager()))
                 .addFilter(new JWTAuthorizationFilter(authenticationManager()))
                 // this disables session creation on Spring Security
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        http.authorizeRequests().antMatchers("/films/new").hasRole("ADMIN");
     }
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {

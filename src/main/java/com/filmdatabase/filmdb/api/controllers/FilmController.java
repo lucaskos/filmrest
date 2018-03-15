@@ -75,7 +75,7 @@ public class FilmController {
     @PostMapping
     public void create(@RequestBody Film film) {
         Preconditions.checkNotNull(film);
-        filmService.addFilm(film);
+        //filmService.addFilm(film);
     }
 
     @PutMapping

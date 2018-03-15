@@ -25,13 +25,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User findByUsername(String username) {
+        return userDao.findByUsername(username);
+    }
+
+    @Override
     public void save(User user) {
-        LOGGER.info("\n\nUser has been created " + user.getEmail());
+        LOGGER.info("User has been created " + user.getEmail());
         userDao.create(user);
     }
 
     public User getUserById(Long id) {
         return userDao.findOne(id);
     }
+
 
 }

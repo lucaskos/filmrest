@@ -2,6 +2,7 @@ package com.filmdatabase.filmdb.configuration.security.auth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.filmdatabase.filmdb.api.service.UserService;
+import com.filmdatabase.filmdb.application.model.user.role.Role;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -22,7 +22,6 @@ import java.io.IOException;
 import java.util.*;
 
 import static com.filmdatabase.filmdb.configuration.security.auth.SecurityConstants.*;
-
 
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
@@ -33,18 +32,26 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     }
 
     private final List<String> allowedOrigins = Arrays.asList("http://localhost:4200");
+
     @Override
     public Authentication attemptAuthentication(HttpServletRequest req,
                                                 HttpServletResponse res) throws AuthenticationException {
+        if (logger.isDebugEnabled()) {
+            logger.debug("Request method " + req.getServletPath());
+        }
+
         try {
             com.filmdatabase.filmdb.application.model.user.dao.User creds = new ObjectMapper()
                     .readValue(req.getInputStream(), com.filmdatabase.filmdb.application.model.user.dao.User.class);
+
+            List<GrantedAuthority> list = new ArrayList<>();
 
             return authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
                             creds.getUsername(),
                             creds.getPassword(),
-                            (Collection<? extends GrantedAuthority>) creds.getRoles())
+//                            (Collection<? extends GrantedAuthority>) creds.getRoles())
+                            list)
             );
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -92,4 +99,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         roles.add(test2);
         res.addHeader("ROLES", String.valueOf(roles));
     }
+
+
 }
