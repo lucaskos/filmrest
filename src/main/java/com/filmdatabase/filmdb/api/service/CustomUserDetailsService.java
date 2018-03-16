@@ -1,7 +1,8 @@
 package com.filmdatabase.filmdb.api.service;
 
 
-import com.filmdatabase.filmdb.configuration.common.MyUserPrincipal;
+import com.filmdatabase.filmdb.application.model.user.role.Role;
+import com.filmdatabase.filmdb.configuration.common.ConfigurationConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Autowired
     private UserDao userDao;
 
-    public CustomUserDetailsService(){
+    public CustomUserDetailsService() {
         super();
     }
 
@@ -35,11 +36,19 @@ public class CustomUserDetailsService implements UserDetailsService {
         if (applicationUser == null) {
             throw new UsernameNotFoundException(username);
         }
-//        SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(applicationUser.getRoles().getRole());
-//        ArrayList<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-//        if (simpleGrantedAuthority != null){
-//            grantedAuthorities.add(simpleGrantedAuthority);
-//        }
-        return new User(applicationUser.getUsername(), applicationUser.getPassword(), null);
+        List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+        try {
+            if (applicationUser != null && !CollectionUtils.isEmpty(applicationUser.getRoles())) {
+                for (Role userRole : applicationUser.getRoles()) {
+                    grantedAuthorities.add(new SimpleGrantedAuthority(userRole.getRole()));
+                }
+            } else {
+                LOGGER.error("Can't find roles for user");
+                grantedAuthorities.add(new SimpleGrantedAuthority(ConfigurationConstants.ROLE_DUMMY));
+            }
+        } catch(Exception ex) {
+            LOGGER.error("User " + username + " not found." + ex);
+        }
+        return new User(applicationUser.getUsername(), applicationUser.getPassword(), grantedAuthorities);
     }
 }

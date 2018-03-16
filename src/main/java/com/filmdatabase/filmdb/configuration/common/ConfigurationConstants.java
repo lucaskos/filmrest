@@ -37,4 +37,5 @@ public class ConfigurationConstants {
     public static final String ROLE_PREMIUM = "ROLE_PREMIUM";
 
     public static final String UNAUTHORIZED = "Unauthorized";
+    public static final String ROLE_DUMMY = "ROLE_DUMMY";
 }

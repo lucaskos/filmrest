@@ -56,10 +56,4 @@ public class Role {
 		this.user = user;
 	}
 
-	@Override
-	public String toString() {
-		return "Role [id=" + id + ", role=" + role +  "]";
-	}
-
-
 }
