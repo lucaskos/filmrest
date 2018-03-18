@@ -1,9 +1,6 @@
 package com.filmdatabase.filmdb.configuration.security.auth;
-import com.filmdatabase.filmdb.api.service.UserService;
-import com.filmdatabase.filmdb.application.model.user.dao.User;
-import com.filmdatabase.filmdb.application.model.user.role.Role;
+
 import io.jsonwebtoken.Jwts;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,16 +12,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
-import static com.filmdatabase.filmdb.configuration.security.auth.SecurityConstants.HEADER_STRING;
-import static com.filmdatabase.filmdb.configuration.security.auth.SecurityConstants.SECRET;
-import static com.filmdatabase.filmdb.configuration.security.auth.SecurityConstants.TOKEN_PREFIX;
+import static com.filmdatabase.filmdb.application.commons.SecurityConstants.*;
 
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
-
-    @Autowired
-    private UserService userService;
 
     public JWTAuthorizationFilter(AuthenticationManager authManager) {
         super(authManager);
@@ -41,12 +32,6 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
             return;
         }
         UsernamePasswordAuthenticationToken authentication = getAuthentication(req);
-        User registeredUser;
-        List<Role> userRoles;
-        if (authentication != null && authentication.getPrincipal() != null ) {
-            registeredUser = userService.findByUsername(authentication.getPrincipal().toString());
-//            Role roles = registeredUser.getRoles();
-        }
         SecurityContextHolder.getContext().setAuthentication(authentication);
         chain.doFilter(req, res);
     }

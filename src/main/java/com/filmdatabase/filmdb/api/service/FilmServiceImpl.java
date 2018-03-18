@@ -6,6 +6,7 @@ import com.filmdatabase.filmdb.application.model.film.Film;
 import com.filmdatabase.filmdb.application.model.film.FilmDao;
 import com.filmdatabase.filmdb.application.model.test.RatingTest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,16 +37,19 @@ public class FilmServiceImpl implements FilmService {
     }
 
     @Override
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void addFilm(Film film) {
         filmDao.create(film);
     }
 
     @Override
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void deleteFilm(Film film) {
         filmDao.delete(film);
     }
 
     @Override
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void updateFilm(Film film) {
         filmDao.update(film);
     }
