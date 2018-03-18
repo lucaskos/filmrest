@@ -34,16 +34,19 @@ public class MyUserPrincipal implements UserDetails {
         return user.getUsername();
     }
 
+    //todo
     @Override
     public boolean isAccountNonExpired() {
         return true;
     }
 
+    //todo
     @Override
     public boolean isAccountNonLocked() {
         return true;
     }
 
+    //todo
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
@@ -51,7 +54,7 @@ public class MyUserPrincipal implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return user.isEnabled();
     }
 
     public User getUser() {

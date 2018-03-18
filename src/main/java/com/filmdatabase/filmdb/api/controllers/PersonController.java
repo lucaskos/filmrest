@@ -33,8 +33,6 @@ public class PersonController {
     @GetMapping("/{id}")
     public @ResponseBody Person getPersonById(@PathVariable @NotNull int id) {
         //todo exception handler in component if no actor found
-        Person one = personService.getPerson(id);
-
         return personService.getPerson(id);
     }
 

@@ -1,19 +1,18 @@
 package com.filmdatabase.filmdb.configuration.security.auth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.filmdatabase.filmdb.api.service.UserService;
-import com.filmdatabase.filmdb.application.model.user.role.Role;
+import com.filmdatabase.filmdb.application.commons.SecurityConstants;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.util.StringUtils;
+
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -21,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.*;
 
-import static com.filmdatabase.filmdb.configuration.security.auth.SecurityConstants.*;
+import static com.filmdatabase.filmdb.application.commons.SecurityConstants.*;
 
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
@@ -50,7 +49,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                     new UsernamePasswordAuthenticationToken(
                             creds.getUsername(),
                             creds.getPassword(),
-//                            (Collection<? extends GrantedAuthority>) creds.getRoles())
                             list)
             );
         } catch (IOException e) {
@@ -83,22 +81,26 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         // Access-Control-Allow-Methods
         res.setHeader(METHODS_ALLOWED, "POST, GET, OPTIONS, DELETE");
 
-        String a = SecurityConstants.getGeneratedHeaders();
-
         // Access-Control-Allow-Headers
-        //todo sprawdzi czy authorization z malej jest potrzebne
         res.setHeader(HEADERS_ALLOWED,
                 "Origin, Authorization, ROLES, X-Requested-By, X-Requested-With, Content-Type, Accept, " + "X-CSRF-TOKEN");
-        res.setHeader("Access-Control-Expose-Headers", HEADER_STRING + ", ROLES");
-        res.addHeader(HEADER_STRING, TOKEN_PREFIX + token);
-        //res.addHeader("ROLES", String.valueOf(((User) auth.getPrincipal()).getAuthorities()));
-        List<GrantedAuthority> roles = new ArrayList<>();
-        GrantedAuthority test = new SimpleGrantedAuthority("ROLE_USER");
-        GrantedAuthority test2 = new SimpleGrantedAuthority("ROLE_ADMIN");
-        roles.add(test);
-        roles.add(test2);
-        res.addHeader("ROLES", String.valueOf(roles));
+        setExposedHeaders(res);
+
+        if (!StringUtils.isEmpty(token) && auth.getAuthorities() != null && !auth.getAuthorities().isEmpty()) {
+            addExposedHeaders(res, token, auth.getAuthorities());
+        }
+        if (logger.isDebugEnabled()) {
+            logger.debug("Generated headers " + SecurityConstants.getGeneratedHeaders());
+        }
     }
 
+    private void setExposedHeaders(HttpServletResponse res) {
+        res.addHeader(EXPOSED_HEADERS, HEADER_STRING + ", " + ROLES);
+    }
+
+    private void addExposedHeaders(HttpServletResponse res, String token, Collection<? extends GrantedAuthority> authorities) {
+        res.addHeader(HEADER_STRING, TOKEN_PREFIX + token);
+        res.addHeader(ROLES, String.valueOf(authorities));
+    }
 
 }

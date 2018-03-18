@@ -1,12 +1,11 @@
 package com.filmdatabase.filmdb.configuration.security.auth;
-import com.filmdatabase.filmdb.api.service.UserService;
-import com.filmdatabase.filmdb.application.model.user.dao.User;
-import com.filmdatabase.filmdb.application.model.user.role.Role;
+
 import io.jsonwebtoken.Jwts;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import javax.servlet.FilterChain;
@@ -15,19 +14,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
-import static com.filmdatabase.filmdb.configuration.security.auth.SecurityConstants.HEADER_STRING;
-import static com.filmdatabase.filmdb.configuration.security.auth.SecurityConstants.SECRET;
-import static com.filmdatabase.filmdb.configuration.security.auth.SecurityConstants.TOKEN_PREFIX;
+import static com.filmdatabase.filmdb.application.commons.SecurityConstants.*;
 
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
-    @Autowired
-    private UserService userService;
+    private UserDetailsService userDetailsService;
 
-    public JWTAuthorizationFilter(AuthenticationManager authManager) {
+    public JWTAuthorizationFilter(AuthenticationManager authManager, UserDetailsService userDetailsService) {
         super(authManager);
+        this.userDetailsService = userDetailsService;
     }
 
     @Override
@@ -40,14 +36,15 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
             chain.doFilter(req, res);
             return;
         }
+        Object principal = getAuthentication(req).getPrincipal();
+        UserDetails userDetails = userDetailsService.loadUserByUsername(principal.toString());
+
         UsernamePasswordAuthenticationToken authentication = getAuthentication(req);
-        User registeredUser;
-        List<Role> userRoles;
-        if (authentication != null && authentication.getPrincipal() != null ) {
-            registeredUser = userService.findByUsername(authentication.getPrincipal().toString());
-//            Role roles = registeredUser.getRoles();
+        UsernamePasswordAuthenticationToken token = null;
+        if (userDetails.getAuthorities() != null && !userDetails.getAuthorities().isEmpty()) {
+            token = new UsernamePasswordAuthenticationToken(authentication.getPrincipal(), null, userDetails.getAuthorities());
         }
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+        SecurityContextHolder.getContext().setAuthentication(token);
         chain.doFilter(req, res);
     }
 

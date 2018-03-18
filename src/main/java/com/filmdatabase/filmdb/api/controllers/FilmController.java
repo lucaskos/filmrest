@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
@@ -51,8 +52,6 @@ public class FilmController {
     public @ResponseBody
     FilmDTO getFilm(@PathVariable @NotNull int id) {
         //todo exception handler if no entity found
-        //generic for person, film and what not
-        List<User> all = userDao.findAll();
         if(id == 0) {
             return null;
         }
@@ -61,21 +60,17 @@ public class FilmController {
         return film;
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping
     @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody List<Film> getList() {
-        List<PersonRole> all = genresDao.getAll();
-
         List<Film> list = (List<Film>) filmService.getAllFilms();
         return list;
     }
 
-    @Secured(value = "ROLE_ADMIN")
     @PostMapping
     public void create(@RequestBody Film film) {
         Preconditions.checkNotNull(film);
-        //filmService.addFilm(film);
+        filmService.addFilm(film);
     }
 
     @PutMapping
@@ -87,8 +82,9 @@ public class FilmController {
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable("id") Long id) {
+    public void delete(@PathVariable("id") Integer id) {
+        FilmDTO filmDetails = filmService.getFilmDetails(id);
+//todo
         filmService.deleteFilm(null);
-        //
     }
 }
