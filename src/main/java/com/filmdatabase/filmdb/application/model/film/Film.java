@@ -29,8 +29,8 @@ public class Film implements Serializable {
     private Integer year;
     private String description;
 
-    //	@JsonIgnore
-//	@OneToMany(mappedBy = "film", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @JsonIgnore
+	@OneToMany(mappedBy = "film", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     private Set<Cast> allCast = new HashSet<Cast>();
 
     private List<FilmRelation> filmRelations;

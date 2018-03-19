@@ -1,6 +1,8 @@
 package com.filmdatabase.filmdb.application.model.rating;
 
 
+import com.filmdatabase.filmdb.application.model.user.dao.User;
+
 import javax.persistence.*;
 
 @NamedStoredProcedureQueries({
@@ -43,7 +45,7 @@ public class Rating {
 
     private Long ratingId;
     private int rating;
-    private Integer userId;
+    private User userId;
     private Integer filmId;
     private Integer personId;
 
@@ -51,7 +53,7 @@ public class Rating {
 
     }
 
-    public Rating(int rating, Integer userId, int filmId) {
+    public Rating(int rating, User userId, int filmId) {
         this.rating = rating;
         this.userId = userId;
         this.filmId = filmId;
@@ -68,7 +70,7 @@ public class Rating {
         this.ratingId = ratingId;
     }
 
-    @JoinColumn(name = "film_id")
+    @JoinColumn(name = "filmId")
     public Integer getFilmId() {
         return filmId;
     }
@@ -82,12 +84,13 @@ public class Rating {
         this.rating = rating;
     }
 
-    @Column(name = "user_id")
-    public Integer getUserId() {
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    public User getUserId() {
         return userId;
     }
 
-    public void setUserId(Integer user) {
+    public void setUserId(User user) {
         this.userId = user;
     }
 

@@ -2,14 +2,7 @@ package com.filmdatabase.filmdb.application.model.cast;
 
 import java.io.Serializable;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.filmdatabase.filmdb.application.model.person.Person;
 import org.springframework.transaction.annotation.Propagation;
@@ -26,8 +19,8 @@ public class Cast implements Serializable {
 	private static final long serialVersionUID = -6424609370178798738L;
 
 	private int actorFilmId;
-	private Integer film;
-	private Integer person;
+	private Film film;
+	private Person person;
 	private String role;
 
 	public Cast() {
@@ -54,21 +47,23 @@ public class Cast implements Serializable {
 		this.role = role;
 	}
 
-	@Column(name = "film_id")
-	public Integer getFilm() {
+	@ManyToOne
+	@JoinColumn(name = "film_id")
+	public Film getFilm() {
 		return film;
 	}
 
-	public void setFilm(Integer film) {
+	public void setFilm(Film film) {
 		this.film = film;
 	}
 
-	@Column(name = "person_id")
-	public Integer getPerson() {
+	@ManyToOne
+	@JoinColumn(name = "person_id")
+	public Person getPerson() {
 		return person;
 	}
 
-	public void setPerson(Integer person) {
+	public void setPerson(Person person) {
 		this.person = person;
 	}
 }

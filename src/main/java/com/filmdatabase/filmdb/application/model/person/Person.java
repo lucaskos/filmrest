@@ -3,11 +3,15 @@ package com.filmdatabase.filmdb.application.model.person;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.filmdatabase.filmdb.application.model.FilmRelation;
 import com.filmdatabase.filmdb.application.model.PersonRelation;
+import com.filmdatabase.filmdb.application.model.cast.Cast;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -27,11 +31,11 @@ public class Person implements Serializable{
     private Set<PersonRelation> personRelations;
     private Set<FilmRelation> filmRelations;
 
-//    @JsonIgnore
-    //@OneToMany(mappedBy = "person", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//    public Set<PersonRelation> getPersonRelations() {
-//        return personRelations;
-//    }
+    @JsonIgnore
+    @OneToMany(mappedBy = "person", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    public Set<PersonRelation> getPersonRelations() {
+        return personRelations;
+    }
 
     public void setPersonRelations(Set<PersonRelation> personRelations) {
         this.personRelations = personRelations;
@@ -46,9 +50,7 @@ public class Person implements Serializable{
         this.filmRelations = filmRelations;
     }
 
-//	@LazyCollection(LazyCollectionOption.FALSE)
-//	@OneToMany(mappedBy = "person",cascade = CascadeType.ALL)
-    //private Set<Cast> filmography = new HashSet<Cast>();
+    private Set<Cast> filmography = new HashSet<Cast>();
 
     public Person() {
 
@@ -79,17 +81,19 @@ public class Person implements Serializable{
         this.firstName = firstName;
     }
 
-//	public Set<Cast> getActorFilms() {
-//		return this.filmography;
-//	}
-//
-//	public void setActorFilms(Set<Cast> actorFilms) {
-//		this.filmography = actorFilms;
-//	}
-//
-//	public void addActorsFilms(Cast actorFilms) {
-//		this.filmography.add(actorFilms);
-//	}
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(mappedBy = "person",cascade = CascadeType.ALL)
+	public Set<Cast> getActorFilms() {
+		return this.filmography;
+	}
+
+	public void setActorFilms(Set<Cast> actorFilms) {
+		this.filmography = actorFilms;
+	}
+
+	public void addActorsFilms(Cast actorFilms) {
+		this.filmography.add(actorFilms);
+	}
 
 
     @Column(name = "LAST_NAME")

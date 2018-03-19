@@ -1,13 +1,17 @@
 package com.filmdatabase.filmdb.application.model.user.dao;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.filmdatabase.filmdb.application.model.rating.Rating;
 import com.filmdatabase.filmdb.application.model.user.role.Role;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -18,7 +22,7 @@ public class User {
     public String password;
     public boolean enabled;
     public String email;
-//    public Set<Rating> rating = new HashSet<>();
+    public Set<Rating> rating = new HashSet<>();
     public List<Role> roles;
     //@OneToMany(mappedBy = "user")
     //private Set<Comment> comments;
@@ -99,15 +103,15 @@ public class User {
         this.email = email;
     }
 
-//    @JsonManagedReference
-//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "userId", cascade = CascadeType.ALL)
-//    public Set<Rating> getRating() {
-//        return rating;
-//    }
-//
-//    public void setRating(Set<Rating> rating) {
-//        this.rating = rating;
-//    }
+    @JsonManagedReference
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "userId", cascade = CascadeType.ALL)
+    public Set<Rating> getRating() {
+        return rating;
+    }
+
+    public void setRating(Set<Rating> rating) {
+        this.rating = rating;
+    }
 
     @Override
     public String toString() {
