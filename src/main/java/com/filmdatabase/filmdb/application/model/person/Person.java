@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.filmdatabase.filmdb.application.model.FilmRelation;
 import com.filmdatabase.filmdb.application.model.PersonRelation;
 import com.filmdatabase.filmdb.application.model.cast.Cast;
+import org.hibernate.LazyInitializationException;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.validator.constraints.NotBlank;
@@ -132,10 +133,6 @@ public class Person implements Serializable{
         this.bio = bio;
     }
 
-    @Override
-    public String toString() {
-        return "Person [id=" + id + ", firstName=" + firstName + "]";
-    }
 
     @Override
     public int hashCode() {

@@ -1,6 +1,13 @@
 package com.filmdatabase.filmdb.application.DTO;
 
+import com.filmdatabase.filmdb.application.model.film.Film;
+import com.filmdatabase.filmdb.application.model.person.Person;
+
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class PersonDTO {
 
@@ -9,9 +16,18 @@ public class PersonDTO {
     private String lastName;
     private Date bornDate;
     private Date diedDate;
+    private Map<Integer, Film> filmList = new HashMap();
 
     public PersonDTO() {
 
+    }
+
+    public PersonDTO(Person p) {
+        this.id = p.getId();
+        this.firstName = p.getFirstName();
+        this.lastName = p.getLastName();
+        this.bornDate = p.getBornDate();
+        this.diedDate = p.getDiedDate();
     }
 
     public PersonDTO(int id, String firstName, String lastName) {
@@ -66,5 +82,13 @@ public class PersonDTO {
 
     public void setDiedDate(Date diedDate) {
         this.diedDate = diedDate;
+    }
+
+    public Map<Integer, Film> getFilmList() {
+        return filmList;
+    }
+
+    public void setFilmList(Map<Integer, Film> filmList) {
+        this.filmList = filmList;
     }
 }

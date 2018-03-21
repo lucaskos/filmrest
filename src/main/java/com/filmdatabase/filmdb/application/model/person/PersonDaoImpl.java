@@ -1,9 +1,12 @@
 package com.filmdatabase.filmdb.application.model.person;
 
 import com.filmdatabase.filmdb.application.model.GenericDaoHibernateImpl;
+import com.filmdatabase.filmdb.application.model.film.Film;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.Query;
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -25,5 +28,21 @@ public class PersonDaoImpl extends GenericDaoHibernateImpl<Person> implements Pe
     @Override
     public List getPeopleByLastName(String lastName) {
         return null;
+    }
+
+    @Override
+    public Person findOne(Serializable id) {
+        Query query = entityManager.createQuery("from Person p LEFT JOIN FETCH p.filmRelations " +
+                "LEFT JOIN FETCH p.actorFilms " +
+                "WHERE p.id=:id");
+        query.setParameter("id", id);
+
+        Person singleResult = (Person) query.getSingleResult();
+
+        if (singleResult != null) {
+            return singleResult;
+        } else {
+            return null;
+        }
     }
 }
