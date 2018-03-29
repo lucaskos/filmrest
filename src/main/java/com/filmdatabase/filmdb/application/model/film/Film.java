@@ -1,12 +1,7 @@
 package com.filmdatabase.filmdb.application.model.film;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonView;
 import com.filmdatabase.filmdb.application.model.FilmRelation;
-import com.filmdatabase.filmdb.application.model.cast.Cast;
-import com.filmdatabase.filmdb.application.model.test.RatingTest;
-import org.hibernate.annotations.LazyToOne;
-import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
@@ -14,9 +9,7 @@ import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @XmlRootElement
 @Entity
@@ -28,11 +21,6 @@ public class Film implements Serializable {
     private String title;
     private Integer year;
     private String description;
-
-    @JsonIgnore
-	@OneToMany(mappedBy = "film", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
-    private Set<Cast> allCast = new HashSet<Cast>();
-
     private List<FilmRelation> filmRelations;
 
     public Film() {
@@ -66,10 +54,6 @@ public class Film implements Serializable {
         this.title = title;
         this.year = year;
         this.description = description;
-    }
-
-    public void addActor(Cast actorsFilms) {
-        this.allCast.add(actorsFilms);
     }
 
     @Id

@@ -2,22 +2,17 @@ package com.filmdatabase.filmdb.application.model.person;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.filmdatabase.filmdb.application.model.FilmRelation;
-import com.filmdatabase.filmdb.application.model.PersonRelation;
-import com.filmdatabase.filmdb.application.model.cast.Cast;
-import org.hibernate.LazyInitializationException;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "PERSON")
-public class Person implements Serializable{
+public class Person implements Serializable {
 
     private static final long serialVersionUID = 5650070241555490348L;
     private int id;
@@ -29,34 +24,23 @@ public class Person implements Serializable{
      * biography of a person
      */
     private String bio;
-    private Set<PersonRelation> personRelations;
-    private Set<FilmRelation> filmRelations;
-
     @JsonIgnore
-    @OneToMany(mappedBy = "person", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    public Set<PersonRelation> getPersonRelations() {
-        return personRelations;
-    }
+    @OneToMany(targetEntity = FilmRelation.class, mappedBy = "person", fetch = FetchType.LAZY, cascade = CascadeType
+            .ALL)
+    private List<FilmRelation> filmRelations = new ArrayList<>(0);
 
-    public void setPersonRelations(Set<PersonRelation> personRelations) {
-        this.personRelations = personRelations;
-    }
     @OneToMany(mappedBy = "person", fetch = FetchType.LAZY, cascade = CascadeType
             .ALL)
-    public Set<FilmRelation> getFilmRelations() {
+    public List<FilmRelation> getFilmRelations() {
         return filmRelations;
     }
 
-    public void setFilmRelations(Set<FilmRelation> filmRelations) {
+    public void setFilmRelations(List<FilmRelation> filmRelations) {
         this.filmRelations = filmRelations;
     }
 
-    private Set<Cast> filmography = new HashSet<Cast>();
-
     public Person() {
-
     }
-
     public Person(String firstName) {
         this.firstName = firstName;
     }
@@ -81,21 +65,6 @@ public class Person implements Serializable{
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
-
-    @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(mappedBy = "person",cascade = CascadeType.ALL)
-	public Set<Cast> getActorFilms() {
-		return this.filmography;
-	}
-
-	public void setActorFilms(Set<Cast> actorFilms) {
-		this.filmography = actorFilms;
-	}
-
-	public void addActorsFilms(Cast actorFilms) {
-		this.filmography.add(actorFilms);
-	}
-
 
     @Column(name = "LAST_NAME")
     public String getLastName() {
@@ -138,7 +107,6 @@ public class Person implements Serializable{
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-//		result = prime * result + ((filmography == null) ? 0 : filmography.hashCode());
         result = prime * result + id;
         result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
         return result;
@@ -153,11 +121,6 @@ public class Person implements Serializable{
         if (getClass() != obj.getClass())
             return false;
         Person other = (Person) obj;
-//		if (filmography == null) {
-//			if (other.filmography != null)
-//				return false;
-//		} else if (!filmography.equals(other.filmography))
-//			return false;
         if (id != other.id)
             return false;
         if (firstName == null) {

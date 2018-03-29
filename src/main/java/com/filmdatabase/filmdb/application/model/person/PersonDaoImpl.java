@@ -33,7 +33,7 @@ public class PersonDaoImpl extends GenericDaoHibernateImpl<Person> implements Pe
     @Override
     public Person findOne(Serializable id) {
         Query query = entityManager.createQuery("from Person p LEFT JOIN FETCH p.filmRelations " +
-                "LEFT JOIN FETCH p.actorFilms " +
+//                "LEFT JOIN FETCH p.actorFilms " +
                 "WHERE p.id=:id");
         query.setParameter("id", id);
 

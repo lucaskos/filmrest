@@ -22,7 +22,7 @@ public class User {
     public String password;
     public boolean enabled;
     public String email;
-    public Set<Rating> rating = new HashSet<>();
+//    public Set<Rating> rating = new HashSet<>();
     public List<Role> roles;
     //@OneToMany(mappedBy = "user")
     //private Set<Comment> comments;
@@ -103,15 +103,15 @@ public class User {
         this.email = email;
     }
 
-    @JsonManagedReference
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "userId", cascade = CascadeType.ALL)
-    public Set<Rating> getRating() {
-        return rating;
-    }
-
-    public void setRating(Set<Rating> rating) {
-        this.rating = rating;
-    }
+//    @JsonManagedReference
+//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "userId", cascade = CascadeType.ALL)
+//    public Set<Rating> getRating() {
+//        return rating;
+//    }
+//
+//    public void setRating(Set<Rating> rating) {
+//        this.rating = rating;
+//    }
 
     @Override
     public String toString() {

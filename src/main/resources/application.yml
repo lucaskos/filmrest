@@ -45,7 +45,6 @@ spring:
             maxPoolSize: 10
             hibernate:
                 default_schema: films
-                enable_lazy_load_no_trans: true
     management:
         security:
             enabled: true

@@ -1,6 +1,10 @@
 package com.filmdatabase.filmdb.application.model.cache.dictionaries;
 
+import com.filmdatabase.filmdb.application.model.FilmRelation;
+
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Luke on 25.10.2017.
@@ -12,6 +16,7 @@ public class PersonRole {
     private int personRoleId;
     private String personRoleType;
     private String personRoleKey;
+
 
     public PersonRole() {
 
@@ -45,4 +50,15 @@ public class PersonRole {
     public void setPersonRoleKey(String personRoleKey) {
         this.personRoleKey = personRoleKey;
     }
+//todo add this to filmrelation
+//    private List<FilmRelation> filmRelationList = new ArrayList<>();
+//
+//    @OneToMany(mappedBy = "personRelation")
+//    public List<FilmRelation> getFilmRelationList() {
+//        return filmRelationList;
+//    }
+//
+//    public void setFilmRelationList(List<FilmRelation> filmRelationList) {
+//        this.filmRelationList = filmRelationList;
+//    }
 }

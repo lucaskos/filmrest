@@ -9,7 +9,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class PersonDTO {
+public class
+PersonDTO {
 
     private int id;
     private String firstName;
@@ -17,12 +18,14 @@ public class PersonDTO {
     private Date bornDate;
     private Date diedDate;
     private Map<Integer, Film> filmList = new HashMap();
+    private Person person;
 
     public PersonDTO() {
 
     }
 
     public PersonDTO(Person p) {
+        this.person = p;
         this.id = p.getId();
         this.firstName = p.getFirstName();
         this.lastName = p.getLastName();
@@ -91,4 +94,6 @@ public class PersonDTO {
     public void setFilmList(Map<Integer, Film> filmList) {
         this.filmList = filmList;
     }
+
+//    public Person getPerson() { return this.person; }
 }

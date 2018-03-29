@@ -1,17 +1,13 @@
 package com.filmdatabase.filmdb.api.controllers;
 
 import com.filmdatabase.filmdb.api.service.PersonService;
-import com.filmdatabase.filmdb.application.DTO.FilmWrapper;
 import com.filmdatabase.filmdb.application.DTO.PersonDTO;
-import com.filmdatabase.filmdb.application.model.FilmRelation;
 import com.filmdatabase.filmdb.application.model.person.Person;
 import jersey.repackaged.com.google.common.base.Preconditions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.constraints.NotNull;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 
 @RestController
@@ -36,26 +32,20 @@ public class PersonController {
     public @ResponseBody PersonDTO getPersonById(@PathVariable @NotNull int id) {
 
         //todo exception handler in component if no actor found
-        Person person = personService.getPerson(id);
-        FilmWrapper filmWrapper = new FilmWrapper();
-        PersonDTO personDTO = filmWrapper.wrapPeopleObject(person);
-        person.setPersonRelations(null);
-
-        PersonDTO personDTO1 = filmWrapper.wrapFullPersonObject(person);
-
-        return personDTO1;
+        PersonDTO person = personService.getPerson(id);
+        return person;
     }
 
     @PostMapping
-    public void create(@RequestBody Person person) {
+    public void create(@RequestBody PersonDTO person) {
         Preconditions.checkNotNull(person);
         personService.create(person);
     }
 
     @PutMapping
-    public void update(@PathVariable("id") Long id, @RequestBody Person person) {
+    public void update(@PathVariable("id") Long id, @RequestBody PersonDTO person) {
         Preconditions.checkNotNull(person);
-        personService.update(person);
+        //personService.update(person);
     }
 
     @DeleteMapping

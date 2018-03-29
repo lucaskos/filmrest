@@ -1,11 +1,10 @@
 package com.filmdatabase.filmdb.api.service;
 
 import com.filmdatabase.filmdb.application.DTO.FilmDTO;
-import com.filmdatabase.filmdb.application.DTO.FilmWrapper;
+import com.filmdatabase.filmdb.application.DTO.WrapperUtils;
 import com.filmdatabase.filmdb.application.model.FilmRelation;
 import com.filmdatabase.filmdb.application.model.film.Film;
 import com.filmdatabase.filmdb.application.model.film.FilmDao;
-import com.filmdatabase.filmdb.application.model.test.RatingTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
@@ -13,19 +12,18 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class FilmServiceImpl implements FilmService {
 
     private final FilmDao filmDao;
 
-    private final FilmWrapper filmWrapper;
+    private final WrapperUtils filmWrapper;
 
     @Autowired
     public FilmServiceImpl(FilmDao filmDao) {
         this.filmDao = filmDao;
-        filmWrapper = new FilmWrapper();
+        filmWrapper = new WrapperUtils();
     }
 
     @Override
@@ -61,7 +59,7 @@ public class FilmServiceImpl implements FilmService {
     public FilmDTO getFilmDetails(int id) {
         Film one = filmDao.findOne(id);
         List<FilmRelation> filmRelations = one.getFilmRelations();
-        return filmWrapper.populateDetails(filmDao.getFilmDetails(id));
+        return filmWrapper.getFullDetailsFilmObject(filmDao.getFilmDetails(id));
     }
 
 }

@@ -1,21 +1,20 @@
 package com.filmdatabase.filmdb.application.DTO;
 
 import com.filmdatabase.filmdb.application.model.FilmRelation;
-import com.filmdatabase.filmdb.application.model.PersonRelation;
 import com.filmdatabase.filmdb.application.model.film.Film;
 import com.filmdatabase.filmdb.application.model.person.Person;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
 
-import java.util.Set;
+import java.util.List;
 
 
-public class FilmWrapper {
+public class WrapperUtils {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(FilmWrapper.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(WrapperUtils.class);
 
-    public FilmDTO populateDetails(Film film) {
+    public FilmDTO getFullDetailsFilmObject(Film film) {
         if(film != null) {
             FilmDTO filmDTO = new FilmDTO(film.getFilmId(), film.getYear(), film.getTitle(), film.getDescription());
             if (film.getFilmRelations() != null) {
@@ -37,21 +36,13 @@ public class FilmWrapper {
         }
         return null;
     }
-    public PersonDTO wrapFullPersonObject(Person person) {
+    public static PersonDTO getFullDetailsPersonObject(Person person) {
         if (person != null) {
             PersonDTO personDto = new PersonDTO(person);
-            if (!CollectionUtils.isEmpty(person.getPersonRelations())) {
-                Set<PersonRelation> personRelations = person.getPersonRelations();
-                LOGGER.info(String.valueOf(personRelations.toArray()));
-                Set<PersonRelation> personRelations1 = person.getPersonRelations();
-                for (PersonRelation r : personRelations) {
-                    r.getPersonRole();
-                }
-            }
 
             if (!CollectionUtils.isEmpty(person.getFilmRelations())) {
-                Set<FilmRelation> filmRelations = person.getFilmRelations();
-                LOGGER.info(String.valueOf(filmRelations.toArray()));
+                List<FilmRelation> filmRelations = person.getFilmRelations();
+                LOGGER.info(String.valueOf(filmRelations));
                 for (FilmRelation f : filmRelations) {
                     personDto.getFilmList().put(1, f.getFilm());
                 }

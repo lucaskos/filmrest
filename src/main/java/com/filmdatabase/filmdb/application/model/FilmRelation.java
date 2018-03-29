@@ -1,5 +1,6 @@
 package com.filmdatabase.filmdb.application.model;
 
+import com.filmdatabase.filmdb.application.model.cache.dictionaries.PersonRole;
 import com.filmdatabase.filmdb.application.model.person.Person;
 import com.filmdatabase.filmdb.application.model.film.Film;
 import org.hibernate.annotations.LazyToOne;
@@ -17,6 +18,7 @@ public class FilmRelation implements Serializable {
 
     private static final long serialVersionUID = -3368604415829986784L;
     private int filmRelationId;
+    private String role;
     private Film film;
     private Person person;
 
@@ -33,6 +35,15 @@ public class FilmRelation implements Serializable {
 
     public void setFilmRelationId(int filmRelationId) {
         this.filmRelationId = filmRelationId;
+    }
+
+    @Column(name = "ROLE")
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)

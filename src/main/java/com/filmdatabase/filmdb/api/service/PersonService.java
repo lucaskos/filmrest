@@ -1,10 +1,13 @@
 package com.filmdatabase.filmdb.api.service;
 
+import com.filmdatabase.filmdb.application.DTO.WrapperUtils;
+import com.filmdatabase.filmdb.application.DTO.PersonDTO;
+import com.filmdatabase.filmdb.application.model.film.Film;
 import com.filmdatabase.filmdb.application.model.person.Person;
 import com.filmdatabase.filmdb.application.model.person.PersonDao;
-import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
@@ -23,19 +26,27 @@ public class PersonService {
         return personDao.findAll();
     }
 
-    public Person getPerson(int id){
-        Person one = personDao.findOne(id);
-        if(one == null) {
+    public PersonDTO getPerson(int id){
+        Person person = personDao.findOne(id);
+        PersonDTO personDTO1 = WrapperUtils.getFullDetailsPersonObject(person);
+
+        if(person == null) {
             //TODO add logger
             //throw exception
             throw new EntityNotFoundException("Couldn't find Person entity of id: "  + id);
         }
-        return personDao.findOne(id);
+        return personDTO1;
     }
 
 
-    public void create( Person person) {
-        personDao.create(person);
+    public void create(PersonDTO personWrapper) {
+//        Person person = personWrapper.getPerson();
+//        personDao.create(person);
+        if (!CollectionUtils.isEmpty(personWrapper.getFilmList())) {
+            for(Film f : personWrapper.getFilmList().values()) {
+
+            }
+        }
     }
 
 
