@@ -13,7 +13,7 @@ import java.util.List;
  * Created by Luke on 01.11.2017.
  */
 @Component(QualifierConstants.GENRES_DIC_DAO)
-public class GenresDaoImpl extends DictionaryAbstractClass<GenresDictionary> {
+public class GenresDaoImpl extends DictionaryAbstractClass {
 
     public GenresDaoImpl() {
         super(GenresDictionary.class);

@@ -2,29 +2,17 @@ package com.filmdatabase.filmdb.api.controllers;
 
 import com.filmdatabase.filmdb.api.service.FilmService;
 import com.filmdatabase.filmdb.application.DTO.FilmDTO;
-import com.filmdatabase.filmdb.application.commons.QualifierConstants;
-import com.filmdatabase.filmdb.application.model.FilmRelation;
-import com.filmdatabase.filmdb.application.model.cache.dao.DictionaryDao;
-import com.filmdatabase.filmdb.application.model.cache.dao.GenresDaoImpl;
-import com.filmdatabase.filmdb.application.model.cache.dictionaries.GenresDictionary;
-import com.filmdatabase.filmdb.application.model.cache.dictionaries.PersonRole;
+import com.filmdatabase.filmdb.application.model.cache.dao.CacheDao;
 import com.filmdatabase.filmdb.application.model.film.Film;
-import com.filmdatabase.filmdb.application.model.test.RatingTest;
-import com.filmdatabase.filmdb.application.model.user.dao.User;
-import com.filmdatabase.filmdb.application.model.user.dao.UserDao;
-import com.filmdatabase.filmdb.application.procedures.ProcedureDao;
 import jersey.repackaged.com.google.common.base.Preconditions;
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cache.CacheManager;
 import org.springframework.http.MediaType;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
-import java.util.Set;
 
 @RestController
 @CrossOrigin(origins = {"http://localhost:4200"})
@@ -34,19 +22,16 @@ public class FilmController {
     private final FilmService filmService;
 
     @Autowired
-    private ProcedureDao procedureDao;
-
-    @Autowired
-    @Qualifier(QualifierConstants.PERSON_DIC_DAO)
-    private DictionaryDao genresDao;
-
-    @Autowired
-    private UserDao userDao;
-
-    @Autowired
     public FilmController(FilmService filmService) {
         this.filmService = filmService;
     }
+
+    @Autowired
+    CacheManager cacheManager;
+
+    @Qualifier("personRolesDao")
+    @Autowired()
+    private CacheDao dictionaryAbstractClass;
 
     @GetMapping("/{id}")
     public @ResponseBody
@@ -60,9 +45,11 @@ public class FilmController {
         return film;
     }
 
-    @GetMapping
+    @GetMapping("/")
     @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody List<Film> getList() {
+        cacheManager.getCacheNames();
+
         List<Film> list = (List<Film>) filmService.getAllFilms();
         return list;
     }

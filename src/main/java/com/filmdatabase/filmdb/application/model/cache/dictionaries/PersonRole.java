@@ -1,9 +1,11 @@
 package com.filmdatabase.filmdb.application.model.cache.dictionaries;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.filmdatabase.filmdb.application.model.FilmRelation;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -50,15 +52,15 @@ public class PersonRole {
     public void setPersonRoleKey(String personRoleKey) {
         this.personRoleKey = personRoleKey;
     }
-//todo add this to filmrelation
-//    private List<FilmRelation> filmRelationList = new ArrayList<>();
-//
-//    @OneToMany(mappedBy = "personRelation")
-//    public List<FilmRelation> getFilmRelationList() {
-//        return filmRelationList;
-//    }
-//
-//    public void setFilmRelationList(List<FilmRelation> filmRelationList) {
-//        this.filmRelationList = filmRelationList;
-//    }
+
+    private Collection<FilmRelation> filmRelation;
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "personRoleDictionary")
+    public Collection<FilmRelation> getFilmRelation() {
+        return filmRelation;
+    }
+
+    public void setFilmRelation(Collection<FilmRelation> filmRelation) {
+        this.filmRelation = filmRelation;
+    }
 }

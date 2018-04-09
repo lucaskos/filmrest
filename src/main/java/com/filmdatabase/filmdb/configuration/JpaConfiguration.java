@@ -1,11 +1,15 @@
 package com.filmdatabase.filmdb.configuration;
 
+import com.filmdatabase.filmdb.application.commons.CacheConstants;
 import com.filmdatabase.filmdb.configuration.common.ConfigurationConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.YamlPropertiesFactoryBean;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -31,6 +35,7 @@ import java.util.Properties;
         entityManagerFactoryRef = "entityManagerFactory",
         transactionManagerRef = "transactionManager")
 @EnableTransactionManagement
+@EnableCaching
 //@PropertySource("classpath:application.yml")
 public class JpaConfiguration {
 

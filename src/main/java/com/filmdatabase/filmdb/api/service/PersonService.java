@@ -43,9 +43,7 @@ public class PersonService {
 //        Person person = personWrapper.getPerson();
 //        personDao.create(person);
         if (!CollectionUtils.isEmpty(personWrapper.getFilmList())) {
-            for(Film f : personWrapper.getFilmList().values()) {
 
-            }
         }
     }
 

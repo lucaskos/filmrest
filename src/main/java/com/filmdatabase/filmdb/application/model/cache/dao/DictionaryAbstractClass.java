@@ -4,7 +4,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
-public abstract class DictionaryAbstractClass<T> implements DictionaryDao<T> {
+public abstract class DictionaryAbstractClass<T> implements CacheDao<T> {
 
     @PersistenceContext
     private EntityManager entityManager;

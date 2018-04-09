@@ -1,5 +1,6 @@
 package com.filmdatabase.filmdb.application.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.filmdatabase.filmdb.application.model.cache.dictionaries.PersonRole;
 import com.filmdatabase.filmdb.application.model.person.Person;
 import com.filmdatabase.filmdb.application.model.film.Film;
@@ -62,5 +63,16 @@ public class FilmRelation implements Serializable {
 
     public void setPerson(Person person) {
         this.person = person;
+    }
+
+    private PersonRole personRoleDictionary;
+
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    public PersonRole getPersonRoleDictionary() {
+        return personRoleDictionary;
+    }
+
+    public void setPersonRoleDictionary(PersonRole personRoleDictionary) {
+        this.personRoleDictionary = personRoleDictionary;
     }
 }

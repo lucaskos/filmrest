@@ -1,13 +1,12 @@
 package com.filmdatabase.filmdb.application.DTO;
 
+import com.filmdatabase.filmdb.application.model.cache.dictionaries.PersonRole;
 import com.filmdatabase.filmdb.application.model.film.Film;
 import com.filmdatabase.filmdb.application.model.person.Person;
 
 import java.sql.Date;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class
 PersonDTO {
@@ -17,8 +16,9 @@ PersonDTO {
     private String lastName;
     private Date bornDate;
     private Date diedDate;
-    private Map<Integer, Film> filmList = new HashMap();
+    private List<Film> filmList = new ArrayList<>(0);
     private Person person;
+    private String roleType;
 
     public PersonDTO() {
 
@@ -87,13 +87,21 @@ PersonDTO {
         this.diedDate = diedDate;
     }
 
-    public Map<Integer, Film> getFilmList() {
+    public List<Film> getFilmList() {
         return filmList;
     }
 
-    public void setFilmList(Map<Integer, Film> filmList) {
+    public void setFilmList(List<Film> filmList) {
         this.filmList = filmList;
     }
 
-//    public Person getPerson() { return this.person; }
+    public String getRoleType() {
+        return roleType;
+    }
+
+    public void setRoleType(String roleType) {
+        this.roleType = roleType;
+    }
+
+    //    public Person getPerson() { return this.person; }
 }

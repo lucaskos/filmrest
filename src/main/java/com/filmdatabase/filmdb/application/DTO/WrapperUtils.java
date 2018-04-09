@@ -1,6 +1,7 @@
 package com.filmdatabase.filmdb.application.DTO;
 
 import com.filmdatabase.filmdb.application.model.FilmRelation;
+import com.filmdatabase.filmdb.application.model.cache.dictionaries.PersonRole;
 import com.filmdatabase.filmdb.application.model.film.Film;
 import com.filmdatabase.filmdb.application.model.person.Person;
 import org.slf4j.Logger;
@@ -19,7 +20,12 @@ public class WrapperUtils {
             FilmDTO filmDTO = new FilmDTO(film.getFilmId(), film.getYear(), film.getTitle(), film.getDescription());
             if (film.getFilmRelations() != null) {
                 for(FilmRelation filmRelation : film.getFilmRelations()) {
-                    filmDTO.addPerson(wrapPeopleObject(filmRelation.getPerson()));
+                    PersonDTO personDTO = wrapPeopleObject(filmRelation.getPerson());
+                    if (filmRelation.getPersonRoleDictionary() != null) {
+                        PersonRole personRoleDictionary = filmRelation.getPersonRoleDictionary();
+                        personDTO.setRoleType(filmRelation.getPersonRoleDictionary().getPersonRoleType());
+                    }
+                    filmDTO.addPerson(personDTO);
                 }
             }
                 LOGGER.info("Details DTO created from film " + film);
@@ -44,7 +50,7 @@ public class WrapperUtils {
                 List<FilmRelation> filmRelations = person.getFilmRelations();
                 LOGGER.info(String.valueOf(filmRelations));
                 for (FilmRelation f : filmRelations) {
-                    personDto.getFilmList().put(1, f.getFilm());
+                    personDto.getFilmList().add(f.getFilm());
                 }
             }
             return personDto;
