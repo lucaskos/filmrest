@@ -1,0 +1,4 @@
+INSERT INTO films.film_relation (ID_FILM_RELATION, film_FILM_ID, person_PERSON_ID, PERSON_ROLE_TYPE, ROLE, personRoleDictionary_SL_PERSON_ROLE_ID) VALUES (1, 1, 1, 1, null, 1);
+INSERT INTO films.film_relation (ID_FILM_RELATION, film_FILM_ID, person_PERSON_ID, PERSON_ROLE_TYPE, ROLE, personRoleDictionary_SL_PERSON_ROLE_ID) VALUES (23, 1, 20, 1, null, null);
+INSERT INTO films.film_relation (ID_FILM_RELATION, film_FILM_ID, person_PERSON_ID, PERSON_ROLE_TYPE, ROLE, personRoleDictionary_SL_PERSON_ROLE_ID) VALUES (24, 1, 20, 1, null, null);
+INSERT INTO films.film_relation (ID_FILM_RELATION, film_FILM_ID, person_PERSON_ID, PERSON_ROLE_TYPE, ROLE, personRoleDictionary_SL_PERSON_ROLE_ID) VALUES (25, 1, 20, 1, null, null);

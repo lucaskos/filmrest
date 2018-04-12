@@ -1,0 +1,5 @@
+INSERT INTO films.users (id, email, enabled, password, username) VALUES (10, 'testtesa1t@gmail.com', true, '$2a$10$MNzpum3qavR1ggu233ioOej7bENauPNW6k6Njb/RtBN1Cf52ScxKq', 'testtaest1');
+INSERT INTO films.users (id, email, enabled, password, username) VALUES (11, 'lucaskos@gmail.com', true, '$2a$10$CrVt/gethHQ3wevM.tsln.17fCYoJnKF576IdRbQg/KB58afD7t7e', 'lucaskos');
+INSERT INTO films.users (id, email, enabled, password, username) VALUES (12, null, false, '$2a$10$PYW.K.wEFIkwxS/NX6y.kO6WbjPv5dCqfh4X3Lc6in1ryk/lRQQTG', 'admin');
+INSERT INTO films.users (id, email, enabled, password, username) VALUES (13, null, false, '$2a$10$XJtSeyVt9QQjFBrovNPxAeiWeCorGs9UsyvZqLFxkdFB4sLSmlMtO', 'admin');
+INSERT INTO films.users (id, email, enabled, password, username) VALUES (14, null, true, '$2a$10$tlQxzr2iUqhSl/u/6/ckPOKxOsQibk6NuttUbbor2UtfsmvDOdG3G', 'admin1');
