@@ -38,8 +38,8 @@ public class FilmServiceImpl implements FilmService {
 
     @Override
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public void addFilm(Film film) {
-        filmDao.create(film);
+    public Film addFilm(Film film) {
+        return filmDao.create(film);
     }
 
     @Override

@@ -1,0 +1,2 @@
+INSERT INTO films.person (PERSON_ID, BIOGRAPHY, BORN_DATE, DIED_DATE, FIRST_NAME, LAST_NAME) VALUES (1, 'asdasd asda', null, null, 'aa ', 'aaa');
+INSERT INTO films.person (PERSON_ID, BIOGRAPHY, BORN_DATE, DIED_DATE, FIRST_NAME, LAST_NAME) VALUES (20, 'test', null, null, 'test', 'test');

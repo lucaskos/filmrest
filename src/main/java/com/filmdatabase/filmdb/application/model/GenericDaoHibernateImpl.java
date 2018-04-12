@@ -56,7 +56,7 @@ public abstract class GenericDaoHibernateImpl<T>
     }
 
     public void delete(T t) {
-        entityManager.remove(t);
+        entityManager.remove(entityManager.contains(t) ? t : entityManager.merge(t));
     }
 
     public void flush() {

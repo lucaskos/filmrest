@@ -1,0 +1,11 @@
+INSERT INTO films.hibernate_sequence (next_val) VALUES (33);
+INSERT INTO films.hibernate_sequence (next_val) VALUES (33);
+INSERT INTO films.hibernate_sequence (next_val) VALUES (33);
+INSERT INTO films.hibernate_sequence (next_val) VALUES (33);
+INSERT INTO films.hibernate_sequence (next_val) VALUES (33);
+INSERT INTO films.hibernate_sequence (next_val) VALUES (33);
+INSERT INTO films.hibernate_sequence (next_val) VALUES (33);
+INSERT INTO films.hibernate_sequence (next_val) VALUES (33);
+INSERT INTO films.hibernate_sequence (next_val) VALUES (33);
+INSERT INTO films.hibernate_sequence (next_val) VALUES (33);
+INSERT INTO films.hibernate_sequence (next_val) VALUES (33);

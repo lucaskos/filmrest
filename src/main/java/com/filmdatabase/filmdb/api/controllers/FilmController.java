@@ -2,7 +2,10 @@ package com.filmdatabase.filmdb.api.controllers;
 
 import com.filmdatabase.filmdb.api.service.FilmService;
 import com.filmdatabase.filmdb.application.DTO.FilmDTO;
+import com.filmdatabase.filmdb.application.model.cache.dao.Cache;
 import com.filmdatabase.filmdb.application.model.cache.dao.CacheDao;
+import com.filmdatabase.filmdb.application.model.cache.dictionaries.GenresDictionary;
+import com.filmdatabase.filmdb.application.model.cache.dictionaries.PersonRole;
 import com.filmdatabase.filmdb.application.model.film.Film;
 import jersey.repackaged.com.google.common.base.Preconditions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,18 +23,13 @@ import java.util.List;
 public class FilmController {
 
     private final FilmService filmService;
+    private final Cache cacheManager;
 
     @Autowired
-    public FilmController(FilmService filmService) {
+    public FilmController(FilmService filmService, Cache cacheManager) {
         this.filmService = filmService;
+        this.cacheManager = cacheManager;
     }
-
-    @Autowired
-    CacheManager cacheManager;
-
-    @Qualifier("personRolesDao")
-    @Autowired()
-    private CacheDao dictionaryAbstractClass;
 
     @GetMapping("/{id}")
     public @ResponseBody
@@ -48,16 +46,22 @@ public class FilmController {
     @GetMapping("/")
     @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody List<Film> getList() {
-        cacheManager.getCacheNames();
+        List<PersonRole> roles = cacheManager.getRoles();
+        List<GenresDictionary> genres = cacheManager.getGenres();
 
-        List<Film> list = (List<Film>) filmService.getAllFilms();
+        List<Film> list = null;
+        try {
+            list = (List<Film>) filmService.getAllFilms();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return list;
     }
 
     @PostMapping
-    public void create(@RequestBody Film film) {
+    public Film create(@RequestBody Film film) {
         Preconditions.checkNotNull(film);
-        filmService.addFilm(film);
+        return filmService.addFilm(film);
     }
 
     @PutMapping
