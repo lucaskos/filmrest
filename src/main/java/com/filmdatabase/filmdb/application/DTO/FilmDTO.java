@@ -1,33 +1,37 @@
 package com.filmdatabase.filmdb.application.DTO;
 
-import com.filmdatabase.filmdb.application.model.person.Person;
+import com.filmdatabase.filmdb.application.model.film.Film;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class FilmDTO {
 
-    private int id;
-    private int year;
+    private Integer id;
+    private Integer year;
     private String title;
     private String description;
-    private List<PersonDTO> peopleList;
+    private List<PersonDTO> peopleList = new ArrayList<>();
+    private Map<RoleDto, PersonDTO> peopleRoleMap = new HashMap<>();
+    private Film film;
 
     public FilmDTO() {
     }
 
-    public FilmDTO(int id, int year, String title, String description) {
+    public FilmDTO(Integer id, Integer year, String title, String description) {
         this.year = year;
         this.id = id;
         this.title = title;
         this.description = description;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -47,11 +51,11 @@ public class FilmDTO {
         this.description = description;
     }
 
-    public int getYear() {
+    public Integer getYear() {
         return year;
     }
 
-    public void setYear(int year) {
+    public void setYear(Integer year) {
         this.year = year;
     }
 
@@ -68,5 +72,18 @@ public class FilmDTO {
             peopleList = new ArrayList<>();
         }
         peopleList.add(person);
+    }
+
+    public Map<RoleDto, PersonDTO> getPeopleRoleMap() {
+        return peopleRoleMap;
+    }
+
+    public void setPeopleRoleMap(Map<RoleDto, PersonDTO> peopleRoleMap) {
+        this.peopleRoleMap = peopleRoleMap;
+    }
+
+    public Film getFilm() {
+        Film film = new Film(this.id, this.title, this.year, this.description );
+        return film;
     }
 }

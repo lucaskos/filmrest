@@ -1,24 +1,32 @@
 package com.filmdatabase.filmdb.application.DTO;
 
-import com.filmdatabase.filmdb.application.model.cache.dictionaries.PersonRole;
-import com.filmdatabase.filmdb.application.model.film.Film;
 import com.filmdatabase.filmdb.application.model.person.Person;
 
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
-public class
-PersonDTO {
+public class PersonDTO {
 
-    private int id;
+    private Integer id;
     private String firstName;
     private String lastName;
     private Date bornDate;
     private Date diedDate;
-    private List<Film> filmList = new ArrayList<>(0);
+    private List<FilmDTO> filmList = new ArrayList<>(0);
     private Person person;
     private String roleType;
+    private String biography;
+    private RoleDto roleDto;
+    private String role;
+
+    public RoleDto getRoleDto() {
+        return roleDto;
+    }
+
+    public void setRoleDto(RoleDto roleDto) {
+        this.roleDto = roleDto;
+    }
 
     public PersonDTO() {
 
@@ -33,13 +41,13 @@ PersonDTO {
         this.diedDate = p.getDiedDate();
     }
 
-    public PersonDTO(int id, String firstName, String lastName) {
+    public PersonDTO(Integer id, String firstName, String lastName) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
     }
 
-    public PersonDTO(int id, String firstName, String lastName, Date bornDate, Date diedDate) {
+    public PersonDTO(Integer id, String firstName, String lastName, Date bornDate, Date diedDate) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -47,11 +55,11 @@ PersonDTO {
         this.diedDate = diedDate;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -87,11 +95,11 @@ PersonDTO {
         this.diedDate = diedDate;
     }
 
-    public List<Film> getFilmList() {
+    public List<FilmDTO> getFilmList() {
         return filmList;
     }
 
-    public void setFilmList(List<Film> filmList) {
+    public void setFilmList(List<FilmDTO> filmList) {
         this.filmList = filmList;
     }
 
@@ -103,5 +111,45 @@ PersonDTO {
         this.roleType = roleType;
     }
 
-    //    public Person getPerson() { return this.person; }
+    public String getBiography() {
+        return biography;
+    }
+
+    public void setBiography(String biography) {
+        this.biography = biography;
+    }
+
+    public Person getPerson() { return this.person != null ? person : createPersonEntity(); }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    private Person createPersonEntity() {
+        person = new Person();
+        person.setFirstName(getFirstName());
+        person.setLastName(getLastName());
+        person.setId(getId());
+        person.setBio(getBiography());
+        return person;
+    }
+
+    @Override
+    public String toString() {
+        return "PersonDTO{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", bornDate=" + bornDate +
+                ", diedDate=" + diedDate +
+                ", filmList=" + filmList +
+                ", person=" + person +
+                ", roleType='" + roleType + '\'' +
+                ", biography='" + biography + '\'' +
+                '}';
+    }
 }

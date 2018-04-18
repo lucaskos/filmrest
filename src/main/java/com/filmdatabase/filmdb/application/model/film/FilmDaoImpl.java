@@ -26,7 +26,7 @@ public class FilmDaoImpl extends GenericDaoHibernateImpl<Film> implements FilmDa
 
 
     @Override
-    public Film getFilmDetails(int id) {
+    public Film getFilmDetailsById(int id) {
 
         Query query = entityManager.createQuery("from Film f LEFT JOIN FETCH f.filmRelations WHERE f.id=:id");
         query.setParameter("id", id);

@@ -4,20 +4,20 @@ import com.filmdatabase.filmdb.application.commons.CacheConstants;
 import com.filmdatabase.filmdb.application.model.cache.dictionaries.GenresDictionary;
 import com.filmdatabase.filmdb.application.model.cache.dictionaries.PersonRole;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.util.List;
 
-@Service
-public class CacheImpl implements Cache {
+//@Service
+//@Qualifier("cache")
+public class CacheImpl {
 
     @PersistenceContext
     private EntityManager entityManager;
 
-    @Override
+//    @Override
     @Cacheable(CacheConstants.ROLES)
     public List<PersonRole> getRoles() {
         Query query = entityManager.createQuery("from PersonRole");
@@ -25,7 +25,7 @@ public class CacheImpl implements Cache {
         return resultList;
     }
 
-    @Override
+//    @Override
     @Cacheable(CacheConstants.GENRES)
     public List<GenresDictionary> getGenres() {
         Query query = entityManager.createQuery("from GenresDictionary");

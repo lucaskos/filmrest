@@ -9,13 +9,13 @@ public interface FilmService {
 
     Collection<Film> getAllFilms();
 
-    Film getFilmById(int id);
+    FilmDTO getFilmById(int id);
 
-    Film addFilm(Film film);
+    FilmDTO addFilm(FilmDTO film);
 
     void deleteFilm(Film film);
 
-    void updateFilm(Film film);
+    FilmDTO updateFilm(Film film);
 
     FilmDTO getFilmDetails(int id);
 

@@ -2,6 +2,7 @@ package com.filmdatabase.filmdb.configuration;
 
 import com.filmdatabase.filmdb.application.commons.CacheConstants;
 import com.filmdatabase.filmdb.configuration.common.ConfigurationConstants;
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -143,6 +144,11 @@ public class JpaConfiguration {
         propertySourcesPlaceholderConfigurer.setProperties(yaml.getObject());
         LOGGER.info("Properties loaded " + yaml.toString());
         return propertySourcesPlaceholderConfigurer;
+    }
+
+    @Bean
+    public ModelMapper modelMapper() {
+        return new ModelMapper();
     }
 
 }

@@ -11,7 +11,7 @@ import java.util.Set;
  */
 public interface FilmDao extends GenericDao<Film> {
 
-    Film getFilmDetails(int id);
+    Film getFilmDetailsById(int id);
 
     List getByTitle(String title);
 
