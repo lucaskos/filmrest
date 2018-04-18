@@ -15,7 +15,7 @@ import java.util.List;
 public class Person implements Serializable {
 
     private static final long serialVersionUID = 5650070241555490348L;
-    private int id;
+    private Integer id;
     private String firstName;
     private String lastName;
     private Date bornDate;
@@ -48,11 +48,11 @@ public class Person implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "PERSON_ID")
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

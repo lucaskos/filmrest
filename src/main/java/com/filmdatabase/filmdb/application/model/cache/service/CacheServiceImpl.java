@@ -1,49 +1,65 @@
 package com.filmdatabase.filmdb.application.model.cache.service;
 
 import com.filmdatabase.filmdb.application.commons.CacheConstants;
-import com.filmdatabase.filmdb.application.model.cache.dao.Cache;
 import com.filmdatabase.filmdb.application.model.cache.dictionaries.GenresDictionary;
 import com.filmdatabase.filmdb.application.model.cache.dictionaries.PersonRole;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.CacheManager;
-import org.springframework.util.CollectionUtils;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import java.util.ArrayList;
 import java.util.List;
 
-public class CacheServiceImpl implements Cache{
+@Service
+@Qualifier("cacheServiceImpl")
+public class CacheServiceImpl implements CacheService {
 
-    private final Cache cache;
     private final CacheManager cacheManager;
 
+    @PersistenceContext
+    private EntityManager entityManager;
+
+
     @Autowired
-    public CacheServiceImpl(Cache cache, CacheManager cacheManager) {
-        this.cache = cache;
+    public CacheServiceImpl(CacheManager cacheManager) {
         this.cacheManager = cacheManager;
     }
 
     @PostConstruct
     public void init() {
-        cache.getGenres();
-        cache.getRoles();
+        getGenres();
+        getRoles();
     }
 
     @Override
-    public List getRoles() {
-        List<PersonRole> personRoles = (List<PersonRole>) cacheManager.getCache(CacheConstants.ROLES);
-        if (CollectionUtils.isEmpty(personRoles)) {
-            return personRoles;
+    @Cacheable(CacheConstants.ROLES)
+    public List<PersonRole> getRoles() {
+        org.springframework.cache.Cache cache = cacheManager.getCache(CacheConstants.GENRES);
+        List resultList = new ArrayList();
+        if (cache.get(CacheConstants.ROLES) == null) {
+            Query query = entityManager.createQuery("from PersonRole");
+            resultList = query.getResultList();
         }
-        return this.cache.getRoles();
+        return resultList;
     }
 
     @Override
-    public List getGenres() {
-        List<GenresDictionary> genres = (List<GenresDictionary>) cacheManager.getCache(CacheConstants.ROLES);
-        if (CollectionUtils.isEmpty(genres)) {
-            return genres;
+    @Cacheable(CacheConstants.GENRES)
+    public List<GenresDictionary> getGenres() {
+        org.springframework.cache.Cache cache = cacheManager.getCache(CacheConstants.ROLES);
+        List resultList = new ArrayList();
+        if (cache.get(CacheConstants.GENRES) == null) {
+            Query query = entityManager.createQuery("from GenresDictionary");
+            resultList = query.getResultList();
         }
-        return cache.getGenres();
+        return resultList;
     }
+
 
 }

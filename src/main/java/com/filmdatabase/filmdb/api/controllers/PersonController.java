@@ -1,6 +1,6 @@
 package com.filmdatabase.filmdb.api.controllers;
 
-import com.filmdatabase.filmdb.api.service.PersonService;
+import com.filmdatabase.filmdb.api.service.PersonServiceImpl;
 import com.filmdatabase.filmdb.application.DTO.PersonDTO;
 import com.filmdatabase.filmdb.application.model.person.Person;
 import jersey.repackaged.com.google.common.base.Preconditions;
@@ -15,10 +15,10 @@ import java.util.List;
 @RequestMapping("/person")
 public class PersonController {
 
-    private final PersonService personService;
+    private final PersonServiceImpl personService;
 
     @Autowired
-    public PersonController(PersonService personService) {
+    public PersonController(PersonServiceImpl personService) {
         this.personService = personService;
     }
 

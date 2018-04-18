@@ -2,15 +2,10 @@ package com.filmdatabase.filmdb.api.controllers;
 
 import com.filmdatabase.filmdb.api.service.FilmService;
 import com.filmdatabase.filmdb.application.DTO.FilmDTO;
-import com.filmdatabase.filmdb.application.model.cache.dao.Cache;
-import com.filmdatabase.filmdb.application.model.cache.dao.CacheDao;
-import com.filmdatabase.filmdb.application.model.cache.dictionaries.GenresDictionary;
-import com.filmdatabase.filmdb.application.model.cache.dictionaries.PersonRole;
+import com.filmdatabase.filmdb.application.model.cache.service.CacheService;
 import com.filmdatabase.filmdb.application.model.film.Film;
 import jersey.repackaged.com.google.common.base.Preconditions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.cache.CacheManager;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,10 +18,10 @@ import java.util.List;
 public class FilmController {
 
     private final FilmService filmService;
-    private final Cache cacheManager;
+    private final CacheService cacheManager;
 
     @Autowired
-    public FilmController(FilmService filmService, Cache cacheManager) {
+    public FilmController(FilmService filmService, CacheService cacheManager) {
         this.filmService = filmService;
         this.cacheManager = cacheManager;
     }
@@ -46,8 +41,9 @@ public class FilmController {
     @GetMapping("/")
     @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody List<Film> getList() {
-        List<PersonRole> roles = cacheManager.getRoles();
-        List<GenresDictionary> genres = cacheManager.getGenres();
+        //fixme
+//        List<PersonRole> roles = cacheManager.getRoles();
+//        List<GenresDictionary> genres = cacheManager.getGenres();
 
         List<Film> list = null;
         try {
@@ -59,13 +55,13 @@ public class FilmController {
     }
 
     @PostMapping
-    public Film create(@RequestBody Film film) {
+    public FilmDTO create(@RequestBody FilmDTO film) {
         Preconditions.checkNotNull(film);
         return filmService.addFilm(film);
     }
 
     @PutMapping
-    public void update(@PathVariable( "id" ) Long id, @RequestBody Film resource) {
+    public void update(@RequestBody Film resource) {
         Preconditions.checkNotNull(resource);
         //RestPreconditions.checkNotNull(service.getById( resource.getId()));
         //http://www.baeldung.com/building-a-restful-web-service-with-spring-and-java-based-configuration

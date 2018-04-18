@@ -1,8 +1,5 @@
 package com.filmdatabase.filmdb.application.model.cache.dictionaries;
 
-import com.filmdatabase.filmdb.application.commons.CacheConstants;
-import com.filmdatabase.filmdb.application.commons.QualifierConstants;
-
 import javax.persistence.*;
 
 /**
@@ -10,33 +7,44 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "SL_GENRES")
-public class GenresDictionary {
+public class GenresDictionary extends CacheAbstract {
 
     @Id
     @Column(name = "SL_GENRES_ID")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer genreId;
+    private Integer id;
 
-    @Column(name = "SL_GENRES_NAME")
-    private String genreName;
+    @Column(name = "SL_GENRES_TYPE")
+    private String type;
+
+    @Column(name = "SL_GENRES_KEY")
+    private String key;
 
     public GenresDictionary() {
 
     }
 
-    public Integer getGenreId() {
-        return genreId;
+    public Integer getId() {
+        return id;
     }
 
-    public void setGenreId(Integer genreId) {
-        this.genreId = genreId;
+    public void setId(Integer genreId) {
+        this.id = genreId;
     }
 
-    public String getGenreName() {
-        return genreName;
+    public String getType() {
+        return type;
     }
 
-    public void setGenreName(String genreName) {
-        this.genreName = genreName;
+    public void setType(String genreName) {
+        this.type = genreName;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 }

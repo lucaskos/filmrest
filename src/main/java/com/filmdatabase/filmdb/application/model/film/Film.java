@@ -17,11 +17,11 @@ import java.util.List;
 public class Film implements Serializable {
 
     private static final long serialVersionUID = -8915838577868975194L;
-    private int filmId;
+    private Integer filmId;
     private String title;
     private Integer year;
     private String description;
-    private List<FilmRelation> filmRelations;
+    private List<FilmRelation> filmRelations = new ArrayList<>();
 
     public Film() {
 
@@ -50,7 +50,8 @@ public class Film implements Serializable {
         this.year = year;
     }
 
-    public Film(String title, int year, String description) {
+    public Film(Integer id, String title, int year, String description) {
+        this.filmId = id;
         this.title = title;
         this.year = year;
         this.description = description;
@@ -59,11 +60,11 @@ public class Film implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "FILM_ID")
-    public int getFilmId() {
+    public Integer getFilmId() {
         return filmId;
     }
 
-    public void setFilmId(int filmId) {
+    public void setFilmId(Integer filmId) {
         this.filmId = filmId;
     }
 

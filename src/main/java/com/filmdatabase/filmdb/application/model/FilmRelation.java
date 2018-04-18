@@ -8,6 +8,7 @@ import org.hibernate.annotations.LazyToOne;
 import org.hibernate.annotations.LazyToOneOption;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
@@ -18,7 +19,7 @@ import java.io.Serializable;
 public class FilmRelation implements Serializable {
 
     private static final long serialVersionUID = -3368604415829986784L;
-    private int filmRelationId;
+    private Integer filmRelationId;
     private String role;
     private Film film;
     private Person person;
@@ -30,11 +31,11 @@ public class FilmRelation implements Serializable {
     @Id
     @Column(name = "ID_FILM_RELATION")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    public int getFilmRelationId() {
+    public Integer getFilmRelationId() {
         return filmRelationId;
     }
 
-    public void setFilmRelationId(int filmRelationId) {
+    public void setFilmRelationId(Integer filmRelationId) {
         this.filmRelationId = filmRelationId;
     }
 
@@ -68,6 +69,7 @@ public class FilmRelation implements Serializable {
     private PersonRole personRoleDictionary;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @NotNull
     public PersonRole getPersonRoleDictionary() {
         return personRoleDictionary;
     }

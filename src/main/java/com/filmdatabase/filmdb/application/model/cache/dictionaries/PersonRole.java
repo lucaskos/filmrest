@@ -1,61 +1,67 @@
 package com.filmdatabase.filmdb.application.model.cache.dictionaries;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.filmdatabase.filmdb.application.model.FilmRelation;
 
 import javax.persistence.*;
-import java.util.ArrayList;
+import javax.validation.constraints.NotNull;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * Created by Luke on 25.10.2017.
  */
 @Entity
 @Table(name = "SL_PERSON_ROLE")
-public class PersonRole {
+public class PersonRole extends CacheAbstract{
 
-    private int personRoleId;
-    private String personRoleType;
-    private String personRoleKey;
+    private Integer id;
+    private String type;
+    private String key;
 
 
     public PersonRole() {
 
     }
 
+    public PersonRole(Integer id, String type, String key) {
+        this.id = id;
+        this.type = type;
+        this.key = key;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "SL_PERSON_ROLE_ID")
-    public int getPersonRoleId() {
-        return personRoleId;
+    @NotNull
+    public Integer getId() {
+        return id;
     }
 
-    public void setPersonRoleId(int personRoleId) {
-        this.personRoleId = personRoleId;
+    public void setId(Integer personRoleId) {
+        this.id = personRoleId;
     }
 
     @Column(name = "SL_PERSON_ROLE_TYPE")
-    public String getPersonRoleType() {
-        return personRoleType;
+    public String getType() {
+        return type;
     }
 
-    public void setPersonRoleType(String personRoleType) {
-        this.personRoleType = personRoleType;
+    public void setType(String personRoleType) {
+        this.type = personRoleType;
     }
 
     @Column(name = "SL_PERSON_ROLE_KEY")
-    public String getPersonRoleKey() {
-        return personRoleKey;
+    @NotNull
+    public String getKey() {
+        return key;
     }
 
-    public void setPersonRoleKey(String personRoleKey) {
-        this.personRoleKey = personRoleKey;
+    public void setKey(String personRoleKey) {
+        this.key = personRoleKey;
     }
 
     private Collection<FilmRelation> filmRelation;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "personRoleDictionary")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "personRoleDictionary")
     public Collection<FilmRelation> getFilmRelation() {
         return filmRelation;
     }
