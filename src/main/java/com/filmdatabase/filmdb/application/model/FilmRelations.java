@@ -1,11 +1,8 @@
 package com.filmdatabase.filmdb.application.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.filmdatabase.filmdb.application.model.cache.dictionaries.PersonRole;
 import com.filmdatabase.filmdb.application.model.person.Person;
 import com.filmdatabase.filmdb.application.model.film.Film;
-import org.hibernate.annotations.LazyToOne;
-import org.hibernate.annotations.LazyToOneOption;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -16,7 +13,7 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name = "FILM_RELATION")
-public class FilmRelation implements Serializable {
+public class FilmRelations implements Serializable {
 
     private static final long serialVersionUID = -3368604415829986784L;
     private Integer filmRelationId;
@@ -24,7 +21,7 @@ public class FilmRelation implements Serializable {
     private Film film;
     private Person person;
 
-    public FilmRelation() {
+    public FilmRelations() {
 
     }
 

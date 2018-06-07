@@ -1,10 +1,10 @@
 package com.filmdatabase.filmdb.application.model.cache.dictionaries;
 
-import com.filmdatabase.filmdb.application.model.FilmRelation;
+import com.filmdatabase.filmdb.application.model.FilmRelations;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.Collection;
+import java.util.Set;
 
 /**
  * Created by Luke on 25.10.2017.
@@ -59,14 +59,14 @@ public class PersonRole extends CacheAbstract{
         this.key = personRoleKey;
     }
 
-    private Collection<FilmRelation> filmRelation;
+    private Set<FilmRelations> filmRelations;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "personRoleDictionary")
-    public Collection<FilmRelation> getFilmRelation() {
-        return filmRelation;
+    public Set<FilmRelations> getFilmRelations() {
+        return filmRelations;
     }
 
-    public void setFilmRelation(Collection<FilmRelation> filmRelation) {
-        this.filmRelation = filmRelation;
+    public void setFilmRelations(Set<FilmRelations> filmRelations) {
+        this.filmRelations = filmRelations;
     }
 }

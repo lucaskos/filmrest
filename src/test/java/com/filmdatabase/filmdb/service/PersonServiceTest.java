@@ -1,10 +1,9 @@
 package com.filmdatabase.filmdb.service;
 
-import com.filmdatabase.filmdb.api.service.FilmService;
-import com.filmdatabase.filmdb.api.service.PersonService;
+import com.filmdatabase.filmdb.api.service.interfaces.FilmService;
+import com.filmdatabase.filmdb.api.service.interfaces.PersonService;
 import com.filmdatabase.filmdb.application.DTO.FilmDTO;
 import com.filmdatabase.filmdb.application.DTO.PersonDTO;
-import com.filmdatabase.filmdb.application.DTO.RoleDto;
 import com.filmdatabase.filmdb.application.model.cache.service.CacheService;
 import com.filmdatabase.filmdb.application.model.film.Film;
 import com.filmdatabase.filmdb.application.model.person.Person;
@@ -23,9 +22,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -100,10 +97,15 @@ public class PersonServiceTest {
 
     @Test
     public void removeSingle() {
+        int peopleListSize;
         if (peopleList != null) {
+            peopleListSize = peopleList.size();
             Person person = peopleList.get(peopleList.size() - 1);
             personService.delete(person);
             assertNull(personService.getPerson(person.getId()));
+            int newListSize = personService.findAll().size();
+            assertTrue(peopleListSize > newListSize);
+            assertTrue(newListSize - peopleListSize == 1);
         }
     }
 
@@ -158,7 +160,7 @@ public class PersonServiceTest {
 
             personDTO.setFilmList(newFilmList);
 
-            personService.update(personDTO);
+            personService.updateRelations(personDTO);
 
         }
     }

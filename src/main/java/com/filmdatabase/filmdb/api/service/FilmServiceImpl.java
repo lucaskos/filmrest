@@ -1,10 +1,9 @@
 package com.filmdatabase.filmdb.api.service;
 
+import com.filmdatabase.filmdb.api.service.interfaces.FilmService;
+import com.filmdatabase.filmdb.api.service.interfaces.PersonService;
 import com.filmdatabase.filmdb.application.DTO.FilmDTO;
-import com.filmdatabase.filmdb.application.DTO.FilmWrapperUtils;
-import com.filmdatabase.filmdb.application.DTO.PersonDTO;
-import com.filmdatabase.filmdb.application.DTO.RoleDto;
-import com.filmdatabase.filmdb.application.model.FilmRelation;
+import com.filmdatabase.filmdb.application.DTO.utils.FilmWrapperUtils;
 import com.filmdatabase.filmdb.application.model.film.Film;
 import com.filmdatabase.filmdb.application.model.film.FilmDao;
 import org.modelmapper.ModelMapper;
@@ -12,11 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.ObjectUtils;
 
 import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.Date;
 
 @Service
 public class FilmServiceImpl implements FilmService {
@@ -44,19 +41,22 @@ public class FilmServiceImpl implements FilmService {
 
     @Override
     public FilmDTO getFilmById(int id) {
-        return modelMapper.map(filmDao.findOne(id), FilmDTO.class);
+        return filmWrapper.getFullFilmDetails(modelMapper, filmDao.findOne(id));
     }
 
     @Override
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public FilmDTO addFilm(FilmDTO film) {
+        Date currentDate = new Date();
         if (film.getId() != null) {
             film.setId(null);
         }
-
+        film.setModificationDate(currentDate);
+        film.setCreationDate(currentDate);
         Film newFilm = filmWrapper.createFilmEntity(modelMapper, film);
 
         newFilm.setFilmRelations(null);
+
         Film film1 = filmDao.create(newFilm);
 
         if(isSimpleFilm(film1)) {
@@ -87,6 +87,8 @@ public class FilmServiceImpl implements FilmService {
     @Override
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public FilmDTO updateFilm(Film film) {
+        Date now = new Date();
+        film.setModificationDate(now);
         Film updatedFilm = filmDao.update(film);
         return FilmWrapperUtils.getFullFilmDetails(modelMapper, updatedFilm);
     }
@@ -96,13 +98,6 @@ public class FilmServiceImpl implements FilmService {
     public FilmDTO getFilmDetails(int id) {
         Film one = filmDao.findOne(id);
         return FilmWrapperUtils.getFullFilmDetails(modelMapper, one);
-    }
-
-    private boolean isFilmWithoutRelation(FilmDTO filmDto) {
-        if (filmDto.getPeopleList() == null || filmDto.getPeopleList().isEmpty()) {
-            return true;
-        }
-        return false;
     }
 
 }

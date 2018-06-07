@@ -1,19 +1,23 @@
-package com.filmdatabase.filmdb.application.DTO;
+package com.filmdatabase.filmdb.application.DTO.utils;
 
+import com.filmdatabase.filmdb.application.commons.CacheConstants;
 import com.filmdatabase.filmdb.application.model.cache.dictionaries.Cache;
 import com.filmdatabase.filmdb.application.model.cache.dictionaries.CacheAbstract;
 import com.filmdatabase.filmdb.application.model.cache.service.CacheService;
+import com.filmdatabase.filmdb.application.model.user.role.Role;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Component
 public class CacheUtil {
 
-    private CacheService cacheService;
+    private static CacheService cacheService;
 
     @Autowired
     public CacheUtil(CacheService cacheService){
@@ -35,6 +39,12 @@ public class CacheUtil {
             return list.stream().filter(cacheAbstract -> cacheAbstract.getKey().equals(key)).findFirst().orElse(null);
         }
         return null;
+    }
+
+     public static Role getDefaultRole() {
+        List roles = cacheService.getRoles();
+        Cache cacheByKey = findCacheByKey(CacheConstants.DEFAULT_USER_ROLE, roles);
+        return (Role) cacheByKey;
     }
 
 }

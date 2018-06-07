@@ -1,15 +1,15 @@
 package com.filmdatabase.filmdb.application.model.film;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.filmdatabase.filmdb.application.model.FilmRelation;
+import com.filmdatabase.filmdb.application.model.FilmRelations;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @XmlRootElement
 @Entity
@@ -21,26 +21,34 @@ public class Film implements Serializable {
     private String title;
     private Integer year;
     private String description;
-    private List<FilmRelation> filmRelations = new ArrayList<>();
+    private Set<FilmRelations> filmRelations = new HashSet<>();
+    private Date creationDate;
+    private Date modificationDate;
 
     public Film() {
 
     }
 
+    public Film(String title, Integer year, String description) {
+        this.title = title;
+        this.year = year;
+        this.description = description;
+    }
+
     @JsonIgnore
-    @OneToMany(targetEntity = FilmRelation.class, mappedBy = "film", fetch = FetchType.LAZY, cascade = CascadeType
+    @OneToMany(targetEntity = FilmRelations.class, mappedBy = "film", fetch = FetchType.LAZY, cascade = CascadeType
             .ALL)
-    public List<FilmRelation> getFilmRelations() {
+    public Set<FilmRelations> getFilmRelations() {
         return filmRelations;
     }
 
-    public void setFilmRelations(List<FilmRelation> filmRelations) {
+    public void setFilmRelations(Set<FilmRelations> filmRelations) {
         this.filmRelations = filmRelations;
     }
 
-    public void addRelation(FilmRelation relation) {
-        if(filmRelations == null) {
-            filmRelations = new ArrayList<>();
+    public void addRelation(FilmRelations relation) {
+        if(filmRelations == null || filmRelations.isEmpty()) {
+            filmRelations = new HashSet<>();
         }
         filmRelations.add(relation);
     }
@@ -79,7 +87,8 @@ public class Film implements Serializable {
         this.title = title;
     }
 
-    @Column(name = "YEAR")
+    @Min(1800)
+    @Column(name = "PUBLISH_YEAR")
     public Integer getYear() {
         return year;
     }
@@ -88,10 +97,28 @@ public class Film implements Serializable {
         this.year = year;
     }
 
-    @NotBlank
-    @Size(min = 10)
+    @Column(name = "DESCRIPTION", columnDefinition = "text")
+    @Lob
     public String getDescription() {
         return description;
+    }
+
+    @Column(name = "CREATION_DATE")
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    @Column(name = "MODIFICATION_DATE")
+    public Date getModificationDate() {
+        return modificationDate;
+    }
+
+    public void setModificationDate(Date modificationDate) {
+        this.modificationDate = modificationDate;
     }
 
     public void setDescription(String description) {

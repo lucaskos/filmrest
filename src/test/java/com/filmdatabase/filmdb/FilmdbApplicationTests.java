@@ -1,6 +1,6 @@
 package com.filmdatabase.filmdb;
 
-import com.filmdatabase.filmdb.api.service.FilmService;
+import com.filmdatabase.filmdb.api.service.interfaces.FilmService;
 import com.filmdatabase.filmdb.api.service.PersonServiceImpl;
 import com.filmdatabase.filmdb.application.model.person.Person;
 import com.filmdatabase.filmdb.application.model.person.PersonDao;

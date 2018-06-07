@@ -1,15 +1,15 @@
 package com.filmdatabase.filmdb.service;
 
-import com.filmdatabase.filmdb.api.service.FilmService;
-import com.filmdatabase.filmdb.api.service.PersonService;
+import com.filmdatabase.filmdb.api.service.interfaces.FilmService;
+import com.filmdatabase.filmdb.api.service.interfaces.PersonService;
 import com.filmdatabase.filmdb.application.DTO.*;
-import com.filmdatabase.filmdb.application.commons.CacheConstants;
+import com.filmdatabase.filmdb.application.DTO.utils.CacheUtil;
+import com.filmdatabase.filmdb.application.DTO.utils.PersonWrapperUtils;
 import com.filmdatabase.filmdb.application.commons.PersonRolesKeys;
 import com.filmdatabase.filmdb.application.model.cache.dictionaries.Cache;
 import com.filmdatabase.filmdb.application.model.cache.service.CacheService;
 import com.filmdatabase.filmdb.application.model.film.Film;
 import com.filmdatabase.filmdb.application.model.person.Person;
-import com.filmdatabase.filmdb.application.model.user.role.Role;
 import org.apache.commons.collections4.CollectionUtils;
 import org.junit.*;
 import org.junit.rules.ExpectedException;
@@ -20,15 +20,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.access.method.P;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
-import sun.rmi.runtime.Log;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -100,6 +97,8 @@ public class FilmServiceTest {
             LOGGER.info("Getting film by id : " + filmWithoutRelations.toString());
             FilmDTO filmById = filmService.getFilmById(filmWithoutRelations.getFilmId());
             assertNotNull(filmById);
+
+            LOGGER.info("Comparing : " + filmWithoutRelations.toString() + " TO  : " + filmById.toString());
 
             assertEquals(filmWithoutRelations.getTitle(), filmById.getTitle());
             assertEquals(filmWithoutRelations.getDescription(), filmById.getDescription());
@@ -186,17 +185,14 @@ public class FilmServiceTest {
     public void filmDetails() {
 
         List<Film> allFilms = (List<Film>) filmService.getAllFilms();
-        Film film = allFilms.get(0);
-        assertNotNull(film);
-        LOGGER.info(film.toString());
-        FilmDTO filmDto = modelMapper.map(film, FilmDTO.class);
 
+
+        FilmDTO filmDto = filmService.getFilmDetails(film.getFilmId() != null ? film.getFilmId() : allFilms.get(allFilms.size()-1).getFilmId() );
+        assertNotNull(filmDto);
         assertEquals(filmDto.getDescription(), film.getDescription());
         assertEquals(filmDto.getTitle(), film.getTitle());
-        assertEquals(filmDto.getId(), Integer.valueOf(film.getFilmId()));
-        assertEquals(filmDto.getYear(), film.getYear());
 
-        FilmDTO filmDetails = filmService.getFilmDetails(film.getFilmId());
+        FilmDTO filmDetails = filmService.getFilmDetails(((List<Film>) filmService.getAllFilms()).get(filmService.getAllFilms().size()-1).getFilmId());
         assertNotNull(filmDetails);
         assertNotNull(filmDetails.getPeopleRoleMap());
     }
@@ -204,13 +200,8 @@ public class FilmServiceTest {
     public Film getFilmToInsert() {
         Film filmToInsert = new Film(null, filmTitle, filmYear, filmDescription);
         assertNotNull(filmToInsert);
-        Collection<Film> allFilms = filmService.getAllFilms();
-        int size = allFilms.size() - 1;
-        Film o = (Film) allFilms.toArray()[size];
 
-        assertNotNull(o);
-
-        return o;
+        return filmToInsert;
 
     }
 

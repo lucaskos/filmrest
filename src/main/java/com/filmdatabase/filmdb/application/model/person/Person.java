@@ -1,14 +1,14 @@
 package com.filmdatabase.filmdb.application.model.person;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.filmdatabase.filmdb.application.model.FilmRelation;
+import com.filmdatabase.filmdb.application.model.FilmRelations;
+import com.filmdatabase.filmdb.application.model.comments.PersonComments;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Date;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Table(name = "PERSON")
@@ -20,22 +20,25 @@ public class Person implements Serializable {
     private String lastName;
     private Date bornDate;
     private Date diedDate;
+    private Date creationDate;
+    private Date modificationDate;
+    private Set<PersonComments> personComments;
     /**
      * biography of a person
      */
     private String bio;
     @JsonIgnore
-    @OneToMany(targetEntity = FilmRelation.class, mappedBy = "person", fetch = FetchType.LAZY, cascade = CascadeType
+    @OneToMany(targetEntity = FilmRelations.class, mappedBy = "person", fetch = FetchType.LAZY, cascade = CascadeType
             .ALL)
-    private List<FilmRelation> filmRelations = new ArrayList<>(0);
+    private List<FilmRelations> filmRelations = new ArrayList<>(0);
 
     @OneToMany(mappedBy = "person", fetch = FetchType.LAZY, cascade = CascadeType
             .ALL)
-    public List<FilmRelation> getFilmRelations() {
+    public List<FilmRelations> getFilmRelations() {
         return filmRelations;
     }
 
-    public void setFilmRelations(List<FilmRelation> filmRelations) {
+    public void setFilmRelations(List<FilmRelations> filmRelations) {
         this.filmRelations = filmRelations;
     }
 
@@ -93,7 +96,8 @@ public class Person implements Serializable {
         this.diedDate = diedDate;
     }
 
-    @Column(name = "BIOGRAPHY")
+    @Column(name = "BIOGRAPHY", columnDefinition = "TEXT")
+    @Lob
     public String getBio() {
         return bio;
     }
@@ -102,6 +106,42 @@ public class Person implements Serializable {
         this.bio = bio;
     }
 
+    @Column(name = "CREATION_DATE")
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    @Column(name = "MODIFICATION_DATE")
+    public Date getModificationDate() {
+        return modificationDate;
+    }
+
+    public void setModificationDate(Date modificationDate) {
+        this.modificationDate = modificationDate;
+    }
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "person_PERSON_ID")
+    public Set<PersonComments> getPersonComments() {
+        return personComments;
+    }
+
+    public void setPersonComments(Set<PersonComments> personComments) {
+        this.personComments = personComments;
+    }
+
+    public void addPersonComments(PersonComments comment) {
+        if(this.personComments == null) {
+            this.personComments = new LinkedHashSet<>();
+            this.personComments.add(comment);
+        } else {
+            this.personComments.add(comment);
+        }
+    }
 
     @Override
     public int hashCode() {

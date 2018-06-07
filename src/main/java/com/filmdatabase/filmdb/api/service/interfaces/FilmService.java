@@ -1,4 +1,4 @@
-package com.filmdatabase.filmdb.api.service;
+package com.filmdatabase.filmdb.api.service.interfaces;
 
 import com.filmdatabase.filmdb.application.DTO.FilmDTO;
 import com.filmdatabase.filmdb.application.model.film.Film;

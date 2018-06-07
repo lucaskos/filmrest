@@ -1,10 +1,9 @@
 package com.filmdatabase.filmdb.application.DTO;
 
+import com.filmdatabase.filmdb.application.model.comments.PersonComments;
 import com.filmdatabase.filmdb.application.model.person.Person;
 
-import java.sql.Date;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class PersonDTO {
 
@@ -19,6 +18,10 @@ public class PersonDTO {
     private String biography;
     private RoleDto roleDto;
     private String role;
+    private Date creationDate;
+    private Date modificationDate;
+    //todo sprawdzic czy mapa nie jest lepsza do jako drzewo commentarzy
+    private Set<PersonComments> personCommentsSet = new HashSet<>();
 
     public RoleDto getRoleDto() {
         return roleDto;
@@ -127,6 +130,37 @@ public class PersonDTO {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public Date getModificationDate() {
+        return modificationDate;
+    }
+
+    public void setModificationDate(Date modificationDate) {
+        this.modificationDate = modificationDate;
+    }
+
+    public Set<PersonComments> getPersonCommentsSet() {
+        return personCommentsSet;
+    }
+
+    public void setPersonCommentsSet(Set<PersonComments> personCommentsSet) {
+        this.personCommentsSet = personCommentsSet;
+    }
+
+    public void addPersonComment(PersonComments personComments) {
+        if(personCommentsSet == null || personCommentsSet.isEmpty()) {
+            personCommentsSet = new HashSet<>();
+        }
+        this.personCommentsSet.add(personComments);
     }
 
     private Person createPersonEntity() {

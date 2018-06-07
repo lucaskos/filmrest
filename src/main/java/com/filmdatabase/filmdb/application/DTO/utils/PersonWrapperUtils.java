@@ -1,9 +1,13 @@
-package com.filmdatabase.filmdb.application.DTO;
+package com.filmdatabase.filmdb.application.DTO.utils;
 
-import com.filmdatabase.filmdb.application.model.FilmRelation;
+import com.filmdatabase.filmdb.application.DTO.FilmDTO;
+import com.filmdatabase.filmdb.application.DTO.PersonDTO;
+import com.filmdatabase.filmdb.application.model.FilmRelations;
+import com.filmdatabase.filmdb.application.model.comments.PersonComments;
 import com.filmdatabase.filmdb.application.model.cache.service.CacheService;
 import com.filmdatabase.filmdb.application.model.film.Film;
 import com.filmdatabase.filmdb.application.model.person.Person;
+import org.apache.commons.collections4.CollectionUtils;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -11,7 +15,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 public class PersonWrapperUtils {
@@ -19,7 +25,7 @@ public class PersonWrapperUtils {
     private static final Logger LOGGER = LoggerFactory.getLogger(FilmWrapperUtils.class);
     private static Converter<Person, PersonDTO> personDTOConverter = null;
 
-    private ModelMapper modelMapper = new ModelMapper();
+    private static ModelMapper modelMapper = new ModelMapper();
 
     @Autowired
     private CacheService cacheService;
@@ -42,7 +48,13 @@ public class PersonWrapperUtils {
 
                 if (!src.getFilmRelations().isEmpty()) {
                     List<Film> list = new ArrayList<>();
-                    src.getFilmRelations().forEach(filmRelation -> list.add(filmRelation.getFilm()));
+                    src.getFilmRelations().forEach(filmRelation -> list.add(modelMapper.map(filmRelation.getFilm(), Film.class)));
+
+                }
+
+                if (!CollectionUtils.isEmpty(src.getPersonComments())) {
+                    Set<PersonComments> personComments = new HashSet<>();
+                    src.getPersonComments().forEach(personComments1 -> personComments.add(modelMapper.map(personComments1, PersonComments.class)));
                 }
 
                 return dsc;
@@ -57,9 +69,8 @@ public class PersonWrapperUtils {
             List<FilmDTO> filmList = new ArrayList<>();
 
             PersonDTO map = modelMapper.map(person, PersonDTO.class);
-            for (FilmRelation relation : person.getFilmRelations()) {
+            for (FilmRelations relation : person.getFilmRelations()) {
                 if (relation.getPerson().getId() == person.getId()) {
-                    //relation.getFilm().setFilmRelations(null);
                     FilmDTO filmDTO = modelMapper.map(relation.getFilm(), FilmDTO.class);
                     PersonDTO personDTO = new PersonDTO();
                     personDTO.setRoleDto(RoleWrapper.getRoleFromFilmRelation(relation));

@@ -2,10 +2,7 @@ package com.filmdatabase.filmdb.application.DTO;
 
 import com.filmdatabase.filmdb.application.model.film.Film;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class FilmDTO {
 
@@ -15,6 +12,8 @@ public class FilmDTO {
     private String description;
     private List<PersonDTO> peopleList = new ArrayList<>();
     private Map<RoleDto, PersonDTO> peopleRoleMap = new HashMap<>();
+    private Date creationDate;
+    private Date modificationDate;
     private Film film;
 
     public FilmDTO() {
@@ -83,7 +82,36 @@ public class FilmDTO {
     }
 
     public Film getFilm() {
-        Film film = new Film(this.id, this.title, this.year, this.description );
+        Film film = new Film(this.title, this.year, this.description );
         return film;
+    }
+
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public Date getModificationDate() {
+        return modificationDate;
+    }
+
+    public void setModificationDate(Date modificationDate) {
+        this.modificationDate = modificationDate;
+    }
+
+    @Override
+    public String toString() {
+        return "FilmDTO{" +
+                "id=" + id +
+                ", year=" + year +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", peopleList=" + peopleList +
+                ", peopleRoleMap=" + peopleRoleMap +
+                ", film=" + film +
+                '}';
     }
 }

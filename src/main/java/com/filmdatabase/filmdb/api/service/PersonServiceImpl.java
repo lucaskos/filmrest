@@ -1,21 +1,25 @@
 package com.filmdatabase.filmdb.api.service;
 
+import com.filmdatabase.filmdb.api.service.interfaces.PersonService;
 import com.filmdatabase.filmdb.application.DTO.*;
-import com.filmdatabase.filmdb.application.commons.CacheConstants;
+import com.filmdatabase.filmdb.application.DTO.utils.CacheUtil;
+import com.filmdatabase.filmdb.application.DTO.utils.PersonWrapperUtils;
 import com.filmdatabase.filmdb.application.commons.PersonRolesKeys;
-import com.filmdatabase.filmdb.application.model.FilmRelation;
+import com.filmdatabase.filmdb.application.model.FilmRelations;
 import com.filmdatabase.filmdb.application.model.cache.dictionaries.PersonRole;
 import com.filmdatabase.filmdb.application.model.cache.service.CacheService;
-import com.filmdatabase.filmdb.application.model.film.FilmDao;
+import com.filmdatabase.filmdb.application.model.comments.PersonComments;
 import com.filmdatabase.filmdb.application.model.person.Person;
 import com.filmdatabase.filmdb.application.model.person.PersonDao;
 import org.apache.commons.collections4.CollectionUtils;
+import org.hibernate.Hibernate;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -27,7 +31,6 @@ public class PersonServiceImpl implements PersonService {
 
     private final PersonDao personDao;
 
-    private final FilmDao filmDao;
 
     private final PersonWrapperUtils personWrapperUtils;
 
@@ -35,10 +38,11 @@ public class PersonServiceImpl implements PersonService {
 
     private ModelMapper modelMapper;
 
+    private Date now = new Date();
+
     @Autowired
-    public PersonServiceImpl(CacheService cache, PersonDao personDao, FilmDao filmDao, ModelMapper modelMapper) {
+    public PersonServiceImpl(CacheService cache, PersonDao personDao, ModelMapper modelMapper) {
         this.cache = cache;
-        this.filmDao = filmDao;
         this.personDao = personDao;
         this.personWrapperUtils = new PersonWrapperUtils();
         this.modelMapper = modelMapper;
@@ -54,8 +58,15 @@ public class PersonServiceImpl implements PersonService {
         return personDTO1;
     }
 
+    public PersonDTO getPersonDetails(int id) {
+        PersonDTO personDTO1 = personWrapperUtils.getFullDetailsPersonObject(personDao.findOneWithRelations(id, PersonComments.class, FilmRelations.class));
+        return personDTO1;
+    }
+
 
     public PersonDTO create(PersonDTO personWrapper) {
+        personWrapper.setCreationDate(now);
+        personWrapper.setModificationDate(now);
         Person person = personWrapper.getPerson();
         person.setId(null);
         Person person1 = personDao.create(person);
@@ -76,22 +87,22 @@ public class PersonServiceImpl implements PersonService {
     private void addFilmRelationsToPerson(PersonDTO personWrapper, Person person) {
         List<FilmDTO> filmList = personWrapper.getFilmList();
         for (FilmDTO filmDTO : filmList) {
-            FilmRelation filmRelation = new FilmRelation();
-            filmRelation.setFilmRelationId(null);
-            filmRelation.setPerson(personWrapper.getPerson());
-            filmRelation.setRole(personWrapper.getRoleType());
-            filmRelation.setFilm(filmDTO.getFilm());
+            FilmRelations filmRelations = new FilmRelations();
+            filmRelations.setFilmRelationId(null);
+            filmRelations.setPerson(personWrapper.getPerson());
+            filmRelations.setRole(personWrapper.getRoleType());
+            filmRelations.setFilm(filmDTO.getFilm());
             if(personWrapper.getRoleDto() == null) {
-                filmRelation.setPersonRoleDictionary((PersonRole) CacheUtil.findCacheByKey(PersonRolesKeys.ACTOR.name(), cache.getRoles()));
+                filmRelations.setPersonRoleDictionary((PersonRole) CacheUtil.findCacheByKey(PersonRolesKeys.ACTOR.name(), cache.getRoles()));
             } else {
-                filmRelation.setPersonRoleDictionary(modelMapper.map(personWrapper.getRoleDto(), PersonRole.class));
+                filmRelations.setPersonRoleDictionary(modelMapper.map(personWrapper.getRoleDto(), PersonRole.class));
             }
-            person.getFilmRelations().add(filmRelation);
+            person.getFilmRelations().add(filmRelations);
         }
     }
 
 
-    private void setFilmRelationRole(FilmRelation filmRelation, Set<RoleDto> roleDtos) {
+    private void setFilmRelationRole(FilmRelations filmRelations, Set<RoleDto> roleDtos) {
         if (CollectionUtils.isEmpty(roleDtos)) {
             List roles = cache.getRoles();
         } else {
@@ -100,20 +111,45 @@ public class PersonServiceImpl implements PersonService {
         }
         Iterator iterator = roleDtos.iterator();
         RoleDto next = (RoleDto) iterator.next();
-        filmRelation.setPersonRoleDictionary(new PersonRole(next.getId(), next.getRoleType(), next.getRoleKey()));
+        filmRelations.setPersonRoleDictionary(new PersonRole(next.getId(), next.getRoleType(), next.getRoleKey()));
     }
 
 
-    public void update(PersonDTO person) {
+    public PersonDTO update(PersonDTO person) {
+//fixme relacje i komentarze
+
+        return modelMapper.map(personDao.update(person.getPerson()), PersonDTO.class);
+    }
+
+    @Override
+    public PersonDTO updateRelations(PersonDTO person) {
+        person.setModificationDate(now);
         Person personEntity = person.getPerson();
         if (!CollectionUtils.isEmpty(person.getFilmList())) {
             addFilmRelationsToPerson(person, personEntity);
         }
-        personDao.update(personEntity);
+        return modelMapper.map(personDao.update(personEntity), PersonDTO.class);
     }
 
     public void delete(Person person) {
         personDao.delete(person);
+    }
+
+    @Override
+    public PersonDTO addComment(PersonDTO person) {
+        Person personEntity = person.getPerson();
+        if (!CollectionUtils.isEmpty(person.getPersonCommentsSet())) {
+            addComment(person, personEntity);
+        }
+        Person update = personDao.update(person.getPerson());
+        return modelMapper.map(update, PersonDTO.class);
+    }
+
+    private void addComment(PersonDTO personWrapper, Person person) {
+        Set<PersonComments> personCommentsSet = personWrapper.getPersonCommentsSet();
+        for (PersonComments comment : personCommentsSet) {
+            person.addPersonComments(comment);
+        }
     }
 
     private boolean isFilmRelationExistsOnPerson(FilmDTO filmDTO, List<FilmDTO> filmRelations) {

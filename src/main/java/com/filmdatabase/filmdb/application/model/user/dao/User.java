@@ -1,15 +1,13 @@
 package com.filmdatabase.filmdb.application.model.user.dao;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.filmdatabase.filmdb.application.model.rating.Rating;
+import com.filmdatabase.filmdb.application.model.comments.PersonComments;
 import com.filmdatabase.filmdb.application.model.user.role.Role;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -18,14 +16,13 @@ import java.util.Set;
 public class User {
 
     public String username;
-    public int id;
+    public Integer id;
     public String password;
     public boolean enabled;
     public String email;
-//    public Set<Rating> rating = new HashSet<>();
     public List<Role> roles;
-    //@OneToMany(mappedBy = "user")
-    //private Set<Comment> comments;
+    //    public Set<Rating> rating = new HashSet<>();
+    private Set<PersonComments> personComments;
 
     public User() {
 
@@ -35,6 +32,15 @@ public class User {
         this.username = username;
         this.password = password;
         this.roles = role;
+    }
+
+    public User(String username, Integer id, String password, boolean enabled, String email, List<Role> roles) {
+        this.username = username;
+        this.id = id;
+        this.password = password;
+        this.enabled = enabled;
+        this.email = email;
+        this.roles = roles;
     }
 
     @JsonIgnore
@@ -54,11 +60,11 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -103,7 +109,17 @@ public class User {
         this.email = email;
     }
 
-//    @JsonManagedReference
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.EAGER)
+    @JoinColumn(name = "OWNER_ID")
+    public Set<PersonComments> getPersonComments() {
+        return personComments;
+    }
+
+    public void setPersonComments(Set<PersonComments> comments) {
+        this.personComments = comments;
+    }
+
+    //    @JsonManagedReference
 //    @OneToMany(fetch = FetchType.LAZY, mappedBy = "userId", cascade = CascadeType.ALL)
 //    public Set<Rating> getRating() {
 //        return rating;

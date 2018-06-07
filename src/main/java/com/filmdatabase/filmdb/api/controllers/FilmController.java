@@ -1,6 +1,6 @@
 package com.filmdatabase.filmdb.api.controllers;
 
-import com.filmdatabase.filmdb.api.service.FilmService;
+import com.filmdatabase.filmdb.api.service.interfaces.FilmService;
 import com.filmdatabase.filmdb.application.DTO.FilmDTO;
 import com.filmdatabase.filmdb.application.model.cache.service.CacheService;
 import com.filmdatabase.filmdb.application.model.film.Film;

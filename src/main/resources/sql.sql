@@ -42,7 +42,7 @@ create index FKfqfxsrdadhrp1h4sywwrdclmq
 ;
 
 create index FKtijdyq0jyy5bn2d22wajdwljl
-	on film_relation (person_PERSON_ID)
+	on film_relation (PERSON_ID)
 ;
 
 create index personRoleDictionary_SL_PERSON_ROLE_ID
@@ -195,13 +195,13 @@ SELECT
     `films`.`film`.`FILM_ID`     AS `ID`,
     `films`.`film`.`TITLE`       AS `TITLE`,
     `films`.`film`.`DESCRIPTION` AS `DESCRIPTION`,
-    `films`.`film`.`YEAR`        AS `YEAR`,
+    `films`.`film`.PUBLISH_YEAR        AS `YEAR`,
     `c`.`CREATED_DATE`           AS `created_date`,
-    `c`.`PERSON_ID`              AS `person_id`,
+    `c`.person_PERSON_ID              AS `person_id`,
     `c`.`TEXT`                   AS `text`,
     `af`.`actor_film_id`         AS `actor_film_id`
   FROM ((`films`.`film`
-    JOIN `films`.`comment` `c` ON ((`c`.`FILM_ID` = `films`.`film`.`FILM_ID`))) JOIN `films`.`actor_film` `af`
+    JOIN `films`.PERSON_COMMENTS `c` ON ((`c`.`FILM_ID` = `films`.`film`.`FILM_ID`))) JOIN `films`.`actor_film` `af`
       ON ((`af`.`film_id` = `films`.`film`.`FILM_ID`)));
 
 create procedure INSERT_RATING (IN in_user_id int, IN in_film_id int, IN in_person_id int, IN in_rating int)  

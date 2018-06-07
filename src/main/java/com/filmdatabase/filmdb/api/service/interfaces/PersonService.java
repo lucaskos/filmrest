@@ -1,4 +1,4 @@
-package com.filmdatabase.filmdb.api.service;
+package com.filmdatabase.filmdb.api.service.interfaces;
 
 import com.filmdatabase.filmdb.application.DTO.PersonDTO;
 import com.filmdatabase.filmdb.application.model.person.Person;
@@ -11,10 +11,15 @@ public interface PersonService {
 
     PersonDTO getPerson(int id);
 
+    PersonDTO getPersonDetails(int id);
+
     PersonDTO create(PersonDTO person);
 
-    void update(PersonDTO person);
+    PersonDTO update(PersonDTO person);
 
     void delete(Person person);
 
+    PersonDTO addComment(PersonDTO person);
+
+    PersonDTO updateRelations(PersonDTO personDTO);
 }

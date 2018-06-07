@@ -16,6 +16,14 @@ public interface GenericDao <T> {
      */
     T findOne(Serializable id);
 
+    /**
+     * Retrieve an object with relations of this this object.
+     * @param id - object id
+     * @param args - list of objects we want relations retrieved
+     * @return
+     */
+    T findOneWithRelations(Serializable id, Object ... args);
+
     /** Save changes made to a persistent object.  */
     T update(T transientObject);
 

@@ -9,6 +9,7 @@ import org.springframework.util.CollectionUtils;
 
 import javax.persistence.Query;
 import javax.persistence.criteria.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
