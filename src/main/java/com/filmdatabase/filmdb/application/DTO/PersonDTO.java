@@ -21,7 +21,7 @@ public class PersonDTO {
     private Date creationDate;
     private Date modificationDate;
     //todo sprawdzic czy mapa nie jest lepsza do jako drzewo commentarzy
-    private Set<PersonComments> personCommentsSet = new HashSet<>();
+    private Set<PersonComments> personComments = new LinkedHashSet<>();
 
     public RoleDto getRoleDto() {
         return roleDto;
@@ -148,19 +148,20 @@ public class PersonDTO {
         this.modificationDate = modificationDate;
     }
 
-    public Set<PersonComments> getPersonCommentsSet() {
-        return personCommentsSet;
+    public Set<PersonComments> getPersonComments() {
+        return personComments;
     }
 
-    public void setPersonCommentsSet(Set<PersonComments> personCommentsSet) {
-        this.personCommentsSet = personCommentsSet;
+    public void setPersonComments(Set<PersonComments> personComments) {
+        this.personComments = personComments;
     }
 
-    public void addPersonComment(PersonComments personComments) {
-        if(personCommentsSet == null || personCommentsSet.isEmpty()) {
-            personCommentsSet = new HashSet<>();
+    public void addPersonComments(PersonComments comment) {
+        if (this.personComments == null) {
+            personComments = new LinkedHashSet<>();
         }
-        this.personCommentsSet.add(personComments);
+        this.personComments.add(comment);
+
     }
 
     private Person createPersonEntity() {

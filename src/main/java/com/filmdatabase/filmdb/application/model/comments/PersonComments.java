@@ -9,7 +9,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "PERSON_COMMENTS")
-public class PersonComments implements Comment{
+public class PersonComments {
     private int commentId;
     private Date createdDate;
     private Integer depth;

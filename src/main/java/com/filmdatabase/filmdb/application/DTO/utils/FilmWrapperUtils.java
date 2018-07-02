@@ -71,6 +71,7 @@ public class FilmWrapperUtils {
                 if (relation.getFilm().getFilmId() == one.getFilmId()) {
 
                     relation.getPerson().setFilmRelations(null);
+                    //fixme comments
                     PersonDTO newPersonDto = modelMapper.map(relation.getPerson(), PersonDTO.class);
 //fixme
                     RoleDto roleDto = new RoleDto();

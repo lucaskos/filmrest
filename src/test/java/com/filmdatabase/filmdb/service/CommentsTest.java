@@ -1,7 +1,9 @@
 package com.filmdatabase.filmdb.service;
 
+import com.filmdatabase.filmdb.api.service.interfaces.FilmService;
 import com.filmdatabase.filmdb.api.service.interfaces.PersonService;
 import com.filmdatabase.filmdb.api.service.interfaces.UserService;
+import com.filmdatabase.filmdb.application.DTO.FilmDTO;
 import com.filmdatabase.filmdb.application.DTO.PersonDTO;
 import com.filmdatabase.filmdb.application.DTO.UserDto;
 import com.filmdatabase.filmdb.application.model.comments.PersonComments;
@@ -17,7 +19,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Iterator;
-import java.util.Set;
 
 import static org.junit.Assert.*;
 
@@ -33,33 +34,38 @@ public class CommentsTest {
     @Autowired
     PersonService personService;
 
+    @Autowired
+    FilmService filmService;
+
     private PersonDTO person = null;
     private UserDto user = null;
+    private FilmDTO film = null;
 
     @Before
     public void setUp() {
         person = getPerson();
         user = getUser();
+        film = getFilm();
     }
 
     @Test
     public void getSingleComment() {
-        PersonComments personCommentsSet = person.getPersonCommentsSet().iterator().next();
+        PersonComments personCommentsSet = person.getPersonComments().iterator().next();
         assertNotNull(personCommentsSet.getUser().getId());
         assertNotNull(personCommentsSet.getPerson());
     }
 
     @Test
-    public void addSingleCommentWithRemovalOfOld() {
+    public void addSingleCommentToPersonWithRemovalOfOld() {
 
         PersonDTO update = removeComments();
 
         PersonComments personComments = firstComment();
-        person.addPersonComment(personComments);
+        person.addPersonComments(personComments);
 
         update = personService.addComment(person);
-        assertNotNull(update.getPersonCommentsSet());
-        Iterator<PersonComments> iterator = update.getPersonCommentsSet().iterator();
+        assertNotNull(update.getPersonComments());
+        Iterator<PersonComments> iterator = update.getPersonComments().iterator();
         PersonComments next = iterator.next();
         int commentId = next.getCommentId();
         assertEquals(next.getText(), personComments.getText());
@@ -67,8 +73,13 @@ public class CommentsTest {
         assertEquals(next.getUser().getId(), personComments.getUser().getId());
     }
 
+    @Test
+    public void addSingleCommentToFilmWithRemovalOfOld() {
+        assertNotNull(film);
+    }
+
     private PersonDTO removeComments() {
-        person.setPersonCommentsSet(null);
+        person.setPersonComments(null);
         return personService.update(person);
     }
 
@@ -97,13 +108,13 @@ public class CommentsTest {
         PersonComments firstPersonComments = firstComment();
         PersonComments secondPersonComments = secondComment();
 
-        update.addPersonComment(firstPersonComments);
-        update.addPersonComment(secondPersonComments);
+        update.addPersonComments(firstPersonComments);
+        update.addPersonComments(secondPersonComments);
 
         PersonDTO update1 = personService.addComment(update);
 
-        assertNotNull(update1.getPersonCommentsSet());
-        assertTrue(update1.getPersonCommentsSet().size() > 1);
+        assertNotNull(update1.getPersonComments());
+        assertTrue(update1.getPersonComments().size() > 1);
 
 
     }
@@ -111,6 +122,11 @@ public class CommentsTest {
     public PersonDTO getPerson() {
         Integer id = personService.findAll().get(0).getId();
         return personService.getPerson(id);
+    }
+
+    public FilmDTO getFilm() {
+        Integer id = filmService.getAllFilms().iterator().next().getFilmId();
+        return filmService.getFilmDetails(id);
     }
 
     public UserDto getUser() {

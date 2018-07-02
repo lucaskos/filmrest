@@ -1,5 +1,6 @@
 package com.filmdatabase.filmdb.application.DTO;
 
+import com.filmdatabase.filmdb.application.model.comments.FilmComments;
 import com.filmdatabase.filmdb.application.model.film.Film;
 
 import java.util.*;
@@ -15,6 +16,7 @@ public class FilmDTO {
     private Date creationDate;
     private Date modificationDate;
     private Film film;
+    private Set<FilmComments> filmComments = new LinkedHashSet<>();
 
     public FilmDTO() {
     }
@@ -100,6 +102,21 @@ public class FilmDTO {
 
     public void setModificationDate(Date modificationDate) {
         this.modificationDate = modificationDate;
+    }
+
+    public Set<FilmComments> getFilmComments() {
+        return filmComments;
+    }
+
+    public void setFilmComments(Set<FilmComments> filmComments) {
+        this.filmComments = filmComments;
+    }
+
+    public void addComment(FilmComments comment) {
+        if(filmComments == null) {
+            filmComments = new LinkedHashSet<>();
+        }
+        this.filmComments.add(comment);
     }
 
     @Override

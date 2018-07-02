@@ -2,6 +2,7 @@ package com.filmdatabase.filmdb.application.model.film;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.filmdatabase.filmdb.application.model.FilmRelations;
+import com.filmdatabase.filmdb.application.model.comments.FilmComments;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
@@ -24,6 +25,7 @@ public class Film implements Serializable {
     private Set<FilmRelations> filmRelations = new HashSet<>();
     private Date creationDate;
     private Date modificationDate;
+    private Set<FilmComments> filmComments = new LinkedHashSet<>();
 
     public Film() {
 
@@ -123,6 +125,23 @@ public class Film implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "film_FILM_ID")
+    public Set<FilmComments> getFilmComments() {
+        return filmComments;
+    }
+
+    public void setFilmComments(Set<FilmComments> filmComments) {
+        this.filmComments = filmComments;
+    }
+
+    public void addComment(FilmComments filmComment) {
+        if(filmComments == null) {
+            filmComments = new LinkedHashSet<>();
+        }
+        filmComments.add(filmComment);
     }
 
     @Override

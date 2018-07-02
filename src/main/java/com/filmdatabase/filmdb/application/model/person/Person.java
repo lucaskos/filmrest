@@ -8,7 +8,10 @@ import org.hibernate.validator.constraints.NotBlank;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Date;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "PERSON")
@@ -22,7 +25,7 @@ public class Person implements Serializable {
     private Date diedDate;
     private Date creationDate;
     private Date modificationDate;
-    private Set<PersonComments> personComments;
+    private Set<PersonComments> personComments = new LinkedHashSet<>();
     /**
      * biography of a person
      */
@@ -44,6 +47,7 @@ public class Person implements Serializable {
 
     public Person() {
     }
+
     public Person(String firstName) {
         this.firstName = firstName;
     }
@@ -135,12 +139,11 @@ public class Person implements Serializable {
     }
 
     public void addPersonComments(PersonComments comment) {
-        if(this.personComments == null) {
-            this.personComments = new LinkedHashSet<>();
-            this.personComments.add(comment);
-        } else {
-            this.personComments.add(comment);
+        if (this.personComments == null) {
+            personComments = new LinkedHashSet<>();
         }
+        this.personComments.add(comment);
+
     }
 
     @Override

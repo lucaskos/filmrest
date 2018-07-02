@@ -4,6 +4,8 @@ import com.filmdatabase.filmdb.api.service.interfaces.FilmService;
 import com.filmdatabase.filmdb.api.service.interfaces.PersonService;
 import com.filmdatabase.filmdb.application.DTO.FilmDTO;
 import com.filmdatabase.filmdb.application.DTO.utils.FilmWrapperUtils;
+import com.filmdatabase.filmdb.application.model.FilmRelations;
+import com.filmdatabase.filmdb.application.model.comments.FilmComments;
 import com.filmdatabase.filmdb.application.model.film.Film;
 import com.filmdatabase.filmdb.application.model.film.FilmDao;
 import org.modelmapper.ModelMapper;
@@ -14,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class FilmServiceImpl implements FilmService {
@@ -35,13 +38,19 @@ public class FilmServiceImpl implements FilmService {
     }
 
     @Override
-    public Collection<Film> getAllFilms() {
+    public List<Film> getAllFilms() {
         return filmDao.findAll();
     }
 
     @Override
     public FilmDTO getFilmById(int id) {
+        Film oneWithRelations = filmDao.findOneWithRelations(id, FilmRelations.class, FilmComments.class);
         return filmWrapper.getFullFilmDetails(modelMapper, filmDao.findOne(id));
+    }
+
+    @Override
+    public Film getFilmEntity(int id) {
+        return filmDao.findOne(id);
     }
 
     @Override
@@ -93,11 +102,10 @@ public class FilmServiceImpl implements FilmService {
         return FilmWrapperUtils.getFullFilmDetails(modelMapper, updatedFilm);
     }
 
-    @Transactional
     @Override
     public FilmDTO getFilmDetails(int id) {
-        Film one = filmDao.findOne(id);
-        return FilmWrapperUtils.getFullFilmDetails(modelMapper, one);
+        Film oneWithRelations = filmDao.findOneWithRelations(id, FilmComments.class, FilmRelations.class);
+        return FilmWrapperUtils.getFullFilmDetails(modelMapper, oneWithRelations);
     }
 
 }

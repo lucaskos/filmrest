@@ -14,10 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 
 public class PersonWrapperUtils {
@@ -35,7 +32,6 @@ public class PersonWrapperUtils {
     }
 
     private static void initPersonConverter() {
-        if (personDTOConverter == null) {
             personDTOConverter = mappingContext -> {
                 Person src = mappingContext.getSource();
                 PersonDTO dsc = mappingContext.getDestination();
@@ -53,13 +49,12 @@ public class PersonWrapperUtils {
                 }
 
                 if (!CollectionUtils.isEmpty(src.getPersonComments())) {
-                    Set<PersonComments> personComments = new HashSet<>();
+                    Set<PersonComments> personComments = new LinkedHashSet<>();
                     src.getPersonComments().forEach(personComments1 -> personComments.add(modelMapper.map(personComments1, PersonComments.class)));
                 }
 
                 return dsc;
             };
-        }
     }
 
     public PersonDTO getFullDetailsPersonObject(Person person) {

@@ -1,5 +1,7 @@
 package com.filmdatabase.filmdb.application.model.comments;
 
+import com.filmdatabase.filmdb.application.model.film.Film;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -7,7 +9,7 @@ import java.util.Date;
 @Table(name = "FILM_COMMENTS")
 public class FilmComments {
     private int commentId;
-    private Integer filmId;
+    private Film getFilm;
     private Date createdDate;
     private int depth;
     private Integer parentCommentId;
@@ -26,13 +28,13 @@ public class FilmComments {
         this.commentId = commentId;
     }
 
-    @Column(name = "FILM_ID")
-    public Integer getFilmId() {
-        return filmId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    public Film getFilm() {
+        return getFilm;
     }
 
-    public void setFilmId(Integer filmId) {
-        this.filmId = filmId;
+    public void setFilm(Film filmId) {
+        this.getFilm = filmId;
     }
 
     @Column(name = "CREATED_DATE")

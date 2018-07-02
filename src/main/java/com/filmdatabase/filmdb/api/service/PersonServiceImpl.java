@@ -12,7 +12,6 @@ import com.filmdatabase.filmdb.application.model.comments.PersonComments;
 import com.filmdatabase.filmdb.application.model.person.Person;
 import com.filmdatabase.filmdb.application.model.person.PersonDao;
 import org.apache.commons.collections4.CollectionUtils;
-import org.hibernate.Hibernate;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -138,7 +137,7 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public PersonDTO addComment(PersonDTO person) {
         Person personEntity = person.getPerson();
-        if (!CollectionUtils.isEmpty(person.getPersonCommentsSet())) {
+        if (!CollectionUtils.isEmpty(person.getPersonComments())) {
             addComment(person, personEntity);
         }
         Person update = personDao.update(person.getPerson());
@@ -146,7 +145,7 @@ public class PersonServiceImpl implements PersonService {
     }
 
     private void addComment(PersonDTO personWrapper, Person person) {
-        Set<PersonComments> personCommentsSet = personWrapper.getPersonCommentsSet();
+        Set<PersonComments> personCommentsSet = personWrapper.getPersonComments();
         for (PersonComments comment : personCommentsSet) {
             person.addPersonComments(comment);
         }

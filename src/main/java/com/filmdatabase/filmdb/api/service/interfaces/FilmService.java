@@ -4,12 +4,15 @@ import com.filmdatabase.filmdb.application.DTO.FilmDTO;
 import com.filmdatabase.filmdb.application.model.film.Film;
 
 import java.util.Collection;
+import java.util.List;
 
 public interface FilmService {
 
-    Collection<Film> getAllFilms();
+    List<Film> getAllFilms();
 
     FilmDTO getFilmById(int id);
+
+    Film getFilmEntity(int id);
 
     FilmDTO addFilm(FilmDTO film);
 
