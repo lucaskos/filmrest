@@ -3,6 +3,7 @@ package com.filmdatabase.filmdb.api.service;
 import com.filmdatabase.filmdb.api.service.interfaces.PersonService;
 import com.filmdatabase.filmdb.application.DTO.*;
 import com.filmdatabase.filmdb.application.DTO.utils.CacheUtil;
+import com.filmdatabase.filmdb.application.DTO.utils.FilmRelationMapping;
 import com.filmdatabase.filmdb.application.DTO.utils.PersonWrapperUtils;
 import com.filmdatabase.filmdb.application.commons.PersonRolesKeys;
 import com.filmdatabase.filmdb.application.model.FilmRelations;
@@ -17,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.Iterator;
@@ -51,10 +53,12 @@ public class PersonServiceImpl implements PersonService {
         return personDao.findAll();
     }
 
+    @Transactional
     public PersonDTO getPerson(int id) {
         Person person = personDao.findOne(id);
-        PersonDTO personDTO1 = personWrapperUtils.getFullDetailsPersonObject(person);
-        return personDTO1;
+        PersonDTO person1 = FilmRelationMapping.getPerson(person);
+        //PersonDTO personDTO1 = personWrapperUtils.getFullDetailsPersonObject(person);
+        return person1;
     }
 
     public PersonDTO getPersonDetails(int id) {
@@ -145,9 +149,9 @@ public class PersonServiceImpl implements PersonService {
     }
 
     private void addComment(PersonDTO personWrapper, Person person) {
-        Set<PersonComments> personCommentsSet = personWrapper.getPersonComments();
-        for (PersonComments comment : personCommentsSet) {
-            person.addPersonComments(comment);
+        Set<PersonCommentDto> personCommentsSet = personWrapper.getPersonComments();
+        for (PersonCommentDto comment : personCommentsSet) {
+            //person.addPersonComments(comment);
         }
     }
 

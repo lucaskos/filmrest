@@ -7,7 +7,6 @@ public class RoleDto {
     private Integer id;
     private String roleType;
     private String roleKey;
-    private String roleName;
 
     private PersonRole personRole;
 
@@ -39,14 +38,6 @@ public class RoleDto {
         this.roleKey = roleKey;
     }
 
-    public String getRoleName() {
-        return roleName;
-    }
-
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -73,7 +64,6 @@ public class RoleDto {
                 "id=" + id +
                 ", roleType='" + roleType + '\'' +
                 ", roleKey='" + roleKey + '\'' +
-                ", roleName='" + roleName + '\'' +
                 '}';
     }
 }

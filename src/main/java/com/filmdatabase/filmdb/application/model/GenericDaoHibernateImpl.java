@@ -14,7 +14,6 @@ import java.util.List;
 /**
  * Created by Luke on 02.11.2017.
  */
-@Transactional
 @Repository
 public abstract class GenericDaoHibernateImpl<T>
         implements GenericDao<T> {

@@ -7,11 +7,7 @@ import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.sql.Date;
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "PERSON")
@@ -46,6 +42,17 @@ public class Person implements Serializable {
     }
 
     public Person() {
+    }
+
+    public Person(Integer id, String firstName, String lastName, Date bornDate, Date diedDate, Date creationDate, Date modificationDate, String bio) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.bornDate = bornDate;
+        this.diedDate = diedDate;
+        this.creationDate = creationDate;
+        this.modificationDate = modificationDate;
+        this.bio = bio;
     }
 
     public Person(String firstName) {

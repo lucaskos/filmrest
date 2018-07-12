@@ -4,6 +4,7 @@ import com.filmdatabase.filmdb.api.service.interfaces.FilmService;
 import com.filmdatabase.filmdb.api.service.interfaces.PersonService;
 import com.filmdatabase.filmdb.api.service.interfaces.UserService;
 import com.filmdatabase.filmdb.application.DTO.FilmDTO;
+import com.filmdatabase.filmdb.application.DTO.PersonCommentDto;
 import com.filmdatabase.filmdb.application.DTO.PersonDTO;
 import com.filmdatabase.filmdb.application.DTO.UserDto;
 import com.filmdatabase.filmdb.application.model.comments.PersonComments;
@@ -50,7 +51,7 @@ public class CommentsTest {
 
     @Test
     public void getSingleComment() {
-        PersonComments personCommentsSet = person.getPersonComments().iterator().next();
+        PersonCommentDto personCommentsSet = person.getPersonComments().iterator().next();
         assertNotNull(personCommentsSet.getUser().getId());
         assertNotNull(personCommentsSet.getPerson());
     }
@@ -60,13 +61,13 @@ public class CommentsTest {
 
         PersonDTO update = removeComments();
 
-        PersonComments personComments = firstComment();
+        PersonCommentDto personComments = firstComment();
         person.addPersonComments(personComments);
 
         update = personService.addComment(person);
         assertNotNull(update.getPersonComments());
-        Iterator<PersonComments> iterator = update.getPersonComments().iterator();
-        PersonComments next = iterator.next();
+        Iterator<PersonCommentDto> iterator = update.getPersonComments().iterator();
+        PersonCommentDto next = iterator.next();
         int commentId = next.getCommentId();
         assertEquals(next.getText(), personComments.getText());
         assertEquals(next.getTitle(), personComments.getTitle());
@@ -83,21 +84,21 @@ public class CommentsTest {
         return personService.update(person);
     }
 
-    private PersonComments firstComment() {
-        PersonComments personComments = new PersonComments();
+    private PersonCommentDto firstComment() {
+        PersonCommentDto personComments = new PersonCommentDto();
         personComments.setCreatedDate(DateUtil.now());
         personComments.setText("long texxt to support validation");
         personComments.setTitle("single title");
-        personComments.setUser(user.getUser());
+        personComments.setUser(null);//todo
         return personComments;
     }
 
-    private PersonComments secondComment() {
-        PersonComments personComments = new PersonComments();
+    private PersonCommentDto secondComment() {
+        PersonCommentDto personComments = new PersonCommentDto();
         personComments.setCreatedDate(DateUtil.now());
         personComments.setText("text1");
         personComments.setTitle("test1");
-        personComments.setUser(user.getUser());
+        //personComments.setUser(user.getUser());
         return personComments;
     }
 
@@ -105,8 +106,8 @@ public class CommentsTest {
     public void addMultipleComments() {
 
         PersonDTO update = removeComments();
-        PersonComments firstPersonComments = firstComment();
-        PersonComments secondPersonComments = secondComment();
+        PersonCommentDto firstPersonComments = firstComment();
+        PersonCommentDto secondPersonComments = secondComment();
 
         update.addPersonComments(firstPersonComments);
         update.addPersonComments(secondPersonComments);

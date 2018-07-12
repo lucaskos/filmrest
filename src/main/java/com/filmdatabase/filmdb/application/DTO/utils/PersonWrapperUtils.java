@@ -1,6 +1,7 @@
 package com.filmdatabase.filmdb.application.DTO.utils;
 
 import com.filmdatabase.filmdb.application.DTO.FilmDTO;
+import com.filmdatabase.filmdb.application.DTO.PersonCommentDto;
 import com.filmdatabase.filmdb.application.DTO.PersonDTO;
 import com.filmdatabase.filmdb.application.model.FilmRelations;
 import com.filmdatabase.filmdb.application.model.comments.PersonComments;
@@ -10,6 +11,8 @@ import com.filmdatabase.filmdb.application.model.person.Person;
 import org.apache.commons.collections4.CollectionUtils;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
+import org.modelmapper.spi.MatchingStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +35,7 @@ public class PersonWrapperUtils {
     }
 
     private static void initPersonConverter() {
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
             personDTOConverter = mappingContext -> {
                 Person src = mappingContext.getSource();
                 PersonDTO dsc = mappingContext.getDestination();

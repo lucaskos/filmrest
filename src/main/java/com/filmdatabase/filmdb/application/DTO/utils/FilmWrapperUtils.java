@@ -78,10 +78,10 @@ public class FilmWrapperUtils {
                     roleDto.setId(relation.getFilmRelationId());
                     roleDto.setRoleKey(relation.getPersonRoleDictionary().getKey());
                     roleDto.setRoleType(relation.getPersonRoleDictionary().getType());
-                    roleDto.setRoleName(newPersonDto.getRole());
-                    if (roleDto.getRoleKey().equals(PersonRolesKeys.ACTOR.name())) {
-                        roleDto.setRoleName(relation.getRole());
-                    }
+//                    roleDto.setRoleName(newPersonDto.getRole());
+//                    if (roleDto.getRoleKey().equals(PersonRolesKeys.ACTOR.name())) {
+//                        roleDto.setRoleName(relation.getRole());
+//                    }
                     map.getPeopleRoleMap().put(roleDto, newPersonDto);
 
                     //test2 object

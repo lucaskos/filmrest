@@ -1,27 +1,34 @@
-package com.filmdatabase.filmdb.application.model.comments;
+package com.filmdatabase.filmdb.application.DTO;
 
 import com.filmdatabase.filmdb.application.model.person.Person;
 import com.filmdatabase.filmdb.application.model.user.dao.User;
 
-import javax.persistence.*;
-import javax.validation.constraints.Size;
 import java.util.Date;
 
-@Entity
-@Table(name = "PERSON_COMMENTS")
-public class PersonComments {
+public class PersonCommentDto {
     private int commentId;
     private Date createdDate;
     private Integer depth;
     private Integer parentCommentId;
     private String text;
     private String title;
-    private User user;
+    private UserDto user;
     private Person person;
 
-    @Id
-    @Column(name = "COMMENT_ID")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    public PersonCommentDto() {
+    }
+
+    public PersonCommentDto(int commentId, Date createdDate, Integer depth, Integer parentCommentId, String text, String title, UserDto user, Person person) {
+        this.commentId = commentId;
+        this.createdDate = createdDate;
+        this.depth = depth;
+        this.parentCommentId = parentCommentId;
+        this.text = text;
+        this.title = title;
+        this.user = user;
+        this.person = person;
+    }
+
     public int getCommentId() {
         return commentId;
     }
@@ -30,16 +37,6 @@ public class PersonComments {
         this.commentId = commentId;
     }
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    public Person getPerson() {
-        return person;
-    }
-
-    public void setPerson(Person person) {
-        this.person = person;
-    }
-
-    @Column(name = "CREATED_DATE")
     public Date getCreatedDate() {
         return createdDate;
     }
@@ -48,7 +45,6 @@ public class PersonComments {
         this.createdDate = createdDate;
     }
 
-    @Column(name = "DEPTH")
     public Integer getDepth() {
         return depth;
     }
@@ -57,7 +53,6 @@ public class PersonComments {
         this.depth = depth;
     }
 
-    @Column(name = "PARENT_COMMENT_ID")
     public Integer getParentCommentId() {
         return parentCommentId;
     }
@@ -66,8 +61,6 @@ public class PersonComments {
         this.parentCommentId = parentCommentId;
     }
 
-    @Size(min = 10)
-    @Column(name = "TEXT", nullable = false, columnDefinition = "TEXT")
     public String getText() {
         return text;
     }
@@ -76,8 +69,6 @@ public class PersonComments {
         this.text = text;
     }
 
-    @Size(min = 5)
-    @Column(name = "TITLE", nullable = false)
     public String getTitle() {
         return title;
     }
@@ -86,13 +77,19 @@ public class PersonComments {
         this.title = title;
     }
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "OWNER_ID")
-    public User getUser() {
+    public UserDto getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(UserDto user) {
         this.user = user;
+    }
+
+    public Person getPerson() {
+        return person;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
     }
 }

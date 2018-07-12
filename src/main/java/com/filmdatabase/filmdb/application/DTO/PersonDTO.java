@@ -13,6 +13,7 @@ public class PersonDTO {
     private Date bornDate;
     private Date diedDate;
     private List<FilmDTO> filmList = new ArrayList<>(0);
+    private List<PersonRelationDto> filmsList = new ArrayList<>(0);
     private Person person;
     private String roleType;
     private String biography;
@@ -21,7 +22,7 @@ public class PersonDTO {
     private Date creationDate;
     private Date modificationDate;
     //todo sprawdzic czy mapa nie jest lepsza do jako drzewo commentarzy
-    private Set<PersonComments> personComments = new LinkedHashSet<>();
+    private Set<PersonCommentDto> personComments = new LinkedHashSet<>();
 
     public RoleDto getRoleDto() {
         return roleDto;
@@ -106,6 +107,10 @@ public class PersonDTO {
         this.filmList = filmList;
     }
 
+    public void addFilm(FilmDTO filmDTO) {
+        this.filmList.add(filmDTO);
+    }
+
     public String getRoleType() {
         return roleType;
     }
@@ -148,20 +153,28 @@ public class PersonDTO {
         this.modificationDate = modificationDate;
     }
 
-    public Set<PersonComments> getPersonComments() {
+    public Set<PersonCommentDto> getPersonComments() {
         return personComments;
     }
 
-    public void setPersonComments(Set<PersonComments> personComments) {
+    public void setPersonComments(Set<PersonCommentDto> personComments) {
         this.personComments = personComments;
     }
 
-    public void addPersonComments(PersonComments comment) {
+    public void addPersonComments(PersonCommentDto comment) {
         if (this.personComments == null) {
             personComments = new LinkedHashSet<>();
         }
         this.personComments.add(comment);
 
+    }
+
+    public List<PersonRelationDto> getFilmsList() {
+        return filmsList;
+    }
+
+    public void setFilmsList(List<PersonRelationDto> filmsList) {
+        this.filmsList = filmsList;
     }
 
     private Person createPersonEntity() {
