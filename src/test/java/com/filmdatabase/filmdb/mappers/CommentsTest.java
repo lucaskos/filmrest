@@ -3,7 +3,7 @@ package com.filmdatabase.filmdb.mappers;
 import com.filmdatabase.filmdb.application.DTO.FilmDTO;
 import com.filmdatabase.filmdb.application.DTO.PersonDTO;
 import com.filmdatabase.filmdb.application.DTO.UserDto;
-import com.filmdatabase.filmdb.application.DTO.utils.FilmRelationMapping;
+import com.filmdatabase.filmdb.application.DTO.utils.PersonMapper;
 import com.filmdatabase.filmdb.application.model.FilmRelations;
 import com.filmdatabase.filmdb.application.model.cache.dictionaries.PersonRole;
 import com.filmdatabase.filmdb.application.model.comments.PersonComments;
@@ -92,7 +92,7 @@ public class CommentsTest {
         assertTrue(person != null);
 
         PersonDTO map = modelMapper.map(person, PersonDTO.class);
-        PersonDTO person = FilmRelationMapping.getPerson(this.person);
+        PersonDTO person = PersonMapper.toPersonDto(this.person);
         assertNotNull(map);
     }
 

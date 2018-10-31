@@ -3,7 +3,7 @@ package com.filmdatabase.filmdb.api.service;
 import com.filmdatabase.filmdb.api.service.interfaces.PersonService;
 import com.filmdatabase.filmdb.application.DTO.*;
 import com.filmdatabase.filmdb.application.DTO.utils.CacheUtil;
-import com.filmdatabase.filmdb.application.DTO.utils.FilmRelationMapping;
+import com.filmdatabase.filmdb.application.DTO.utils.PersonMapper;
 import com.filmdatabase.filmdb.application.DTO.utils.PersonWrapperUtils;
 import com.filmdatabase.filmdb.application.commons.PersonRolesKeys;
 import com.filmdatabase.filmdb.application.model.FilmRelations;
@@ -56,7 +56,7 @@ public class PersonServiceImpl implements PersonService {
     @Transactional
     public PersonDTO getPerson(int id) {
         Person person = personDao.findOne(id);
-        PersonDTO person1 = FilmRelationMapping.getPerson(person);
+        PersonDTO person1 = PersonMapper.toPersonDto(person);
         //PersonDTO personDTO1 = personWrapperUtils.getFullDetailsPersonObject(person);
         return person1;
     }
